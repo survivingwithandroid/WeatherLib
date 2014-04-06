@@ -31,7 +31,11 @@ At the moment the library supports [Yahoo! Weather] and [Openweathermap]  as wea
 1.0
 
 ## App
-To provide an example about how to use the libray this project contains a fully working app that shows weather information based on this library.
+To provide an example about how to use the libray this project contains a fully working app that shows weather information based on this library (see the demo module).
+
+## Note
+Please notice that some weather provider requires you to get a private API key before using their service, moreover some service aren't free. So if you want to use the Lib with some weather provider you should get your private KEY registering your account.
+
 
 ## Getting started
 The library is based on two main concepts that stands at its base:
