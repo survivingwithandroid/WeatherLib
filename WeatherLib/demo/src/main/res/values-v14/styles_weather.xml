@@ -1,0 +1,8 @@
+<resources>
+
+
+    <dimen name="appwidget_margin">0dp</dimen>
+	<dimen name="appwidget_min_width">250dp</dimen>
+	<dimen name="appwidget_min_height">40dp</dimen>
+    
+</resources>

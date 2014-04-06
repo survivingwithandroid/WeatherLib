@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+     <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"/>
+     
+     <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/ic_menu_refresh"/>     
+
+   <item
+        android:id="@+id/action_share"
+        android:orderInCategory="102"
+        android:showAsAction="ifRoom"
+        android:title="Share"
+        android:icon="@drawable/ic_action_social_share"/>
+     
+     
+</menu>

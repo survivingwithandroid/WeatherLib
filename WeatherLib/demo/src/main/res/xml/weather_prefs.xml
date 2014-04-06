@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ *******************************************************************************
+  ~   Copyright (c) 2013-2014 Francesco Azzola (http://www.survivingwithandroid.com).
+  ~
+  ~   Licensed under the Apache License, Version 2.0 (the "License");
+  ~   you may not use this file except in compliance with the License.
+  ~   You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~   Unless required by applicable law or agreed to in writing, software
+  ~   distributed under the License is distributed on an "AS IS" BASIS,
+  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~   limitations under the License.
+  ~  *****************************************************************************
+  -->
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="@string/loc_title">
+      <Preference android:title="@string/pref_location_title"
+                  android:key="swa_loc">
+          <intent android:targetPackage="com.survivingwithandroid.weatherapp"
+                  android:targetClass="com.survivingwithandroid.weatherapp.settings.SearchLocationActivity"
+                  />
+      </Preference>
+  </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_unit_title">
+        <ListPreference android:key="swa_temp_unit"
+            android:title="@string/temp_title"
+            android:entryValues="@array/unit_values"
+            android:entries="@array/unit_names"
+            android:defaultValue="c" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/lang_title">
+        <ListPreference android:key="swa_lang"
+            android:title="@string/pref_lang_title"
+            android:entryValues="@array/lang_values"
+            android:entries="@array/lang_names"
+            android:defaultValue="en" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
