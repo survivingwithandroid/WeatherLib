@@ -1,8 +1,4 @@
-.gradle
-/local.properties
-/.idea/workspace.xml
-.DS_Store
-/build*.ap_
+*.ap_
 *.dex
 *.class
 bin/
