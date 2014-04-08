@@ -48,6 +48,7 @@ WeatherClient client = WeatherClientDefault.getInstance();
 WeatherConfig config = new WeatherConfig(); // Default configuration
 IWeatherProvider provider = WeatherProviderFactory.createProvider(new YahooProviderType(), config);
 client.setProvider(provider);
+client.init(context);
 // Now we can make our request
 client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
             @Override
