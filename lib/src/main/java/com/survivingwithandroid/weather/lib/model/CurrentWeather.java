@@ -161,6 +161,7 @@ public class CurrentWeather extends Weather {
 		private float speed;
 		private float deg;
         private float chill;
+        private float gust;
 
         /*
         * Current wind speed
@@ -193,6 +194,14 @@ public class CurrentWeather extends Weather {
 
         public void setChill(float chill) {
             this.chill = chill;
+        }
+
+        public float getGust() {
+            return gust;
+        }
+
+        public void setGust(float gust) {
+            this.gust = gust;
         }
     }
 
