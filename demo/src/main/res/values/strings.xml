@@ -7,20 +7,16 @@
     <string name="action_share">Share</string>
     <string name="action_donate">Donate</string>
 
-
     <!-- Prefs -->
     <string name="pref_unit_title">Measure unit</string>
     <string name="temp_title">Temperature unit</string>
     <string name="loc_title">Location</string>
     <string name="pref_location_title">Choose the location</string>
-
     <string name="lang_title">Weather message language</string>
     <string name="summary_lang">Current language</string>
     <string name="pref_lang_title">Select language</string>
-
     <string name="summary_loc">Current location</string>
     <string name="summary_temp">Current temperature unit</string>
-
     <string name="provider">data provided by Openweathermap</string>
 
     <string-array name="unit_names">
@@ -31,7 +27,6 @@
         <item>c</item>
         <item>f</item>
     </string-array>
-
     <string-array name="lang_names">
         <item>English</item>
         <item>Current system language</item>
@@ -40,4 +35,10 @@
         <item>en</item>
         <item>system</item>
     </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Tab resources -->
+    <string name="tab_current">Current</string>
+    <string name="tab_forecast">Forecast</string>
 </resources>
