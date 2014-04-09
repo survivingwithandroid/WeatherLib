@@ -252,7 +252,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
         // We remove spaces in cityName
         cityNamePattern = cityNamePattern.replaceAll(" ", "%20");
-        return YAHOO_GEO_URL + "/places.q(" + cityNamePattern + "%2A);count=" + config.maxResult + "?appid=" + config.ApiKey;
+        return YAHOO_GEO_URL + "/places.q('" + cityNamePattern + "%2A');count=" + config.maxResult + "?appid=" + config.ApiKey;
     }
 
     @Override
@@ -276,7 +276,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 
-        return YAHOO_GEO_URL + "/places.q(" + location.getLatitude() + "," + location.getLongitude() + ")?appid=" + config.ApiKey;
+        return YAHOO_GEO_URL + "/places.q('" + location.getLatitude() + "," + location.getLongitude() + "')?appid=" + config.ApiKey;
     }
 
     @Override
