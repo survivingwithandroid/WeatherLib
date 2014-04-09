@@ -276,7 +276,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 
-        return YAHOO_GEO_URL + "/places.q(" + location.getLatitude() + "," + location.getLongitude() + ")?appid=" + config.ApiKey;
+        return YAHOO_GEO_URL + "/places.q('" + location.getLatitude() + "," + location.getLongitude() + "')?appid=" + config.ApiKey;
     }
 
     @Override
