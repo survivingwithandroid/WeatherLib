@@ -93,6 +93,10 @@
         <item name="android:textSize">8sp</item>
         <item name="android:textColor">@color/color_black</item>
     </style>
+    <style name="textSmallWeather" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
 
 
     <!-- Style for row layout -->
