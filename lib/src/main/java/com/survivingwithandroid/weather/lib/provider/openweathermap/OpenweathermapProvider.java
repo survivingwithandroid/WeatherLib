@@ -103,11 +103,28 @@ public class OpenweathermapProvider implements IWeatherProvider {
          JSONObject wObj = getObject("wind", jObj);
          weather.wind.setSpeed(getFloat("speed", wObj));
          weather.wind.setDeg(getFloat("deg", wObj));
+         weather.wind.setGust(getFloat("gust", wObj));
 
          // Clouds
          JSONObject cObj = getObject("clouds", jObj);
          weather.clouds.setPerc(getInt("all", cObj));
-     }
+
+         // Rain
+         try {
+             JSONObject rObj = getObject("rain", jObj);
+             weather.rain.setAmmount(getFloat("1h", rObj));
+             weather.rain.setTime("1h");
+         }
+         catch(Throwable t) {}
+
+         // Snow
+         try {
+            JSONObject sObj = getObject("snow", jObj);
+            weather.rain.setAmmount(getFloat("3h", sObj));
+         }
+         catch(Throwable t) {}
+
+        }
      catch(JSONException json) {
          throw new WeatherLibException(json);
      }
