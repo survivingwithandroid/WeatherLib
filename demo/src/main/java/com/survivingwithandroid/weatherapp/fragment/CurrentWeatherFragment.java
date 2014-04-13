@@ -1,9 +1,23 @@
+/*
+ * Copyright (C) 2014 Francesco Azzola
+ *  Surviving with Android (http://www.survivingwithandroid.com)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.survivingwithandroid.weatherapp.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,10 +32,8 @@ import com.survivingwithandroid.weather.lib.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
-import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.util.WindDirection;
 import com.survivingwithandroid.weatherapp.R;
-import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 import com.survivingwithandroid.weatherapp.util.LogUtils;
 import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
 import com.survivingwithandroid.weatherapp.util.WeatherUtil;
@@ -69,7 +81,7 @@ public class CurrentWeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.current_weather, container, false);
+        View v = inflater.inflate(R.layout.current_fragment, container, false);
         cityText = (TextView) v.findViewById(R.id.location);
         temp = (TextView) v.findViewById(R.id.temp);
         condDescr = (TextView) v.findViewById(R.id.descrWeather);
@@ -111,8 +123,8 @@ public class CurrentWeatherFragment extends Fragment {
 
         config.lang = WeatherUtil.getLanguage(prefs.getString("swa_lang", "en"));
         config.maxResult = 5;
-        config.numDays = 3;
-        
+        config.numDays = 5;
+        config.ApiKey="782nz97V34GUBogsZZWJCJx7xfPshcWRtQ8mBZ9sxJDaF2vgQa1L3tOLZ0OKiN0W";
         String unit = prefs.getString("swa_temp_unit", "c");
         if (unit.equals("c"))
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;

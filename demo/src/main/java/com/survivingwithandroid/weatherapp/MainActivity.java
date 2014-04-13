@@ -20,7 +20,9 @@ package com.survivingwithandroid.weatherapp;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.survivingwithandroid.weather.lib.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
@@ -32,6 +34,7 @@ import com.survivingwithandroid.weather.lib.provider.yahooweather.YahooProviderT
 import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
 import com.survivingwithandroid.weatherapp.fragment.CurrentWeatherFragment;
+import com.survivingwithandroid.weatherapp.fragment.ForecastWeatherFragment;
 import com.survivingwithandroid.weatherapp.settings.WeatherPreferenceActivity;
 import com.survivingwithandroid.weatherapp.util.LogUtils;
 import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
@@ -53,11 +56,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import android.view.Window;
-
-import android.widget.SpinnerAdapter;
 
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -66,6 +65,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
 	private WeatherConfig config;
     private WeatherClient client;
+    private List<Fragment> activeFragment = new ArrayList<Fragment>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -167,18 +167,35 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         int pos = tab.getPosition();
-        if (pos == 0) {
-            // Current weather
-            CurrentWeatherFragment cwf = CurrentWeatherFragment.newInstance();
-            fragmentTransaction.add(android.R.id.content, cwf);
+        Fragment f = null;
 
+        if (activeFragment.size() > pos)
+          f = activeFragment.get(pos);
+
+        if (f == null) {
+            if (pos == 0) {
+                // Current weather
+                CurrentWeatherFragment cwf = CurrentWeatherFragment.newInstance();
+                fragmentTransaction.add(android.R.id.content, cwf);
+                activeFragment.add(cwf);
+            }
+            else if (pos == 1) {
+                ForecastWeatherFragment fwf = ForecastWeatherFragment.newInstance();
+                fragmentTransaction.add(android.R.id.content, fwf);
+                activeFragment.add(fwf);
+            }
+        }
+        else {
+            fragmentTransaction.add(android.R.id.content, f);
         }
     }
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         Log.d("SwaA", "Tab unselected");
-
+        int pos = tab.getPosition();
+        Fragment f = activeFragment.get(pos);
+        fragmentTransaction.remove(f);
     }
 
     @Override

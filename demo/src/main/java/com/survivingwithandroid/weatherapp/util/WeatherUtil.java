@@ -23,6 +23,8 @@ import com.survivingwithandroid.weather.lib.util.UnitUtility;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 import com.survivingwithandroid.weatherapp.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -55,5 +57,14 @@ public class WeatherUtil {
             return Locale.getDefault().getLanguage();
 
         return null;
+    }
+
+
+    public static String convertDate(long unixTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(unixTime * 1000);
+        sdf.setTimeZone(cal.getTimeZone());
+        return sdf.format(cal.getTime());
     }
 }

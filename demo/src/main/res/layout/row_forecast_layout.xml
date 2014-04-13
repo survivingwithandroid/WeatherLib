@@ -1,26 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp" >
+    android:layout_height="48dp"
+    android:background="@drawable/layout_current"
+    android:layout_marginTop="15dp">
     
     <TextView android:id="@+id/dayName"
     		  android:layout_height="wrap_content"
               android:layout_width="wrap_content"
-    		  style="@style/dayText"
+              android:paddingLeft="5dp"
+              style="@style/dayText"
     		  />
+    <TextView android:id="@+id/dayDate"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="@style/infoTempMaxText"
+        android:layout_below="@id/dayName"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="5dp"
+    />
+
 
      <ImageView android:id="@+id/dayIcon"
               android:layout_width="24dp"
               android:layout_height="24dp"
-              android:layout_centerHorizontal="true"
+              android:layout_centerInParent="true"
     		  />
 
-     <TextView android:id="@+id/dayTemp"
+     <TextView android:id="@+id/dayTempMin"
               android:layout_width="wrap_content"
     		  android:layout_height="wrap_content"
-    		  style="@style/tempText"    		  
-    		  android:layout_alignParentRight="true"
-    		  android:paddingRight="2dp"
-    		  />
+    		  android:paddingRight="7dp"
+    		  android:layout_alignTop="@id/dayIcon"
+              android:layout_toRightOf="@id/dayIcon"
+              style="@style/infoTempMinText"
+                />
+    <TextView android:id="@+id/dayTempMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dayTempMin"
+        android:layout_alignBaseline="@id/tempMin"
+        android:paddingRight="5dp"
+        style="@style/infoTempMaxText"
+    />
+
+    <TextView android:id="@+id/dayRain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dayTempMin"
+        android:paddingTop="5dp"
+        android:layout_alignStart="@id/dayTempMin"
+        style="@style/infoText"
+        />
+
+
+
+    <TextView android:id="@+id/dayCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        style="@style/infoText"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+     />
+
+    <TextView android:id="@+id/dayDescr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="5dp"
+        android:layout_toLeftOf="@id/dayCloud"
+        android:layout_centerVertical="true"
+        style="@style/infoText"
+    />
      
 </RelativeLayout>
