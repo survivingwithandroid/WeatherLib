@@ -1,24 +1,17 @@
-WeatherLib
+WeatherLib (Demo App)
 ==========
 
-Android weather lib for creating easily weather app. The lib implements several protocols to get weather information from the most important weather data provider.
+This is a demo app of WeatherLib. This app demonstrates how to build a weather app in Android using WeatherLib.
+Below there are som screenshots:
 
-This is a demo app that shows to you how to use the library to build a weather app.
-The app gets the current weather information including:
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_weather.png)
 
-* Temperature
-* Min and Max temperature
-* Pressure
-* Humidity
-* Clouds
-* Next days forecast
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_forecast.png)
 
-You can search your city using the search city screen. It supports metric and imperial system units and multiple language forecast
-if you use Openweathermap as weather provider.
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_settings.png)
 
-The app had moreover, a setting interface where you can configure the app parameters.
-The app isn't production-ready the UI and UX must be improved but it is a good starting point if you want to know how to
-use the *WeatherLib*.
+[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_weatherapp_search_city.png)
+
 
 #Community
 If you like there is a Community to talk about new features, suggest tips or report bugs. Please join:
