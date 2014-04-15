@@ -93,6 +93,10 @@
         <item name="android:textSize">8sp</item>
         <item name="android:textColor">@color/color_black</item>
     </style>
+    <style name="textSmallWeather" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
 
 
     <!-- Style for row layout -->
@@ -100,16 +104,21 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">13dp</item>
     </style>
-    <style name="tempText" parent="@android:style/TextAppearance.Small">
+    <style name="infoText" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">11dp</item>
     </style>
-    <style name="labelText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">16dp</item>
-        <item name="android:background">#ff9ed3ff</item>
+
+    <style name="infoTempMinText" parent="infoText">
+        <item name="android:textColor">@color/color_blue</item>
     </style>
+
+    <style name="infoTempMaxText" parent="infoText">
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+
 
 
 </resources>

@@ -20,7 +20,9 @@ package com.survivingwithandroid.weatherapp;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.survivingwithandroid.weather.lib.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
@@ -31,6 +33,8 @@ import com.survivingwithandroid.weather.lib.provider.openweathermap.Openweatherm
 import com.survivingwithandroid.weather.lib.provider.yahooweather.YahooProviderType;
 import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
+import com.survivingwithandroid.weatherapp.fragment.CurrentWeatherFragment;
+import com.survivingwithandroid.weatherapp.fragment.ForecastWeatherFragment;
 import com.survivingwithandroid.weatherapp.settings.WeatherPreferenceActivity;
 import com.survivingwithandroid.weatherapp.util.LogUtils;
 import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
@@ -41,70 +45,59 @@ import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.util.WindDirection;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
 
-    private SharedPreferences prefs;
+public class MainActivity extends Activity implements ActionBar.TabListener {
 
-	private ViewGroup root;
-	private TextView cityText;
-	private TextView condDescr;
-	private TextView temp;
-	private TextView press;
-	private TextView windSpeed;
-	private TextView windDeg;
-	private TextView unitTemp;
-	private TextView hum;
-	private ImageView imgView;
-	private TextView tempMin;
-	private TextView tempMax;
-    private TextView sunset;
-    private TextView sunrise;
-	private TextView cloud;
-
-    // Forecast
-    ListView forecastList;
-	// Forecast
-	private ListView forecastListView;
-
-	private boolean isFinished = false;
+	private boolean isThereForecast = false;
 
 	private WeatherConfig config;
     private WeatherClient client;
+    private List<Fragment> activeFragment = new ArrayList<Fragment>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.main_activity);
+        // Let's verify if we are using a smartphone or a tablet
 
-        setContentView(R.layout.activity_main);
+        FragmentManager fManager = getFragmentManager();
+        Fragment frag = fManager.findFragmentById(R.id.forecastWeatherFrag);
+        if (frag != null)
+            isThereForecast = true;
+
+        if (!isThereForecast) {
+            ActionBar bar = getActionBar();
+            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            ActionBar.Tab tab = bar.newTab();
+            createTab(R.string.tab_current, bar);
+            createTab(R.string.tab_forecast, bar);
+        }
+
+
         client = WeatherClientDefault.getInstance();
         client.init(getApplicationContext());
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         Log.d("App", "Client ["+client+"]");
         // Let's create the WeatherProvider
         config = new WeatherConfig();
+
         IWeatherProvider provider = null;
         try {
-         //   provider = WeatherProviderFactory.createProvider(WeatherProviderFactory.WeatherProviderType.Openweathermap, config);
-
-            provider = WeatherProviderFactory.createProvider(new OpenweathermapProviderType(), config);
-            client.setProvider(provider);
+            //provider = WeatherProviderFactory.createProvider(new YahooProviderType(), config);
+             provider = WeatherProviderFactory.createProvider(new OpenweathermapProviderType(), config);
+             client.setProvider(provider);
         }
         catch (Throwable t) {
             t.printStackTrace();
@@ -112,28 +105,11 @@ public class MainActivity extends Activity {
         }
 
 
-        cityText = (TextView) findViewById(R.id.location);
-		temp = (TextView) findViewById(R.id.temp);
-		condDescr = (TextView) findViewById(R.id.descrWeather);
-		imgView = (ImageView) findViewById(R.id.imgWeather);
-		hum = (TextView) findViewById(R.id.humidity);
-		press = (TextView) findViewById(R.id.pressure);
-		windSpeed = (TextView) findViewById(R.id.windSpeed);
-		windDeg = (TextView) findViewById(R.id.windDeg);
-		tempMin = (TextView) findViewById(R.id.tempMin);
-		tempMax = (TextView) findViewById(R.id.tempMax);
-        unitTemp = (TextView) findViewById(R.id.tempUnit);
-        sunrise = (TextView) findViewById(R.id.sunrise);
-        sunset = (TextView) findViewById(R.id.sunset);
-        cloud = (TextView) findViewById(R.id.cloud);
-
-        forecastList = (ListView) findViewById(R.id.forecastDays);
 	}
 
     @Override
     protected void onStart() {
         super.onStart();
-        refresh();
     }
 
     @Override
@@ -143,104 +119,6 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-
-	public void refresh() {
-
-       // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String cityId = prefs.getString("cityid", null);
-        Log.d("Swa", "City Id ["+cityId+"]");
-        if (cityId == null)
-            return ;
-
-        config.lang = WeatherUtil.getLanguage(prefs.getString("swa_lang", "en"));
-        config.maxResult = 5;
-        config.numDays = 3;
-
-        String unit = prefs.getString("swa_temp_unit", "c");
-        if (unit.equals("c"))
-            config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
-        else
-            config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
-
-        client.updateWeatherConfig(config);
-        displayProgress(true);
-       // setProgressBarIndeterminateVisibility(true);
-        client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
-            @Override
-            public void onWeatherRetrieved(CurrentWeather weather) {
-                //Log.d("SwA", "onWeather");
-                //Log.d("SwA", "City ["+weather.location.getCity()+"]");
-                cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
-                condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
-                LogUtils.LOGD("SwA", "Temp [" + temp + "]");
-                LogUtils.LOGD("SwA", "Val [" + weather.temperature.getTemp() + "]");
-                temp.setText("" + ((int) weather.temperature.getTemp()));
-                unitTemp.setText(weather.getUnit().tempUnit);
-                ((TextView) findViewById(R.id.lineTxt)).setBackgroundResource(WeatherUtil.getResource(weather.temperature.getTemp(), config));
-                hum.setText(weather.currentCondition.getHumidity() + "%");
-                tempMin.setText(weather.temperature.getMinTemp() + weather.getUnit().tempUnit);
-                tempMax.setText(weather.temperature.getMaxTemp() + weather.getUnit().tempUnit);
-                windSpeed.setText(weather.wind.getSpeed() + weather.getUnit().speedUnit);
-                windDeg.setText((int) weather.wind.getDeg() + "° (" + WindDirection.getDir((int) weather.wind.getDeg()) + ")");
-                press.setText(weather.currentCondition.getPressure() + weather.getUnit().pressureUnit);
-
-                sunrise.setText(convertDate(weather.location.getSunrise()));
-
-                sunset.setText(convertDate(weather.location.getSunset()));
-
-                imgView.setImageResource(WeatherIconMapper.getWeatherResource(weather.currentCondition.getIcon(), weather.currentCondition.getWeatherId()));
-
-                cloud.setText(weather.clouds.getPerc() + "%");
-                LogUtils.LOGD("SwA", "UI updated");
-
-            }
-
-            @Override
-            public void onWeatherError(WeatherLibException t) {
-                //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
-            }
-
-            @Override
-            public void onConnectionError(Throwable t) {
-                //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
-            }
-        });
-
-        // Upadte forecast
-         client.getForecastWeather(cityId, new WeatherClient.ForecastWeatherEventListener() {
-            @Override
-            public void onWeatherRetrieved(WeatherForecast forecast) {
-                WeatherAdapter adp = new WeatherAdapter(forecast, MainActivity.this);
-                forecastList.setAdapter(adp);
-                displayProgress(false);
-            }
-
-            @Override
-            public void onWeatherError(WeatherLibException t) {
-
-            }
-
-             @Override
-            public void onConnectionError(Throwable t) {
-            //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
-            }
-        });
-
-		/*
-		TextView tv = (TextView) findViewById(R.id.timeUpd);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");		
-//		tv.setText(sdf.format(new Date()));
-*/
-	}
-
-    private String convertDate(long unixTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(unixTime * 1000);
-        sdf.setTimeZone(cal.getTimeZone());
-        return sdf.format(cal.getTime());
-    }
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
@@ -249,8 +127,12 @@ public class MainActivity extends Activity {
             i.setClass(this, WeatherPreferenceActivity.class);
             startActivity(i);
         }
-		else if (id == R.id.action_refresh)
-            refresh();
+		else if (id == R.id.action_refresh) {
+            FragmentManager fm = getFragmentManager();
+            CurrentWeatherFragment frag  = (CurrentWeatherFragment) fm.findFragmentById(R.id.currentWeatherFrag);
+            if (frag instanceof CurrentWeatherFragment)
+                ( (CurrentWeatherFragment) frag).refreshData();
+        }
 		else if (id == R.id.action_share) {
 			String playStoreLink = "https://play.google.com/store/apps/details?id=" +
 			        getPackageName();
@@ -265,11 +147,50 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+    private void createTab(int labelId, ActionBar bar) {
+        ActionBar.Tab tab = bar.newTab();
+        tab.setText(getResources().getString(labelId));
+        tab.setTabListener(this);
+        bar.addTab(tab);
 
-
-    private void displayProgress(boolean visible) {
-        setProgressBarIndeterminateVisibility(visible);
     }
 
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        int pos = tab.getPosition();
+        Fragment f = null;
 
+        if (activeFragment.size() > pos)
+          f = activeFragment.get(pos);
+
+        if (f == null) {
+            if (pos == 0) {
+                // Current weather
+                CurrentWeatherFragment cwf = CurrentWeatherFragment.newInstance();
+                fragmentTransaction.add(android.R.id.content, cwf);
+                activeFragment.add(cwf);
+            }
+            else if (pos == 1) {
+                ForecastWeatherFragment fwf = ForecastWeatherFragment.newInstance();
+                fragmentTransaction.add(android.R.id.content, fwf);
+                activeFragment.add(fwf);
+            }
+        }
+        else {
+            fragmentTransaction.add(android.R.id.content, f);
+        }
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        Log.d("SwaA", "Tab unselected");
+        int pos = tab.getPosition();
+        Fragment f = activeFragment.get(pos);
+        fragmentTransaction.remove(f);
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        Log.d("Swa", "Tab reselected");
+    }
 }

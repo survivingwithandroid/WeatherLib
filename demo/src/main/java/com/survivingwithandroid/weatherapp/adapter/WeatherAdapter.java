@@ -43,7 +43,8 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
 
 	private List<DayForecast> dayForecastList;
 	private Context ctx;
-	private final static SimpleDateFormat sdf = new SimpleDateFormat("E");
+	private final static SimpleDateFormat sdfDay = new SimpleDateFormat("E");
+    private final static SimpleDateFormat sdfMonth = new SimpleDateFormat("dd/MMM");
 	private Weather.WeatherUnit units;
 
 	public WeatherAdapter(WeatherForecast forecast, Context ctx) {
@@ -68,22 +69,34 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
 			LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.row_forecast_layout, parent, false);
 		}
-		
+
+        // We need to apply holder pattern
+
 		TextView dayText = (TextView) convertView.findViewById(R.id.dayName);
+        TextView dayDate = (TextView) convertView.findViewById(R.id.dayDate);
 		ImageView icon = (ImageView) convertView.findViewById(R.id.dayIcon);
-		TextView tempText = (TextView) convertView.findViewById(R.id.dayTemp);
-		
+		TextView minTempText = (TextView) convertView.findViewById(R.id.dayTempMin);
+        TextView maxTempText = (TextView) convertView.findViewById(R.id.dayTempMax);
+        TextView dayCloud = (TextView) convertView.findViewById(R.id.dayCloud);
+        TextView dayDescr = (TextView) convertView.findViewById(R.id.dayDescr);
+        TextView dayRain = (TextView) convertView.findViewById(R.id.dayRain);
+
 		DayForecast forecast = dayForecastList.get(position);
 		Date d = new Date();
 		Calendar gc =  new GregorianCalendar();
 		gc.setTime(d);
 		gc.add(GregorianCalendar.DAY_OF_MONTH, position + 1);
-		dayText.setText(sdf.format(gc.getTime()));
+		dayText.setText(sdfDay.format(gc.getTime()));
+        dayDate.setText(sdfMonth.format(gc.getTime()));
 
 		icon.setImageResource(WeatherIconMapper.getWeatherResource(forecast.weather.currentCondition.getIcon(), forecast.weather.currentCondition.getWeatherId()));
-		
-		tempText.setText( Math.round(forecast.forecastTemp.min) + units.tempUnit + "/" + Math.round(forecast.forecastTemp.max) + units.tempUnit);
-		
+
+        minTempText.setText( Math.round(forecast.forecastTemp.min) + units.tempUnit);
+        maxTempText.setText( Math.round(forecast.forecastTemp.max) + units.tempUnit);
+        dayCloud.setText("" + forecast.weather.clouds.getPerc() + "%");
+        dayDescr.setText(forecast.weather.currentCondition.getDescr());
+        float rainVal = forecast.weather.rain.getAmmount();
+        dayRain.setText("Rain:" + String.valueOf((int) rainVal));
 		return convertView;
 	}
 	
