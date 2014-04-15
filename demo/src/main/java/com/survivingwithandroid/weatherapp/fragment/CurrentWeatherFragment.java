@@ -124,7 +124,7 @@ public class CurrentWeatherFragment extends Fragment {
         config.lang = WeatherUtil.getLanguage(prefs.getString("swa_lang", "en"));
         config.maxResult = 5;
         config.numDays = 5;
-        config.ApiKey="782nz97V34GUBogsZZWJCJx7xfPshcWRtQ8mBZ9sxJDaF2vgQa1L3tOLZ0OKiN0W";
+
         String unit = prefs.getString("swa_temp_unit", "c");
         if (unit.equals("c"))
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;

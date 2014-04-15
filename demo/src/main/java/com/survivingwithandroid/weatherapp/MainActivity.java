@@ -105,15 +105,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
 
 
-
-/*
-        FragmentManager fManager = getFragmentManager();
-        CurrentWeatherFragment cwf = CurrentWeatherFragment.newInstance();
-        FragmentTransaction fTrans = fManager.beginTransaction();
-        fTrans.add(R.id.currentWeatherFrag, cwf);
-        fTrans.commit();
-*/
-
 	}
 
     @Override

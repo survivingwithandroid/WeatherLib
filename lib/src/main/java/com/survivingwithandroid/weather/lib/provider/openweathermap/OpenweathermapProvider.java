@@ -20,6 +20,8 @@
 
 package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
+import android.util.Log;
+
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
@@ -57,7 +59,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
     private IWeatherCodeProvider codeProvider;
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
-        LogUtils.LOGD("JSON CurrentWeather ["+data+"]");
+        //LogUtils.LOGD("JSON CurrentWeather ["+data+"]");
         CurrentWeather weather = new CurrentWeather();
         try {
         // We create out JSONObject from the data
@@ -103,7 +105,10 @@ public class OpenweathermapProvider implements IWeatherProvider {
          JSONObject wObj = getObject("wind", jObj);
          weather.wind.setSpeed(getFloat("speed", wObj));
          weather.wind.setDeg(getFloat("deg", wObj));
-         weather.wind.setGust(getFloat("gust", wObj));
+            try {
+                weather.wind.setGust(getFloat("gust", wObj));
+            }
+            catch(Throwable t) {}
 
          // Clouds
          JSONObject cObj = getObject("clouds", jObj);
@@ -126,6 +131,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
         }
      catch(JSONException json) {
+         json.printStackTrace();
          throw new WeatherLibException(json);
      }
        weather.setUnit(units);
@@ -195,7 +201,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 	
 	public List<City> getCityResultList(String data) throws WeatherLibException {
         List<City> cityList = new ArrayList<City>();
-
+       // Log.d("SwA", "Data ["+data+"]");
         try {
 
             JSONObject jObj = new JSONObject(data);
@@ -210,7 +216,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 JSONObject sys = obj.getJSONObject("sys");
                 String country = sys.getString("country");
-
+                Log.d("SwA", "ID ["+id+"]");
                 City c = new City(id, name, null, country);
 
                 cityList.add(c);
@@ -231,7 +237,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURL(String cityNamePattern) {
-        return SEARCH_URL + cityNamePattern + "&cnt=" + config.maxResult;
+        return SEARCH_URL + cityNamePattern; // + "&cnt=" + config.maxResult;
     }
 
     @Override
