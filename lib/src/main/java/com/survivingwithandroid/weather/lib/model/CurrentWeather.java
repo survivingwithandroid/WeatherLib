@@ -47,6 +47,12 @@ public class CurrentWeather extends Weather {
 		private float humidity;
 		private float visibility;
         private int pressureTrend;
+        private float feelsLike;
+        private float UV;
+        private float dewPoint;
+        private String heatIndex;
+        private String solarRadiation;
+
         private WeatherCode weatherCode;
 
 		public int getWeatherId() {
@@ -86,6 +92,46 @@ public class CurrentWeather extends Weather {
 			this.humidity = humidity;
 		}
 
+        public float getFeelsLike() {
+            return feelsLike;
+        }
+
+        public void setFeelsLike(float feelsLike) {
+            this.feelsLike = feelsLike;
+        }
+
+        public float getUV() {
+            return UV;
+        }
+
+        public void setUV(float UV) {
+            this.UV = UV;
+        }
+
+        public float getDewPoint() {
+            return dewPoint;
+        }
+
+        public void setDewPoint(float dewPoint) {
+            this.dewPoint = dewPoint;
+        }
+
+        public String getHeatIndex() {
+            return heatIndex;
+        }
+
+        public void setHeatIndex(String heatIndex) {
+            this.heatIndex = heatIndex;
+        }
+
+        public String getSolarRadiation() {
+            return solarRadiation;
+        }
+
+        public void setSolarRadiation(String solarRadiation) {
+            this.solarRadiation = solarRadiation;
+        }
+
         public float getVisibility() {
             return visibility;
         }
@@ -115,7 +161,6 @@ public class CurrentWeather extends Weather {
     * Current Temperature class
     * */
 	public  class Temperature {
-
 
 		private float temp;
 
