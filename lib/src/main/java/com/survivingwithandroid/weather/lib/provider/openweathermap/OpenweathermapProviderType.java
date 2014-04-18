@@ -28,6 +28,6 @@ public class OpenweathermapProviderType implements IProviderType {
 
     @Override
     public String getCodeProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapCodeProvider";
+        return "com.survivingwithandroid.weather.lib.provider.openweathermap.WeatherUndergroundCodeProvider";
     }
 }
