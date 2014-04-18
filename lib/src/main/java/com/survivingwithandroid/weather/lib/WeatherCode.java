@@ -23,7 +23,7 @@ package com.survivingwithandroid.weather.lib;
 * to worry about different weather code to implement different custom icons
 *
 * @see com.survivingwithandroid.weather.lib.IWeatherCodeProvider
-* @see com.survivingwithandroid.weather.lib..openweathermap.OpenweathermapCodeProvider
+* @see com.survivingwithandroid.weather.lib..openweathermap.WeatherUndergroundCodeProvider
 * @see com.survivingwithandroid.weather.lib.yahooweather.YahooWeatherCodeProvider
 * */
 public enum WeatherCode {
