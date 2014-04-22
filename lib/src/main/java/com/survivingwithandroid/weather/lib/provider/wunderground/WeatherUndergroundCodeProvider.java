@@ -26,7 +26,6 @@ public class WeatherUndergroundCodeProvider implements IWeatherCodeProvider {
     @Override
     public WeatherCode getWeatherCode(int code) {
         Log.d("App", "Code [" + code + "]");
-
          throw new UnsupportedOperationException();
         }
   }

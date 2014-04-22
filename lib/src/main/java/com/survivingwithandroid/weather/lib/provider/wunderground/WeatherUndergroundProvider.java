@@ -40,6 +40,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +50,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
 
     private static String BASE_URL_ID = "http://api.wunderground.com/api";
-    private static String IMG_URL = "http://openweathermap.org/img/w/";
+    private static String IMG_URL = "http://icons.wxug.com/i/c/k/";
     private static String SEARCH_URL = "http://autocomplete.wunderground.com/aq?query=";
-    private static String SEARCH_URL_GEO = "http://api.openweathermap.org/data/2.5/find?mode=json&type=accurate";
     private static String BASE_FORECAST_URL_ID = "http://api.wunderground.com/api";
 
 
@@ -126,7 +127,6 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 // weather.temperature.setMinTemp(getFloat("temp_min", mainObj));
                 weather.temperature.setTemp(getFloat("temp_f", jObj));
                 // Wind
-
                 weather.wind.setGust(getFloat("wind_gust_mph", jObj));
                 weather.wind.setSpeed(getFloat("wind_mph", jObj));
                 weather.currentCondition.setVisibility(getFloat("visibility_mi", jObj));
@@ -136,6 +136,32 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             }
 
             parseForecast(rootObj, weather);
+
+
+            // Astronomy
+            JSONObject moonObj = getObject("moon_phase", rootObj);
+            weather.location.getAstronomy().percIllum =  getString("percentIlluminated", moonObj);
+            weather.location.getAstronomy().moonAge =  getString("ageOfMoon", moonObj);
+            weather.location.getAstronomy().moonPhaseDescr =  getString("phaseofMoon", moonObj);
+            weather.location.getAstronomy().hemisphere =  getString("hemisphere", moonObj);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            JSONObject riseObj =  getObject("sunrise", moonObj);
+            String d1 = getString("hour", riseObj) + ":" + getString("minute", riseObj);
+            try {
+                weather.location.setSunrise(sdf.parse(d1).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            JSONObject setObj =  getObject("sunset", moonObj);
+            String d2 = getString("hour", setObj) + ":" + getString("minute", setObj);
+            try {
+                weather.location.setSunset(sdf.parse(d2).getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 
         } catch (JSONException json) {
             //json.printStackTrace();
@@ -251,22 +277,26 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 
-        String url = BASE_URL_ID + "/" + config.ApiKey + "/forecast/conditions" + cityId + ".json";
-        System.out.println("URL [" + url + "]");
+        String url = BASE_URL_ID + "/" + config.ApiKey + "/forecast/conditions/astronomy/";
+        url = addLanguage(url);
+        url = url + cityId + ".json";
         return url;
-        //return BASE_URL_ID + "/" + config.ApiKey + "/forecast/conditions" + cityId + ".json";
+
     }
 
     @Override
     public String getQueryForecastWeatherURL(String cityId) {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
-        return BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/forecast/" + cityId + ".json";
+
+        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/forecast/";
+        url = addLanguage(url);
+        return  url + cityId + ".json";
     }
 
     @Override
     public String getQueryImageURL(String icon) throws ApiKeyRequiredException {
-        return IMG_URL + icon + ".png";
+        return IMG_URL + icon + ".gif";
     }
 
     @Override
@@ -276,7 +306,10 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(android.location.Location location) throws ApiKeyRequiredException {
-        return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3";
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        return BASE_URL_ID  + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
@@ -300,4 +333,11 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return jObj.getInt(tagName);
     }
 
+    private String addLanguage(String url) {
+        if (config.lang == null)
+            return url;
+
+        String nUrl = url + "/lang:" + config.lang.toUpperCase() + "/";
+        return nUrl;
+    }
 }
