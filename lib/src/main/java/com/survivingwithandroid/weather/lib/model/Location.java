@@ -13,10 +13,6 @@ package com.survivingwithandroid.weather.lib.model;
 
 import java.io.Serializable;
 
-/**
- * @author Francesco
- *
- */
 public class Location implements Serializable {
 
 	private float longitude;
@@ -26,6 +22,7 @@ public class Location implements Serializable {
 	private String country;
 	private String city;
     private String region;
+    private Astronomy astronomy = new Astronomy();
 	
 	public float getLongitude() {
 		return longitude;
@@ -70,5 +67,20 @@ public class Location implements Serializable {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public Astronomy getAstronomy() {
+        return astronomy;
+    }
+
+    public void setAstronomy(Astronomy astronomy) {
+        this.astronomy = astronomy;
+    }
+
+    public class Astronomy {
+        public String moonAge;
+        public String percIllum;
+        public String moonPhaseDescr;
+        public String hemisphere;
     }
 }
