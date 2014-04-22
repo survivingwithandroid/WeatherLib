@@ -120,7 +120,7 @@ public abstract void getForecastWeather(String location, final ForecastWeatherEv
 public abstract void getDefaultProviderImage(String icon, final WeatherImageListener listener);
 ```
 
->**This kind of requests can be done for all the weather provider and you can expect to receive the same information with the same structure even if you use different provides. The lib abstracts the protocol details and the information returned presented them to you in a unified manner.**
+>**This kind of requests can be done for all the weather provider and you can expect to receive the same information with the same structure even if you use different provides. The lib abstracts the protocol details and the information returned presenting them to you in a unified manner.**
 
 **WeatherProvider** is a specific implementation that handles all the details related to the protocol used by the weather provider (i.e Openweathermap and so on). You can change at runtime the WeatherProvider without changing your code. All the weather provider implements **IWeatherProvider** that provides some methods to parse the data received.
 
