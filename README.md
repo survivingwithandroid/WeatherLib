@@ -28,7 +28,13 @@ This library provides:
 At the moment the library supports [Yahoo! Weather] and [Openweathermap]  as weather provider. 
 
 ## Version
-1.0
+1.1
+
+## What's new
+1. Add Weather Underground API support (Current Weather, Forecast, Astronomy, City search)
+2. Standard HTTP client, based only on HttpConnection without Volley support
+3. Add new features regarding OpenWeatherMap
+4. Bug fixing
 
 ## App
 To provide an example about how to use the libray this project contains a fully working app that shows weather information based on this library (see the demo module).
