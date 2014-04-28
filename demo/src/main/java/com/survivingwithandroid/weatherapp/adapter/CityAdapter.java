@@ -72,7 +72,7 @@ public class CityAdapter extends ArrayAdapter<City>{
 	@Override
 	public long getItemId(int position) {
 		City city = cityList.get(position);
-		return Long.parseLong(city.getId());
+		return city.getId().hashCode();
 	}
 
 

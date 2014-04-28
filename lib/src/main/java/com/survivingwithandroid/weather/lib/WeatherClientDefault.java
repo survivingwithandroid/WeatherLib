@@ -127,13 +127,16 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getCurrentCondition(String location, final WeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCurrentWeatherURL(location);
-        LogUtils.LOGD("URL ["+url+"]");
+        Log.d("SwA", "URL ["+url+"]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String data) {
                         // We handle the response
                         try {
+                            Log.d("SwA", "----");
+                            Log.d("SwA", data);
+                            Log.d("SwA", "----");
                             CurrentWeather weather = provider.getCurrentCondition(data);
                             listener.onWeatherRetrieved(weather);
                         }
@@ -215,6 +218,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getForecastWeather(String location, final ForecastWeatherEventListener listener)  throws ApiKeyRequiredException {
        String url = provider.getQueryForecastWeatherURL(location);
+       Log.d("SwA", "URL ["+url+"]");
        StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

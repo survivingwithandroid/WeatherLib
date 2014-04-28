@@ -32,6 +32,7 @@ import com.survivingwithandroid.weather.lib.model.DayForecast;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,14 +91,18 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
         dayDate.setText(sdfMonth.format(gc.getTime()));
 
 		icon.setImageResource(WeatherIconMapper.getWeatherResource(forecast.weather.currentCondition.getIcon(), forecast.weather.currentCondition.getWeatherId()));
+        Log.d("SwA", "Min [" + minTempText + "]");
 
         minTempText.setText( Math.round(forecast.forecastTemp.min) + units.tempUnit);
         maxTempText.setText( Math.round(forecast.forecastTemp.max) + units.tempUnit);
         dayCloud.setText("" + forecast.weather.clouds.getPerc() + "%");
         dayDescr.setText(forecast.weather.currentCondition.getDescr());
-        float rainVal = forecast.weather.rain.getAmmount();
-        dayRain.setText("Rain:" + String.valueOf((int) rainVal));
-		return convertView;
+        try {
+            float rainVal = forecast.weather.rain.getAmmount();
+            dayRain.setText("Rain:" + String.valueOf((int) rainVal));
+        }
+        catch(Throwable t) {}
+        return convertView;
 	}
 	
 	

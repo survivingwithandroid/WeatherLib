@@ -14,20 +14,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
-import com.survivingwithandroid.weather.lib.provider.IProviderType;
+package com.survivingwithandroid.weather.lib.provider.wunderground;
 
+import android.util.Log;
 
-public class OpenweathermapProviderType implements IProviderType {
+import com.survivingwithandroid.weather.lib.WeatherCode;
+import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 
+public class WeatherUndergroundCodeProvider implements IWeatherCodeProvider {
     @Override
-    public String getProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProvider";
-    }
+    public WeatherCode getWeatherCode(int code) {
+        Log.d("App", "Code [" + code + "]");
+         throw new UnsupportedOperationException();
+        }
+  }
 
-    @Override
-    public String getCodeProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.openweathermap.WeatherUndergroundCodeProvider";
-    }
-}
