@@ -19,83 +19,26 @@
 
 <resources>
 
-    <style name="Theme.Weather" parent="@android:style/Theme.Holo.Light">
-
-        <item name="android:popupMenuStyle">@style/PopupMenu.Weather</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Weather</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Weather</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Weather</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Weather</item>
-        <item name="android:actionModeBackground">@drawable/cab_background_top_weather</item>
-
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Weather</item>
-        
-        
-    </style>
-
-    <style name="ActionBar.Solid.Weather" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_solid_weather</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_weather</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_weather</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Weather</item>
-    </style>
-
-    <style name="ActionBar.Transparent.Weather" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@drawable/ab_transparent_weather</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Weather</item>
-    </style>
-
-    <style name="PopupMenu.Weather" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_weather</item>	
-    </style>
-
-    <style name="DropDownListView.Weather" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_weather</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Weather" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_weather</item>
-    </style>
-
-    <style name="DropDownNav.Weather" parent="@android:style/Widget.Holo.Light.Spinner">
-        <item name="android:background">@drawable/spinner_background_ab_weather</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_weather</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_weather</item>
-    </style>
-    
-    <style name="ProgressBar.Weather" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_weather</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Weather" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_weather</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Weather.Widget" parent="@android:style/Theme.Holo">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Weather</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Weather</item>
-    </style>
 
 
     <!-- Weather info style -->
     <style name="textBig" parent="@android:style/TextAppearance.Large">
         <item name="android:textSize">82sp</item>
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
     <style name="textSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
     <style name="textVerySmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">8sp</item>
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
     <style name="textSmallWeather" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
 
