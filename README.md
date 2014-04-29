@@ -28,7 +28,7 @@ This library provides:
 At the moment the library supports [Yahoo! Weather], [Openweathermap]  and Weather Underground API as weather provider. 
 
 ## Version
-1.1
+1.2
 
 ## What's new
 1. Add Weather Underground API support (Current Weather, Forecast, Astronomy, City search)
