@@ -21,7 +21,7 @@ public class LogUtils {
 
     public static boolean DEBUG = true;
 
-	public static final String WEATHER_TAG = "WeatherLib";
+	public static final String WEATHER_TAG = "SwA";
 	
 	public static void LOGD(String TAG, String msg) {
 		if (DEBUG && Log.isLoggable(TAG, Log.DEBUG))
