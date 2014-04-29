@@ -18,6 +18,7 @@ package com.survivingwithandroid.weatherapp.fragment;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -113,7 +114,7 @@ public class CurrentWeatherFragment extends Fragment {
 
     private void refresh() {
 
-        WeatherClient client = WeatherClientDefault.getInstance();
+        final WeatherClient client = WeatherClientDefault.getInstance();
         config = new WeatherConfig();
 
         String cityId = prefs.getString("cityid", null);
@@ -153,8 +154,14 @@ public class CurrentWeatherFragment extends Fragment {
 
                 sunset.setText(WeatherUtil.convertDate(weather.location.getSunset()));
 
-                imgView.setImageResource(WeatherIconMapper.getWeatherResource(weather.currentCondition.getIcon(), weather.currentCondition.getWeatherId()));
+                //imgView.setImageResource(WeatherIconMapper.getWeatherResource(weather.currentCondition.getIcon(), weather.currentCondition.getWeatherId()));
 
+                client.getDefaultProviderImage(weather.currentCondition.getIcon(), new WeatherClient.WeatherImageListener() {
+                    @Override
+                    public void onImageReady(Bitmap image) {
+                        imgView.setImageBitmap(image);
+                    }
+                });
                 cloud.setText(weather.clouds.getPerc() + "%");
 
                 if (weather.rain.getTime() != null && weather.rain.getAmmount() != 0)

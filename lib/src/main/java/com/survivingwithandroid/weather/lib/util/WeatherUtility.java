@@ -45,4 +45,6 @@ public class WeatherUtility {
     public static boolean isMetric(WeatherConfig.UNIT_SYSTEM currentUnit) {
         return currentUnit.equals(WeatherConfig.UNIT_SYSTEM.M);
     }
+
+
 }

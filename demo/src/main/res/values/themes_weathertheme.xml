@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="WeatherTheme" parent="android:Theme.Holo">
+
+    <item name="android:editTextBackground">@drawable/weathertheme_edit_text_holo_dark</item>
+
+    <item name="android:textColorHighlight">#990099cc</item>
+    <item name="android:textSelectHandleLeft">@drawable/weathertheme_text_select_handle_left</item>
+    <item name="android:textSelectHandleRight">@drawable/weathertheme_text_select_handle_right</item>
+    <item name="android:textSelectHandle">@drawable/weathertheme_text_select_handle_middle</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/weathertheme_list_selector_holo_dark</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/weathertheme_activated_background_holo_dark</item>
+
+      <item name="android:actionBarItemBackground">@drawable/selectable_background_weatherbar</item>
+      <item name="android:popupMenuStyle">@style/PopupMenu.Weatherbar</item>
+      <item name="android:dropDownListViewStyle">@style/DropDownListView.Weatherbar</item>
+      <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Weatherbar</item>
+      <item name="android:actionDropDownStyle">@style/DropDownNav.Weatherbar</item>
+      <item name="android:actionBarStyle">@style/ActionBar.Solid.Weatherbar</item>
+      <item name="android:actionModeBackground">@drawable/cab_background_top_weatherbar</item>
+      <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_weatherbar</item>
+      <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Weatherbar</item>
+
+  </style>
+
+    <style name="ActionBar.Solid.Weatherbar" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_solid_weatherbar</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_weatherbar</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_weatherbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Weatherbar</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Weatherbar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_weatherbar</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Weatherbar</item>
+    </style>
+
+    <style name="PopupMenu.Weatherbar" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_weatherbar</item>
+    </style>
+
+    <style name="DropDownListView.Weatherbar" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_weatherbar</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Weatherbar" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_weatherbar</item>
+    </style>
+
+    <style name="DropDownNav.Weatherbar" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_weatherbar</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_weatherbar</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_weatherbar</item>
+    </style>
+
+    <style name="ProgressBar.Weatherbar" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_weatherbar</item>
+    </style>
+
+    <style name="ActionButton.CloseMode.Weatherbar" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_weatherbar</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Weatherbar.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Weatherbar</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Weatherbar</item>
+    </style>
+
+</resources>

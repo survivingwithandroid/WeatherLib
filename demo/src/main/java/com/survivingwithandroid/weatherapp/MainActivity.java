@@ -30,6 +30,7 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
+import com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundProviderType;
 import com.survivingwithandroid.weather.lib.provider.yahooweather.YahooProviderType;
 import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
@@ -97,6 +98,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         try {
             //provider = WeatherProviderFactory.createProvider(new YahooProviderType(), config);
              provider = WeatherProviderFactory.createProvider(new OpenweathermapProviderType(), config);
+             //provider = WeatherProviderFactory.createProvider(new WeatherUndergroundProviderType(), config);
              client.setProvider(provider);
         }
         catch (Throwable t) {
