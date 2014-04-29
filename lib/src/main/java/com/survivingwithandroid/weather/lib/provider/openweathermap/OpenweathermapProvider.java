@@ -1,6 +1,5 @@
 
 
-
 /*
  * Copyright (C) 2014 Francesco Azzola
  *  Surviving with Android (http://www.survivingwithandroid.com)
@@ -42,7 +41,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 
 public class OpenweathermapProvider implements IWeatherProvider {
 
