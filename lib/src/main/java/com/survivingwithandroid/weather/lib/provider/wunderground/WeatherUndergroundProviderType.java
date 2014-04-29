@@ -18,7 +18,7 @@ package com.survivingwithandroid.weather.lib.provider.wunderground;
 
 import com.survivingwithandroid.weather.lib.provider.IProviderType;
 
-
+ 
 public class WeatherUndergroundProviderType implements IProviderType {
 
     @Override
