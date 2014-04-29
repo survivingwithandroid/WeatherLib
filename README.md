@@ -25,7 +25,7 @@ This library provides:
 * *You can easily extend the lib and implement your weather provider*
 
 
-At the moment the library supports [Yahoo! Weather] and [Openweathermap]  as weather provider. 
+At the moment the library supports [Yahoo! Weather], [Openweathermap]  and Weather Underground API as weather provider. 
 
 ## Version
 1.1
