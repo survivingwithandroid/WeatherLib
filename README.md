@@ -25,10 +25,16 @@ This library provides:
 * *You can easily extend the lib and implement your weather provider*
 
 
-At the moment the library supports [Yahoo! Weather] and [Openweathermap]  as weather provider. 
+At the moment the library supports [Yahoo! Weather], [Openweathermap]  and Weather Underground API as weather provider. 
 
 ## Version
-1.0
+1.2
+
+## What's new
+1. Add Weather Underground API support (Current Weather, Forecast, Astronomy, City search)
+2. Standard HTTP client, based only on HttpConnection without Volley support
+3. Add new features regarding OpenWeatherMap
+4. Bug fixing
 
 ## App
 To provide an example about how to use the libray this project contains a fully working app that shows weather information based on this library (see the demo module).
@@ -120,7 +126,7 @@ public abstract void getForecastWeather(String location, final ForecastWeatherEv
 public abstract void getDefaultProviderImage(String icon, final WeatherImageListener listener);
 ```
 
->**This kind of requests can be done for all the weather provider and you can expect to receive the same information with the same structure even if you use different provides. The lib abstracts the protocol details and the information returned presented them to you in a unified manner.**
+>**This kind of requests can be done for all the weather provider and you can expect to receive the same information with the same structure even if you use different provides. The lib abstracts the protocol details and the information returned presenting them to you in a unified manner.**
 
 **WeatherProvider** is a specific implementation that handles all the details related to the protocol used by the weather provider (i.e Openweathermap and so on). You can change at runtime the WeatherProvider without changing your code. All the weather provider implements **IWeatherProvider** that provides some methods to parse the data received.
 
