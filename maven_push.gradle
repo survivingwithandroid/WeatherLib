@@ -4,7 +4,6 @@ apply plugin: 'signing'
 def sonatypeRepositoryUrl
 if (isReleaseBuild()) {
     println 'RELEASE BUILD'
-    //sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
     sonatypeRepositoryUrl = hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
             : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 } else {
@@ -88,7 +87,6 @@ afterEvaluate { project ->
     }
 
     artifacts {
-        //archives packageReleaseJar
         archives androidSourcesJar
         archives androidJavadocsJar
     }
