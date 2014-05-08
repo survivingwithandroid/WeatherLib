@@ -44,10 +44,20 @@ Please notice that some weather provider requires you to get a private API key b
 
 
 ## Getting started
+Before using this lib, you have to modify build.gradle adding these lines:
+
+``` java
+dependencies {    
+    compile 'com.survivingwithandroid:weatherlib:1.2'
+}
+```
+
+
 The library is based on two main concepts that stands at its base:
 * WeatherClient  : The library entry point. It deals with HTTP request/respnse
 
 * WeatherProvider : Specific protocol implementation (i.e Openweathermap or Yahoo! Weather)
+
 
 ``` java
 WeatherClient client = WeatherClientDefault.getInstance();
