@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dayTempMin"
         android:layout_alignStart="@id/dayTempMin"
+        android:layout_toRightOf="@id/dayIcon"
         style="@style/infoText"
         />
 
