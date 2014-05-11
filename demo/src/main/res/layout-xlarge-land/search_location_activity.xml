@@ -21,7 +21,8 @@
         android:layout_below="@+id/textView1"
         android:layout_marginTop="5dp"
         android:imeOptions="actionSearch"
-        android:inputType="text" >
+        android:inputType="text"
+        android:ems="10">
 
         <requestFocus />
     </EditText>
@@ -42,7 +43,7 @@
         android:layout_alignBottom="@id/imgSearch"
         android:layout_marginLeft="4dp"
         />
-    
+
     <TextView android:id="@+id/txt1"
         	  android:layout_width="wrap_content"
         	  android:layout_height="wrap_content"

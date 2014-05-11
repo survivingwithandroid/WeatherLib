@@ -5,5 +5,8 @@
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     -->
     <dimen name="activity_horizontal_margin">128dp</dimen>
+    <dimen name="weatherMainIcon.height">60dp</dimen>
+    <dimen name="weatherMainIcon.width">60dp</dimen>
 
+    <dimen name="weatherRow.height">80dp</dimen>
 </resources>

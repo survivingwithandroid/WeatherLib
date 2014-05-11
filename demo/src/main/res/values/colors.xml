@@ -18,7 +18,9 @@
   -->
 <resources>
     <color name="color_black">#000000</color>
-    <color name="color_blue">#0000AA</color>
+    <color name="color_blue">#000050</color>
     <color name="color_red">#AA0000</color>
     <color name="color_white">#FFFFFF</color>
+    <color name="lightblue1">#9ed3ff</color>
+
 </resources>

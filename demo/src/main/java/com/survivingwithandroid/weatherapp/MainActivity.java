@@ -36,6 +36,7 @@ import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
 import com.survivingwithandroid.weatherapp.fragment.CurrentWeatherFragment;
 import com.survivingwithandroid.weatherapp.fragment.ForecastWeatherFragment;
+import com.survivingwithandroid.weatherapp.fragment.WeatherFragment;
 import com.survivingwithandroid.weatherapp.settings.WeatherPreferenceActivity;
 import com.survivingwithandroid.weatherapp.util.LogUtils;
 import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
@@ -46,6 +47,8 @@ import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.util.WindDirection;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -57,42 +60,41 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 
 
-
-public class MainActivity extends Activity implements ActionBar.TabListener {
+public class MainActivity extends Activity implements ActionBar.TabListener, WeatherFragment.WeatherEventListener {
 
 	private boolean isThereForecast = false;
 
 	private WeatherConfig config;
     private WeatherClient client;
     private List<Fragment> activeFragment = new ArrayList<Fragment>();
+    private int currentPos;
+
+    private MenuItem refreshItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+
         setContentView(R.layout.main_activity);
+
         // Let's verify if we are using a smartphone or a tablet
+        View v = findViewById(R.id.currentWeatherFrag);
 
-        FragmentManager fManager = getFragmentManager();
-        Fragment frag = fManager.findFragmentById(R.id.forecastWeatherFrag);
-        if (frag != null)
+        if (v != null)
             isThereForecast = true;
-
-        if (!isThereForecast) {
-            ActionBar bar = getActionBar();
-            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            ActionBar.Tab tab = bar.newTab();
-            createTab(R.string.tab_current, bar);
-            createTab(R.string.tab_forecast, bar);
-        }
-
 
         client = WeatherClientDefault.getInstance();
         client.init(getApplicationContext());
         Log.d("App", "Client ["+client+"]");
         // Let's create the WeatherProvider
         config = new WeatherConfig();
+        config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
 
         IWeatherProvider provider = null;
         try {
@@ -106,7 +108,27 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             // There's a problem
         }
 
-
+        setProgressBarIndeterminate(true);
+        setProgressBarVisibility(true);
+        if (!isThereForecast) {
+            ActionBar bar = getActionBar();
+            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            //ActionBar.Tab tab = bar.newTab();
+            createTab(R.string.tab_current, bar);
+            createTab(R.string.tab_forecast, bar);
+        }
+        else {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setTransitionStyle(R.style.fragmentAnim);
+            CurrentWeatherFragment cf = CurrentWeatherFragment.newInstance();
+            ft.add(R.id.currentWeatherFrag, cf, "currentWeather") ;
+            ft.commit();
+            FragmentTransaction ft1 = getFragmentManager().beginTransaction();
+            ft1.setTransitionStyle(R.style.fragmentAnim);
+            ForecastWeatherFragment ff = ForecastWeatherFragment.newInstance();
+            ft1.add(R.id.forecastWeatherFrag, ff, "forecastWeather");
+            ft1.commit();
+        }
 	}
 
     @Override
@@ -130,10 +152,25 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             startActivity(i);
         }
 		else if (id == R.id.action_refresh) {
+            refreshItem = item;
             FragmentManager fm = getFragmentManager();
-            CurrentWeatherFragment frag  = (CurrentWeatherFragment) fm.findFragmentById(R.id.currentWeatherFrag);
-            if (frag instanceof CurrentWeatherFragment)
-                ( (CurrentWeatherFragment) frag).refreshData();
+
+            if (isThereForecast) {
+
+                CurrentWeatherFragment frag  = (CurrentWeatherFragment) fm.findFragmentById(R.id.currentWeatherFrag);
+                if (frag instanceof CurrentWeatherFragment) {
+                    showProgressBar(true);
+                    ((CurrentWeatherFragment) frag).refreshData();
+                } else {
+                    ForecastWeatherFragment frag1 = (ForecastWeatherFragment) fm.findFragmentById(R.id.forecastWeatherFrag);
+                    if (frag1 instanceof ForecastWeatherFragment)
+                        ((ForecastWeatherFragment) frag1).refreshData();
+                }
+            } else {
+                WeatherFragment f = (WeatherFragment) activeFragment.get(currentPos);
+                if (f != null)
+                    f.refreshData();
+            }
         }
 		else if (id == R.id.action_share) {
 			String playStoreLink = "https://play.google.com/store/apps/details?id=" +
@@ -160,7 +197,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         int pos = tab.getPosition();
+        currentPos = pos;
+
         Fragment f = null;
+        fragmentTransaction.setTransitionStyle(R.style.fragmentAnim);
 
         if (activeFragment.size() > pos)
           f = activeFragment.get(pos);
@@ -194,5 +234,23 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         Log.d("Swa", "Tab reselected");
+    }
+
+    @Override
+    public void requestCompleted() {
+        showProgressBar(false);
+    }
+
+    private void showProgressBar(boolean showIt) {
+      Log.d("SwA", "ShowProgress ["+showIt+"]");
+        setProgressBarVisibility(showIt);
+
+      if (refreshItem == null)
+          return ;
+
+        if (showIt)
+            refreshItem.setActionView(R.layout.progress_bar);
+        else
+            refreshItem.setActionView(null);
     }
 }

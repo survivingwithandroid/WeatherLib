@@ -5,6 +5,9 @@
 
   <style name="WeatherTheme" parent="android:Theme.Holo">
 
+
+     <!--     <item name="android:windowBackground">@drawable/app_background</item> -->
+
     <item name="android:editTextBackground">@drawable/weathertheme_edit_text_holo_dark</item>
 
     <item name="android:textColorHighlight">#990099cc</item>
