@@ -151,7 +151,8 @@
         android:id="@+id/humidityIcon"
         android:src="@drawable/humidity"
         android:layout_below="@id/windIcon"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -206,7 +207,7 @@
         android:layout_toRightOf="@id/windDeg"
         android:layout_alignBaseline="@id/windIcon"
         android:layout_alignStart="@id/pressureIcon"
-        />
+        android:layout_marginLeft="40dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -226,7 +227,8 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/windDeg"
         android:layout_alignStart="@id/pressureIcon"
-        android:layout_alignBaseline="@id/humidityIcon"/>
+        android:layout_alignBaseline="@id/humidityIcon"
+        android:layout_marginLeft="40dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -249,7 +251,7 @@
         android:layout_toRightOf="@id/windDeg"
         android:layout_alignBaseline="@id/windIcon"
         android:layout_alignStart="@id/pressureIcon"
-        />
+        android:layout_marginLeft="40dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
