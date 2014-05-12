@@ -7,5 +7,23 @@
     <dimen name="appwidget_margin">0dp</dimen>
 	<dimen name="appwidget_min_width">294dp</dimen>
 	<dimen name="appwidget_min_height">72dp</dimen>
-    
+
+    <dimen name="textBig.size">82sp</dimen>
+    <dimen name="textSmall.size">14sp</dimen>
+    <dimen name="textVerySmall.size">8sp</dimen>
+    <dimen name="textSmallWeather.size">12sp</dimen>
+    <dimen name="dayText.size">13sp</dimen>
+    <dimen name="infoText.size">11sp</dimen>
+    <dimen name="labelText.size">16sp</dimen>
+    <dimen name="tempText.size">20sp</dimen>
+
+    <!-- weather row dimen -->
+    <dimen name="weatherRow.height">50dp</dimen>
+    <!-- weather icon size-->
+    <dimen name="weatherIcon.height">32dp</dimen>
+    <dimen name="weatherIcon.width">32dp</dimen>
+
+    <dimen name="weatherMainIcon.height">48dp</dimen>
+    <dimen name="weatherMainIcon.width">48dp</dimen>
+
 </resources>

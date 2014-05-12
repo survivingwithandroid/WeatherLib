@@ -16,6 +16,7 @@
  */
 package com.survivingwithandroid.weatherapp.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weatherapp.R;
 import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
-public class ForecastWeatherFragment extends Fragment {
+public class ForecastWeatherFragment extends WeatherFragment {
 
     private SharedPreferences prefs;
     private ListView forecastList;
@@ -43,6 +44,7 @@ public class ForecastWeatherFragment extends Fragment {
         ForecastWeatherFragment fragment = new ForecastWeatherFragment();
         return fragment;
     }
+
     public ForecastWeatherFragment() {
     }
 
@@ -56,16 +58,22 @@ public class ForecastWeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.forecast_fragment, container, false);
-
-
-        forecastList = (ListView) v.findViewById(R.id.forecastDays);
-        update();
+       forecastList = (ListView) v.findViewById(R.id.forecastDays);
         return v;
 
     }
 
+    public void refreshData() {
+        refresh();
+    }
 
-    private void update() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        refresh();
+    }
+
+    private void refresh() {
         // Update forecast
         WeatherClient client = WeatherClientDefault.getInstance();
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());

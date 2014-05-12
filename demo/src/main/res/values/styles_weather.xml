@@ -23,34 +23,34 @@
 
     <!-- Weather info style -->
     <style name="textBig" parent="@android:style/TextAppearance.Large">
-        <item name="android:textSize">82sp</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/textBig.size</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="textSmall" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/textSmall.size</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="textVerySmall" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">8sp</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/textVerySmall.size</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
     <style name="textSmallWeather" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/textSmallWeather.size</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 
     <!-- Style for row layout -->
     <style name="dayText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/dayText.size</item>
     </style>
     <style name="infoText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">11dp</item>
+        <item name="android:textSize">@dimen/infoText.size</item>
     </style>
 
     <style name="infoTempMinText" parent="infoText">
@@ -61,7 +61,20 @@
         <item name="android:textColor">@color/color_red</item>
     </style>
 
+    <style name="labelText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/labelText.size</item>
+        <item name="android:background">#ff9ed3ff</item>
+    </style>
 
+    <style name="tempText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/tempText.size</item>
+    </style>
 
-
+    <style name="fragmentAnim">
+        <item name="android:fragmentFadeEnterAnimation">@anim/fade_in</item>
+        <item name="android:fragmentFadeExitAnimation">@anim/fade_out</item>
+    </style>
 </resources>

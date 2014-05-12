@@ -5,4 +5,26 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
+    <dimen name="appwidget_margin">0dp</dimen>
+    <dimen name="appwidget_min_width">294dp</dimen>
+    <dimen name="appwidget_min_height">72dp</dimen>
+
+    <dimen name="textBig.size">92sp</dimen>
+    <dimen name="textSmall.size">24sp</dimen>
+    <dimen name="textVerySmall.size">12sp</dimen>
+    <dimen name="textSmallWeather.size">22sp</dimen>
+    <dimen name="dayText.size">18sp</dimen>
+    <dimen name="infoText.size">15sp</dimen>
+    <dimen name="labelText.size">19sp</dimen>
+    <dimen name="tempText.size">25sp</dimen>
+
+    <dimen name="weatherRow.height">60dp</dimen>
+
+    <!-- weather icon size-->
+    <dimen name="weatherIcon.height">48dp</dimen>
+    <dimen name="weatherIcon.width">48dp</dimen>
+
+    <dimen name="weatherMainIcon.height">58dp</dimen>
+    <dimen name="weatherMainIcon.width">58dp</dimen>
+
 </resources>

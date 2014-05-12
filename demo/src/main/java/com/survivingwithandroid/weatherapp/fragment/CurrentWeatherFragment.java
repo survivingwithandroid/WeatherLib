@@ -40,7 +40,7 @@ import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
 import com.survivingwithandroid.weatherapp.util.WeatherUtil;
 
 
-public class CurrentWeatherFragment extends Fragment {
+public class CurrentWeatherFragment extends WeatherFragment {
 
 
     private SharedPreferences prefs;
@@ -119,8 +119,11 @@ public class CurrentWeatherFragment extends Fragment {
 
         String cityId = prefs.getString("cityid", null);
         Log.d("Swa", "City Id [" + cityId + "]");
-        if (cityId == null)
+
+       if (cityId == null) {
+            getListener().requestCompleted();
             return ;
+        }
 
         config.lang = WeatherUtil.getLanguage(prefs.getString("swa_lang", "en"));
         config.maxResult = 5;
@@ -133,9 +136,13 @@ public class CurrentWeatherFragment extends Fragment {
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
 
         client.updateWeatherConfig(config);
+
+
         client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
             @Override
             public void onWeatherRetrieved(CurrentWeather weather) {
+
+                getListener().requestCompleted();
                 cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
                 condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
                 LogUtils.LOGD("SwA", "Temp [" + temp + "]");
@@ -154,14 +161,16 @@ public class CurrentWeatherFragment extends Fragment {
 
                 sunset.setText(WeatherUtil.convertDate(weather.location.getSunset()));
 
-                //imgView.setImageResource(WeatherIconMapper.getWeatherResource(weather.currentCondition.getIcon(), weather.currentCondition.getWeatherId()));
+                imgView.setImageResource(WeatherIconMapper.getWeatherResource(weather.currentCondition.getIcon(), weather.currentCondition.getWeatherId()));
 
+                /*
                 client.getDefaultProviderImage(weather.currentCondition.getIcon(), new WeatherClient.WeatherImageListener() {
                     @Override
                     public void onImageReady(Bitmap image) {
                         imgView.setImageBitmap(image);
                     }
                 });
+                */
                 cloud.setText(weather.clouds.getPerc() + "%");
 
                 if (weather.rain.getTime() != null && weather.rain.getAmmount() != 0)
@@ -174,13 +183,16 @@ public class CurrentWeatherFragment extends Fragment {
             @Override
             public void onWeatherError(WeatherLibException t) {
                 //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
+                getListener().requestCompleted();
             }
 
             @Override
             public void onConnectionError(Throwable t) {
                 //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
+                getListener().requestCompleted();
             }
         });
+
 
 
     }

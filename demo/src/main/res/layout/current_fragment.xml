@@ -53,8 +53,8 @@
             android:layout_marginTop="0dp" />
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/weatherMainIcon.width"
+            android:layout_height="@dimen/weatherMainIcon.height"
             android:layout_marginLeft="10dp"
             android:id="@+id/imgWeather"
             android:layout_toRightOf="@id/temp"
@@ -69,7 +69,7 @@
             android:layout_alignBaseline="@id/temp"
             android:layout_toRightOf="@id/temp"
             android:layout_alignStart="@id/imgWeather"
-            style="@style/textSmall"/>
+            style="@style/textVerySmall"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -88,8 +88,8 @@
 
     <!-- Temperature data -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/tempIcon"
         android:src="@drawable/temperature"
         android:layout_below="@id/tempLyt"
@@ -104,7 +104,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginLeft="10dp"
         style="@style/textSmallWeather"
-        android:textColor="@color/color_blue"/>
+        android:textColor="@color/lightblue1"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,8 +118,8 @@
 
     <!-- Wind data -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/windIcon"
         android:src="@drawable/wind"
         android:layout_below="@id/tempIcon"
@@ -146,8 +146,8 @@
 
     <!-- Humidity -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/humidityIcon"
         android:src="@drawable/humidity"
         android:layout_below="@id/windIcon"
@@ -166,8 +166,8 @@
 
     <!-- Pressure data -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/pressureIcon"
         android:src="@drawable/pressure"
         android:layout_alignBaseline="@id/tempIcon"
@@ -197,8 +197,8 @@
 
     <!-- Astronomy -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/sunIcon"
         android:src="@drawable/sun"
         android:layout_below="@id/pressureIcon"
@@ -240,8 +240,8 @@
 
     <!-- Rain -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/rainIcon"
         android:src="@drawable/umbrella"
         android:layout_below="@id/moonIcon"
@@ -264,8 +264,8 @@
 
     <!-- Cloud -->
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/weatherIcon.width"
+        android:layout_height="@dimen/weatherIcon.height"
         android:id="@+id/cloudIcon"
         android:src="@drawable/cloud"
         android:layout_below="@id/humidityIcon"
@@ -281,16 +281,6 @@
         android:layout_alignStart="@id/tempMin"
         android:layout_marginLeft="10dp"
         style="@style/textSmallWeather"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/provider"
-        style="@style/textVerySmall"
-        />
 
 
 </RelativeLayout>

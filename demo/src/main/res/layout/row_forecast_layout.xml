@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/weatherRow.height"
     android:background="@drawable/layout_current"
     android:layout_marginTop="15dp">
     
@@ -31,7 +31,7 @@
               android:layout_width="wrap_content"
     		  android:layout_height="wrap_content"
     		  android:paddingRight="7dp"
-    		  android:layout_alignTop="@id/dayIcon"
+
               android:layout_toRightOf="@id/dayIcon"
               style="@style/infoTempMinText"
                 />
@@ -48,8 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/dayTempMin"
-        android:paddingTop="5dp"
         android:layout_alignStart="@id/dayTempMin"
+        android:layout_toRightOf="@id/dayIcon"
         style="@style/infoText"
         />
 
@@ -59,9 +59,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="5dp"
-        style="@style/infoText"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        style="@style/infoText"
      />
 
     <TextView android:id="@+id/dayDescr"
