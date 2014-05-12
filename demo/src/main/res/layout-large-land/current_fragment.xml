@@ -206,7 +206,6 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/windDeg"
         android:layout_alignBaseline="@id/windIcon"
-        android:layout_alignStart="@id/pressureIcon"
         android:layout_marginLeft="40dp"/>
 
     <TextView
@@ -226,7 +225,6 @@
         android:layout_below="@id/sunIcon"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/windDeg"
-        android:layout_alignStart="@id/pressureIcon"
         android:layout_alignBaseline="@id/humidityIcon"
         android:layout_marginLeft="40dp"/>
     <TextView
@@ -250,7 +248,6 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/windDeg"
         android:layout_alignBaseline="@id/windIcon"
-        android:layout_alignStart="@id/pressureIcon"
         android:layout_marginLeft="40dp"/>
     <TextView
         android:layout_width="wrap_content"
