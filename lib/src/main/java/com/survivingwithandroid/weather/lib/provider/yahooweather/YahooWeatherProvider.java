@@ -133,16 +133,16 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("yweather:wind")) {
-                       // Log.d("SwA", "Tag [Wind]");
+                       // Iss#4
                         weather.wind.setChill(Integer.parseInt(parser.getAttributeValue(null, "chill")));
                         weather.wind.setDeg(Integer.parseInt(parser.getAttributeValue(null, "direction")));
-                        weather.wind.setSpeed(Float.parseFloat(parser.getAttributeValue(null, "speed")));
+                        weather.wind.setSpeed(WeatherUtility.string2Float(parser.getAttributeValue(null, "speed")));
                     }
                     else if (tagName.equals("yweather:atmosphere")) {
-                       // Log.d("SwA", "Tag [Atmos]");
+                       // Iss#4
                         weather.currentCondition.setHumidity(Integer.parseInt(parser.getAttributeValue(null, "humidity")));
-                        weather.currentCondition.setVisibility(Float.parseFloat(parser.getAttributeValue(null, "visibility")));
-                        weather.currentCondition.setPressure(Float.parseFloat(parser.getAttributeValue(null, "pressure")));
+                        weather.currentCondition.setVisibility(WeatherUtility.string2Float(parser.getAttributeValue(null, "visibility")));
+                        weather.currentCondition.setPressure(WeatherUtility.string2Float(parser.getAttributeValue(null, "pressure")));
                         weather.currentCondition.setPressureTrend(Integer.parseInt(parser.getAttributeValue(null, "rising")));
                     }
                     else if (tagName.equals("yweather:forecast")) {
@@ -300,4 +300,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
     public void setWeatherCodeProvider(IWeatherCodeProvider codeProvider) {
         this.codeProvider = codeProvider;
     }
+
+
+
 }

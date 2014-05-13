@@ -47,4 +47,10 @@ public class WeatherUtility {
     }
 
 
+    public static float string2Float(String value) {
+        if (value == null || "".equals(value))
+            return -1;
+
+        return Float.parseFloat(value);
+    }
 }
