@@ -21,18 +21,13 @@ import java.util.Date;
 
 /**
  * Single day weather forecast. This class holds the information about next days weather conditions.
+ *
+ * @author Francesco Azzola
  */
-public class DayForecast {
+public class DayForecast extends WeatherForecastData {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    /*
-    * Current weather information for the day.
-    *
-    * {@see CurrentWeather}
-    * */
-    public CurrentWeather weather = new CurrentWeather();
     public ForecastTemp forecastTemp = new ForecastTemp();
-    public long timestamp;
 
     /*
     * Forecast temperature

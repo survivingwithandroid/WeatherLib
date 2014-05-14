@@ -20,7 +20,9 @@ import com.survivingwithandroid.weather.lib.WeatherCode;
 
 /**
  * This class represents the current weather condition as retrieved by the provider.
- * An instance of this class is returned by the providir using {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherClientListener}
+ * An instance of this class is returned by the provider using {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherClientListener}
+ *
+ * @author Francesco Azzola
  */
 public class CurrentWeather extends Weather {
 
@@ -56,6 +58,8 @@ public class CurrentWeather extends Weather {
         private float dewPoint;
         private String heatIndex;
         private String solarRadiation;
+        private float pressureSeaLevel;
+        private float pressureGroundLevel;
 
         private WeatherCode weatherCode;
 
@@ -169,6 +173,22 @@ public class CurrentWeather extends Weather {
 
         public void setWeatherCode(WeatherCode weatherCode) {
             this.weatherCode = weatherCode;
+        }
+
+        public float getPressureSeaLevel() {
+            return pressureSeaLevel;
+        }
+
+        public void setPressureSeaLevel(float pressureSeaLevel) {
+            this.pressureSeaLevel = pressureSeaLevel;
+        }
+
+        public float getPressureGroundLevel() {
+            return pressureGroundLevel;
+        }
+
+        public void setPressureGroundLevel(float pressureGroundLevel) {
+            this.pressureGroundLevel = pressureGroundLevel;
         }
     }
 

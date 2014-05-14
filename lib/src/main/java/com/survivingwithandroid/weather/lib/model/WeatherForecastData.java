@@ -14,20 +14,27 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.survivingwithandroid.weather.lib.provider.wunderground;
+package com.survivingwithandroid.weather.lib.model;
 
-import com.survivingwithandroid.weather.lib.provider.IProviderType;
+/*
+* This is the basic class for weather forecast data. It holds some basic information
+*
+* @author Francesco Azzola
+* */
+public class WeatherForecastData {
+
+    /*
+    * Current weather information for the day.
+    *
+    * {@see CurrentWeather}
+    *
+    * */
+    public CurrentWeather weather = new CurrentWeather();
+
+    /*
+    * Forecast timestamp. Using this parameter you know at what day/hour the forecast information is refering to.
+    * */
+    public long timestamp;
 
 
-public class WeatherUndergroundProviderType implements IProviderType {
-
-    @Override
-    public String getProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundProvider";
-    }
-
-    @Override
-    public String getCodeProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundCodeProvider";
-    }
 }

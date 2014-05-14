@@ -20,6 +20,8 @@ package com.survivingwithandroid.weather.lib.exception;
 /*
 * This excpetion is raised when an error occurs during the provider instantiation
 *
+*
+* @author Francesco Azzola
 * */
 public class WeatherProviderInstantiationException extends Exception {
 

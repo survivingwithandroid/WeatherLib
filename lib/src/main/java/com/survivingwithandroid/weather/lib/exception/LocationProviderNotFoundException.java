@@ -19,9 +19,13 @@ package com.survivingwithandroid.weather.lib.exception;
 
 /*
 * This exception is raised when the weather client can't find the right Location provider according to
+*
 * {@link SearchCriteria} selected
+*
+* @author Francesco Azzola
 * */
 public class LocationProviderNotFoundException extends Exception {
+
     public LocationProviderNotFoundException() {
     }
 

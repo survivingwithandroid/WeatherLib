@@ -14,18 +14,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-/**
- * This is a tutorial source code 
- * provided "as is" and without warranties.
- *
- * For any question please visit the web site
- * http://www.survivingwithandroid.com
- *
- * or write an email to
- * survivingwithandroid@gmail.com
- *
- */
 package com.survivingwithandroid.weather.lib;
 
 import android.content.Context;
@@ -51,8 +39,8 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
+import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
-import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.List;
 
@@ -64,27 +52,32 @@ import java.util.List;
  * <p>
  * Usually you need only one instance of this class in your app so that the class implements the Singleton pattern
  * To get the reference to this class you have to use getInstance method:
- *</p>
- * {@code  WeatherClient client = WeatherClient.getInstance();}
- *<p>
+ * </p>
+ * {@code WeatherClient client = WeatherClient.getInstance();}
+ * <p>
  * soon after you the the reference and before you make any requests you have to pass the {@link android.content.Context}
  * to this class.
- *</p>
- * */
+ * </p>
+ *
+ * @author Francesco Azzola
+ */
 
 public class WeatherClientDefault extends WeatherClient {
 
     /*
-    * This parameter represents the ammont of time before considering the location out of date
+    * This parameter represents the amount of time before considering the location out of date
     * It must be expressed in seconds
+    *
     * */
-    public static int LOCATION_TIMEOUT = 5 ;
+    public static int LOCATION_TIMEOUT = 5;
 
     private IWeatherProvider provider;
     private CityEventListener cityListener;
     private static WeatherClientDefault me;
-    private  RequestQueue queue;
-    private WeatherClientDefault() {}
+    private RequestQueue queue;
+
+    private WeatherClientDefault() {
+    }
 
     public static WeatherClientDefault getInstance() {
         if (me != null)
@@ -100,11 +93,12 @@ public class WeatherClientDefault extends WeatherClient {
         queue = Volley.newRequestQueue(ctx);
     }
 
-    /***
+    /**
      * This method update the current provider configuration
+     *
      * @param config WeatherConfig info
      * @see WeatherConfig
-     * */
+     */
     @Override
     public void updateWeatherConfig(WeatherConfig config) {
         provider.setConfig(config);
@@ -116,18 +110,19 @@ public class WeatherClientDefault extends WeatherClient {
      * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.WeatherEventListener} to
      * get notified when the weather data is ready.
      * <p>
-     *     When the data is ready this method calls the onWeatherRetrieved passing the current weather information.
-     *     If there are some errors during the request parsing, it calls onWeatherError passing the exception or
-     *     onConnectionError if the errors happened during the HTTP connection
+     * When the data is ready this method calls the onWeatherRetrieved passing the current weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
      * </p>
+     *
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.WeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
-     * */
+     */
     @Override
     public void getCurrentCondition(String location, final WeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCurrentWeatherURL(location);
-        Log.d("SwA", "URL ["+url+"]");
+        Log.d("SwA", "URL [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -139,11 +134,10 @@ public class WeatherClientDefault extends WeatherClient {
                             Log.d("SwA", "----");
                             CurrentWeather weather = provider.getCurrentCondition(data);
                             listener.onWeatherRetrieved(weather);
-                        }
-                        catch (WeatherLibException t) {
+                        } catch (WeatherLibException t) {
                             listener.onWeatherError(t);
                         }
-                  }
+                    }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -162,76 +156,32 @@ public class WeatherClientDefault extends WeatherClient {
      * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.CityEventListener} to
      * get notified when the weather data is ready.
      * <p>
-     *     When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
-     *     If there are some errors during the request parsing, it calls onWeatherError passing the exception or
-     *     onConnectionError if the errors happened during the HTTP connection
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
      * </p>
-     * @param pattern a String representing the pattern
+     *
+     * @param pattern  a String representing the pattern
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.CityEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
-     * */
+     */
     @Override
-    public void searchCity(String pattern, final CityEventListener listener)  throws ApiKeyRequiredException {
+    public void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
         StringRequest req = new StringRequest(Request.Method.GET, url,
-                 new Response.Listener<String>() {
-                     @Override
-                     public void onResponse(String data) {
-                        // We handle the response
-                         try {
-                             List<City> cityResult = provider.getCityResultList(data);
-                             listener.onCityListRetrieved(cityResult);
-                         }
-                         catch (WeatherLibException t) {
-                             listener.onWeatherError(t);
-                         }
-
-
-                     }
-                 },
-                 new Response.ErrorListener() {
-                     @Override
-                     public void onErrorResponse(VolleyError volleyError) {
-                         listener.onConnectionError(volleyError.getCause());
-                     }
-                 }
-        );
-
-        queue.add(req);
-    }
-
-    /**
-     * Get the forecast weather condition. It returns a class structure that is indipendent from the
-     * provider used to ge the weather data.
-     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.ForecastWeatherEventListener} to
-     * get notified when the weather data is ready.
-     * <p>
-     *     When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherForecast} weather information.
-     *     If there are some errors during the request parsing, it calls onWeatherError passing the exception or
-     *     onConnectionError if the errors happened during the HTTP connection
-     * </p>
-     * @param location a String representing the location id
-     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.ForecastWeatherEventListener}
-     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
-     * */
-
-    @Override
-    public void getForecastWeather(String location, final ForecastWeatherEventListener listener)  throws ApiKeyRequiredException {
-       String url = provider.getQueryForecastWeatherURL(location);
-       Log.d("SwA", "URL ["+url+"]");
-       StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String data) {
                         // We handle the response
                         try {
-                            WeatherForecast forecast = provider.getForecastWeather(data);
-                            listener.onWeatherRetrieved(forecast);
-                        }
-                        catch (WeatherLibException t) {
+                            List<City> cityResult = provider.getCityResultList(data);
+                            listener.onCityListRetrieved(cityResult);
+                        } catch (WeatherLibException t) {
                             listener.onWeatherError(t);
                         }
-                  }
+
+
+                    }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -243,6 +193,93 @@ public class WeatherClientDefault extends WeatherClient {
 
         queue.add(req);
     }
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is indipendent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.ForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param location a String representing the location id
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClientDefault.ForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+
+    @Override
+    public void getForecastWeather(String location, final ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryForecastWeatherURL(location);
+        Log.d("SwA", "URL [" + url + "]");
+        StringRequest req = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String data) {
+                        // We handle the response
+                        try {
+                            WeatherForecast forecast = provider.getForecastWeather(data);
+                            listener.onWeatherRetrieved(forecast);
+                        } catch (WeatherLibException t) {
+                            listener.onWeatherError(t);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        listener.onConnectionError(volleyError.getCause());
+                    }
+                }
+        );
+
+        queue.add(req);
+    }
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherHourForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param location a String representing the location id
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getHourForecastWeather(String location, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryHourForecastWeatherURL(location);
+        StringRequest req = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String data) {
+                        // We handle the response
+                        try {
+                            WeatherHourForecast forecast = provider.getHourForecastWeather(data);
+                            listener.onWeatherRetrieved(forecast);
+                        } catch (WeatherLibException t) {
+                            listener.onWeatherError(t);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        listener.onConnectionError(volleyError.getCause());
+                    }
+                }
+        );
+
+        queue.add(req);
+    }
+
 
     /*
     * This is the default imee Provider that can be used to get the image provided by the Weather provider
@@ -266,45 +303,39 @@ public class WeatherClientDefault extends WeatherClient {
 
 
     @Override
-    public void searchCityByLocation(Criteria criteria, final CityEventListener listener) throws LocationProviderNotFoundException{
+    public void searchCityByLocation(Criteria criteria, final CityEventListener listener) throws LocationProviderNotFoundException {
         this.cityListener = listener;
         LocationManager locManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         Log.d("App", "LocManager");
         String locationProvider = locManager.getBestProvider(criteria, true);
 
-        Log.d("App", "Provider ["+locationProvider+"]");
+        Log.d("App", "Provider [" + locationProvider + "]");
 
         if (locationProvider == null || "".equals(locationProvider))
             throw new LocationProviderNotFoundException();
 
         Location loc = locManager.getLastKnownLocation(locationProvider);
         if (loc == null ||
-           (SystemClock.elapsedRealtime() - loc.getTime()) > LOCATION_TIMEOUT * 1000) {
+                (SystemClock.elapsedRealtime() - loc.getTime()) > LOCATION_TIMEOUT * 1000) {
 
             locManager.requestSingleUpdate(locationProvider, locListener, null);
-        }
-        else
-         searchCityByLocation(loc, listener);
+        } else
+            searchCityByLocation(loc, listener);
     }
 
     /**
-     *
      * This method is used to set the Weather provider. The Weather provider must implement ({@link com.survivingwithandroid.weather.lib.provider.IWeatherProvider}
      * interface. This method has to be called before making any HTTP request otherwise the client doesn't know how
      * to parse the request
      *
      * @param provider {@link com.survivingwithandroid.weather.lib.provider.IWeatherProvider}
-     *
      * @see {@link com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProvider}
      * @see {@link com.survivingwithandroid.weather.lib.provider.yahooweather.YahooWeatherProvider}
-     *
-     * */
+     */
     @Override
     public void setProvider(IWeatherProvider provider) {
         this.provider = provider;
     }
-
-
 
 
     private LocationListener locListener = new LocationListener() {
@@ -314,19 +345,22 @@ public class WeatherClientDefault extends WeatherClient {
         }
 
         @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {}
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
 
         @Override
-        public void onProviderEnabled(String s) {}
+        public void onProviderEnabled(String s) {
+        }
 
         @Override
-        public void onProviderDisabled(String s) {}
+        public void onProviderDisabled(String s) {
+        }
     };
 
 
-    private void searchCityByLocation(Location location, final CityEventListener listener)  throws ApiKeyRequiredException {
+    private void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURLByLocation(location);
-        Log.d("App", "Url ["+url+"]");
+        Log.d("App", "Url [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -335,8 +369,7 @@ public class WeatherClientDefault extends WeatherClient {
                         try {
                             List<City> cityResult = provider.getCityResultList(data);
                             listener.onCityListRetrieved(cityResult);
-                        }
-                        catch (WeatherLibException t) {
+                        } catch (WeatherLibException t) {
                             listener.onWeatherError(t);
                         }
 

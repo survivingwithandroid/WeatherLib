@@ -19,6 +19,8 @@ package com.survivingwithandroid.weather.lib.model;
 /**
  * This class represents the a City as returned during the search process. The search can be done using name pattern
  * or using geographic location. The weather provider used will create the instance of city
+ *
+ * @author Francesco Azzola
  */
 public class City {
 

@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright (C) 2014 Francesco Azzola
  *  Surviving with Android (http://www.survivingwithandroid.com)
@@ -27,12 +25,13 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.DayForecast;
+import com.survivingwithandroid.weather.lib.model.HourForecast;
 import com.survivingwithandroid.weather.lib.model.Location;
 import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
+import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
-import com.survivingwithandroid.weather.lib.util.LogUtils;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.json.JSONArray;
@@ -44,7 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
- 
+
 public class WeatherUndergroundProvider implements IWeatherProvider {
 
 
@@ -114,7 +113,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
                 weather.temperature.setTemp(getFloat("temp_c", jObj));
                 // Wind
-               weather.wind.setGust(getFloat("wind_gust_kph", jObj));
+                weather.wind.setGust(getFloat("wind_gust_kph", jObj));
                 weather.wind.setSpeed(getFloat("wind_kph", jObj));
                 weather.currentCondition.setVisibility(getFloat("visibility_km", jObj));
                 weather.currentCondition.setFeelsLike(getFloat("feelslike_c", jObj));
@@ -139,13 +138,13 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
             // Astronomy
             JSONObject moonObj = getObject("moon_phase", rootObj);
-            weather.location.getAstronomy().percIllum =  getString("percentIlluminated", moonObj);
-            weather.location.getAstronomy().moonAge =  getString("ageOfMoon", moonObj);
-            weather.location.getAstronomy().moonPhaseDescr =  getString("phaseofMoon", moonObj);
-            weather.location.getAstronomy().hemisphere =  getString("hemisphere", moonObj);
+            weather.location.getAstronomy().percIllum = getString("percentIlluminated", moonObj);
+            weather.location.getAstronomy().moonAge = getString("ageOfMoon", moonObj);
+            weather.location.getAstronomy().moonPhaseDescr = getString("phaseofMoon", moonObj);
+            weather.location.getAstronomy().hemisphere = getString("hemisphere", moonObj);
 
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            JSONObject riseObj =  getObject("sunrise", moonObj);
+            JSONObject riseObj = getObject("sunrise", moonObj);
             String d1 = getString("hour", riseObj) + ":" + getString("minute", riseObj);
             try {
                 weather.location.setSunrise(sdf.parse(d1).getTime());
@@ -153,7 +152,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 e.printStackTrace();
             }
 
-            JSONObject setObj =  getObject("sunset", moonObj);
+            JSONObject setObj = getObject("sunset", moonObj);
             String d2 = getString("hour", setObj) + ":" + getString("minute", setObj);
             try {
                 weather.location.setSunset(sdf.parse(d2).getTime());
@@ -173,13 +172,13 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
 
     public WeatherForecast getForecastWeather(String data) throws WeatherLibException {
-           try {
-                JSONObject rootObj = new JSONObject(data);
-                parseForecast(rootObj, null);
-            } catch (JSONException json) {
-                json.printStackTrace();
-                throw new WeatherLibException(json);
-            }
+        try {
+            JSONObject rootObj = new JSONObject(data);
+            parseForecast(rootObj, null);
+        } catch (JSONException json) {
+            json.printStackTrace();
+            throw new WeatherLibException(json);
+        }
         return forecast;
     }
 
@@ -256,6 +255,56 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     }
 
     @Override
+    public WeatherHourForecast getHourForecastWeather(String data) throws WeatherLibException {
+        WeatherHourForecast forecast = new WeatherHourForecast();
+        try {
+            JSONObject jObj = new JSONObject(data);
+            JSONArray jHoursArray = jObj.getJSONArray("hourly_forecast");
+            for (int i = 0; i < jHoursArray.length(); i++) {
+                JSONObject jHour = jHoursArray.getJSONObject(i);
+
+                HourForecast hourForecast = new HourForecast();
+                hourForecast.timestamp = jHour.getJSONObject("FCTTIME").getLong("epoch");
+
+                JSONObject jTemp = jHour.getJSONObject("temp");
+                JSONObject jDewPoint = jHour.getJSONObject("dewpoint");
+                JSONObject jWindSpeed = jHour.getJSONObject("wspd");
+                JSONObject jWindDir = jHour.getJSONObject("wdir");
+                JSONObject jHeatIdx = jHour.getJSONObject("heatindex");
+                JSONObject jFeelslike = jHour.getJSONObject("feelslike");
+                JSONObject jQPF = jHour.getJSONObject("qpf");
+                JSONObject jSnow = jHour.getJSONObject("snow");
+
+                hourForecast.weather.currentCondition.setDescr(jHour.getString("conditions"));
+                hourForecast.weather.currentCondition.setIcon(jHour.getString("icon"));
+                hourForecast.weather.currentCondition.setHumidity(getFloat("humidity", jHour));
+                hourForecast.weather.currentCondition.setUV(getFloat("uvi", jHour));
+                hourForecast.weather.wind.setDeg(getFloat("degrees", jWindDir));
+
+                String tag = null;
+                if (WeatherUtility.isMetric(config.unitSystem))
+                    tag = "metric";
+                else
+                    tag = "english";
+
+                hourForecast.weather.temperature.setTemp(getFloat(tag, jTemp));
+                hourForecast.weather.currentCondition.setDewPoint(getFloat(tag, jDewPoint));
+                hourForecast.weather.wind.setSpeed(getFloat(tag, jWindSpeed));
+                hourForecast.weather.currentCondition.setFeelsLike(getFloat(tag, jFeelslike));
+                hourForecast.weather.currentCondition.setHeatIndex(getString(tag, jHeatIdx));
+                hourForecast.weather.rain.setAmmount(getFloat(tag, jQPF));
+                hourForecast.weather.snow.setAmmount(getFloat(tag, jSnow));
+
+                forecast.addForecast(hourForecast);
+            }
+        } catch (JSONException json) {
+            throw new WeatherLibException(json);
+        }
+
+        return forecast;
+    }
+
+    @Override
     public void setConfig(WeatherConfig config) {
         this.config = config;
         units = WeatherUtility.createWeatherUnit(config.unitSystem);
@@ -290,12 +339,23 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
         String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/forecast/";
         url = addLanguage(url);
-        return  url + cityId + ".json";
+        return url + cityId + ".json";
     }
 
     @Override
     public String getQueryImageURL(String icon) throws ApiKeyRequiredException {
         return IMG_URL + icon + ".gif";
+    }
+
+    @Override
+    public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/hourly/";
+        url = addLanguage(url);
+        return url + cityId + ".json";
+
     }
 
     @Override
@@ -308,7 +368,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 
-        return BASE_URL_ID  + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
+        return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {

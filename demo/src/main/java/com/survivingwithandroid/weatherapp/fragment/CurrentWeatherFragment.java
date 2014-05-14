@@ -33,6 +33,7 @@ import com.survivingwithandroid.weather.lib.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.util.WindDirection;
 import com.survivingwithandroid.weatherapp.R;
 import com.survivingwithandroid.weatherapp.util.LogUtils;
@@ -134,6 +135,41 @@ public class CurrentWeatherFragment extends WeatherFragment {
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
         else
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
+
+        // Test
+        client.getHourForecastWeather(cityId, new WeatherClient.HourForecastWeatherEventListener() {
+
+            /**
+             * This method is called to notify to the listener that the Weather information is ready
+             *
+             * @param forecast {@link com.survivingwithandroid.weather.lib.model.WeatherHourForecast}
+             */
+            @Override
+            public void onWeatherRetrieved(WeatherHourForecast forecast) {
+
+            }
+
+            /**
+             * This method is called when an error occured during the data parsing
+             *
+             * @param wle {@link com.survivingwithandroid.weather.lib.exception.WeatherLibException}
+             */
+            @Override
+            public void onWeatherError(WeatherLibException wle) {
+
+            }
+
+            /**
+             * This method is called when an error occured during the HTTP connection
+             *
+             * @param t {@link Throwable}
+             */
+            @Override
+            public void onConnectionError(Throwable t) {
+
+            }
+        });
+
 
         client.updateWeatherConfig(config);
 

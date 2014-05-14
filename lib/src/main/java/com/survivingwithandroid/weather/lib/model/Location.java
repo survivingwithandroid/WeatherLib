@@ -18,6 +18,11 @@ package com.survivingwithandroid.weather.lib.model;
 
 import java.io.Serializable;
 
+/*
+* This class holds information about location as returned from the weather provider
+*
+* @author Francesco Azzola
+* */
 public class Location implements Serializable {
 
     private float longitude;

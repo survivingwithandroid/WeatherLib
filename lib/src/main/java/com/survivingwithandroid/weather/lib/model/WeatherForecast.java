@@ -21,6 +21,8 @@ import java.util.List;
 
 /**
  * Forecast weather. This class holds the list of next day forecast
+ *
+ * @author Francesco Azzola
  */
 public class WeatherForecast extends Weather {
 

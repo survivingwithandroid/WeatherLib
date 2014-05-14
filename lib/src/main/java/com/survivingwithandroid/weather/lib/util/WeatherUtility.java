@@ -31,8 +31,7 @@ public class WeatherUtility {
         if (isMetric(unit)) {
             weatherUnit.speedUnit = "m/s";
             weatherUnit.tempUnit = "°C";
-        }
-        else {
+        } else {
             weatherUnit.speedUnit = "mph";
             weatherUnit.tempUnit = "°F";
         }

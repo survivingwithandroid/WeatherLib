@@ -15,25 +15,25 @@ import android.util.Log;
 
 /**
  * @author Francesco
- *
  */
 public class LogUtils {
 
     public static boolean DEBUG = true;
 
-	public static final String WEATHER_TAG = "SwA";
-	
-	public static void LOGD(String TAG, String msg) {
-		if (DEBUG && Log.isLoggable(TAG, Log.DEBUG))
-			Log.d(TAG, msg);
-	}
+    public static final String WEATHER_TAG = "SwA";
 
-	public static void LOGD(String msg) {
-       LOGD(WEATHER_TAG, msg);
+    public static void LOGD(String TAG, String msg) {
+        if (DEBUG && Log.isLoggable(TAG, Log.DEBUG))
+            Log.d(TAG, msg);
     }
-	public static void LOGD(String TAG, String msg, Throwable t) {
-		if (DEBUG && Log.isLoggable(TAG, Log.DEBUG))
-			Log.d(TAG, msg, t);
-	}
-	
+
+    public static void LOGD(String msg) {
+        LOGD(WEATHER_TAG, msg);
+    }
+
+    public static void LOGD(String TAG, String msg, Throwable t) {
+        if (DEBUG && Log.isLoggable(TAG, Log.DEBUG))
+            Log.d(TAG, msg, t);
+    }
+
 }

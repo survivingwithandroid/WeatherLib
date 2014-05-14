@@ -14,20 +14,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.survivingwithandroid.weather.lib.provider.wunderground;
+package com.survivingwithandroid.weather.lib.model;
 
-import com.survivingwithandroid.weather.lib.provider.IProviderType;
-
-
-public class WeatherUndergroundProviderType implements IProviderType {
-
-    @Override
-    public String getProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundProvider";
-    }
-
-    @Override
-    public String getCodeProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundCodeProvider";
-    }
+/**
+ * This class holds the hour forecast information. Using this class you can access to the hour forecast information
+ *
+ * @author Francesco Azzola
+ */
+public class HourForecast extends WeatherForecastData {
 }

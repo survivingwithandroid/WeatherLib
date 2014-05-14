@@ -14,10 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 package com.survivingwithandroid.weather.lib.provider.yahooweather;
-
-import android.util.Log;
 
 import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
@@ -27,10 +24,10 @@ import java.util.IllegalFormatCodePointException;
 public class YahooWeatherCodeProvider implements IWeatherCodeProvider {
     @Override
     public WeatherCode getWeatherCode(int code) {
-       for (WeatherCode c : WeatherCode.values()) {
-           if (c.getCode() == code)
-               return c;
-       }
+        for (WeatherCode c : WeatherCode.values()) {
+            if (c.getCode() == code)
+                return c;
+        }
         throw new IllegalFormatCodePointException(-1);
     }
 }

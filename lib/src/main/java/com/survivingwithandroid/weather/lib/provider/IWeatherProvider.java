@@ -19,15 +19,22 @@ package com.survivingwithandroid.weather.lib.provider;
 
 import android.location.Location;
 
+import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
-import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
+import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 
 import java.util.List;
 
+/*
+* Public interface that all the weather provider must implement. If you want to code
+* your weather provider you have to implement this interface.
+*
+* @author Francesco Azzola
+* */
 public interface IWeatherProvider {
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException;
@@ -35,6 +42,8 @@ public interface IWeatherProvider {
     public WeatherForecast getForecastWeather(String data) throws WeatherLibException;
 
     public List<City> getCityResultList(String data) throws WeatherLibException;
+
+    public WeatherHourForecast getHourForecastWeather(String data) throws WeatherLibException;
 
     public String getQueryCityURL(String cityNamePattern) throws ApiKeyRequiredException;
 
@@ -49,5 +58,7 @@ public interface IWeatherProvider {
     public void setWeatherCodeProvider(IWeatherCodeProvider codeProvider);
 
     public String getQueryImageURL(String weatherId) throws ApiKeyRequiredException;
+
+    public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
 
 }

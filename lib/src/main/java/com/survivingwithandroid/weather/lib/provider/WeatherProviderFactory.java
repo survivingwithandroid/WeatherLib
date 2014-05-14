@@ -21,11 +21,14 @@ import android.util.Log;
 
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
-import com.survivingwithandroid.weather.lib.util.LogUtils;
 
+/*
+* This class implements the weather provider class factory. It helps you to create
+* the weather provider providing the configuration parameters
+*
+* @author Francesco Azzola
+* */
 public class WeatherProviderFactory {
-
-
 
     public static IWeatherProvider createProvider(IProviderType provType, WeatherConfig config) throws WeatherProviderInstantiationException {
         return _createProvider(provType, config);
@@ -33,9 +36,9 @@ public class WeatherProviderFactory {
 
     private static IWeatherProvider _createProvider(IProviderType provType, WeatherConfig config) throws WeatherProviderInstantiationException {
         try {
-            Class<?> clazz=  Class.forName(provType.getProviderClass());
+            Class<?> clazz = Class.forName(provType.getProviderClass());
             IWeatherProvider provider = (IWeatherProvider) clazz.newInstance();
-            Log.d("App", "Provider ["+provider+"]");
+            Log.d("App", "Provider [" + provider + "]");
 
             if (config != null)
                 provider.setConfig(config);

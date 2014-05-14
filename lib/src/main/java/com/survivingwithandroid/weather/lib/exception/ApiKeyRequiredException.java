@@ -21,8 +21,10 @@ package com.survivingwithandroid.weather.lib.exception;
 * This excpetion is raised when the provider require the ApiKey and this is not provided.
 *
 * @see WeatherConfig
+*
+* @author Francesco Azzola
 * */
-public class ApiKeyRequiredException  extends RuntimeException {
+public class ApiKeyRequiredException extends RuntimeException {
 
     public ApiKeyRequiredException() {
     }

@@ -20,6 +20,7 @@ package com.survivingwithandroid.weather.lib.exception;
 /*
 * This excpetion is raised when an error occurs during the parsing process.
 *
+* @author Francesco Azzola
 * */
 public class WeatherLibException extends Exception {
 

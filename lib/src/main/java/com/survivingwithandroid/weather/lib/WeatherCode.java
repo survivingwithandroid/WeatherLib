@@ -25,6 +25,8 @@ package com.survivingwithandroid.weather.lib;
 * @see com.survivingwithandroid.weather.lib.IWeatherCodeProvider
 * @see com.survivingwithandroid.weather.lib..openweathermap.WeatherUndergroundCodeProvider
 * @see com.survivingwithandroid.weather.lib.yahooweather.YahooWeatherCodeProvider
+*
+* @author Francesco Azzola
 * */
 public enum WeatherCode {
 
