@@ -48,7 +48,6 @@ public class YahooWeatherProvider implements IWeatherProvider {
     private WeatherConfig config;
 
     private Weather.WeatherUnit units = new Weather.WeatherUnit();
-    ;
 
     private IWeatherCodeProvider codeProvider;
 
@@ -156,7 +155,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         } else {
                             DayForecast df = new DayForecast();
                             df.forecastTemp.max = Integer.parseInt(parser.getAttributeValue(null, "high"));
-                            df.forecastTemp.max = Integer.parseInt(parser.getAttributeValue(null, "low"));
+                            df.forecastTemp.min = Integer.parseInt(parser.getAttributeValue(null, "low")); // Bug fixing
                             df.weather.currentCondition.setWeatherId(Integer.parseInt(parser.getAttributeValue(null, "code")));
 
                             if (codeProvider != null)
