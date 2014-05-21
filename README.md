@@ -28,7 +28,7 @@ This library provides:
 At the moment the library supports [Yahoo! Weather], [Openweathermap]  and Weather Underground API as weather provider. 
 
 ## Version
-1.2
+1.3.0
 
 ## What's new
 1. Add Weather Underground API support (Current Weather, Forecast, Astronomy, City search)
@@ -48,7 +48,7 @@ Before using this lib, you have to modify build.gradle adding these lines:
 
 ``` java
 dependencies {    
-    compile 'com.survivingwithandroid:weatherlib:1.2'
+    compile 'com.survivingwithandroid:weatherlib:1.3.0'
 }
 ```
 
