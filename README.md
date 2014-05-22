@@ -68,6 +68,12 @@ If you like there is a Community to talk about new features, suggest tips or rep
 
 [![](http://4.bp.blogspot.com/-Bfh2unbdc84/UcGqVJKdMwI/AAAAAAAAAOc/W4kGiTU-fYk/s1600/google_plus_58.png)](http://www.google.com/+FrancescoAzzola)  [![](http://3.bp.blogspot.com/-_JSQStno9N8/UcGWEW7V9AI/AAAAAAAAAOM/_qFVUjIaySg/s1600/linkedin.png)](http://it.linkedin.com/in/francescoazzola)
 
+
+#Contribute
+The library source code is free so that everyone that wants to contribute to the library is welcome.If you want to contribute to the library you can use <a href="https://github.com/survivingwithandroid/WeatherLib">github</a> and pull a new request so that I can merge your code. If you find bugs in the code you can open an issue on github or contact me.
+In case you use the library and you are satisfied with it I would like you could send some screenshots of the app you created. If someone wants to contribute freely to the library providing a nice logo I would be very happy. <br />
+<br />
+
 #Licence
 ```
 Copyright 2012-2014 Francesco Azzola (Surviving with Android)
