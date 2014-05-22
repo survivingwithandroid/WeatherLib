@@ -55,6 +55,8 @@ dependencies {
 #Tutorial
 If you want to know how to use the lib give a look at [wiki page]
 
+#Eclipse users
+The project is built using Android Studio, anyway if you want to use the lib with Eclipse you can download the library jar [here]
 
 #Community
 If you like there is a Community to talk about new features, suggest tips or report bugs. Please join:
@@ -86,5 +88,5 @@ limitations under the License.
 [Yahoo! Weather]:http://developer.yahoo.com/weather/
 [Openweathermap]:http://openweathermap.org/
 [wiki page]:https://github.com/survivingwithandroid/WeatherLib/wiki/Tutorial
-
+[here]:tree/master/lib/release
     
