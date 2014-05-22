@@ -88,5 +88,5 @@ limitations under the License.
 [Yahoo! Weather]:http://developer.yahoo.com/weather/
 [Openweathermap]:http://openweathermap.org/
 [wiki page]:https://github.com/survivingwithandroid/WeatherLib/wiki/Tutorial
-[here]:../tree/master/lib/release
+[here]:https://github.com/survivingwithandroid/WeatherLib/tree/master/lib/release
     
