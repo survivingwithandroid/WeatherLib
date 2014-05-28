@@ -157,6 +157,17 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 // We retrieve the timestamp (dt)
                 df.timestamp = jDayForecast.getLong("dt");
 
+                // Clouds
+                df.weather.clouds.setPerc(jDayForecast.getInt("clouds"));
+
+
+                // Rain
+                try {
+                 df.weather.rain.setAmmount((float) jDayForecast.getDouble("rain"));
+                }
+                catch(Throwable t) { // ignore
+                }
+
                 // Temp is an object
                 JSONObject jTempObj = jDayForecast.getJSONObject("temp");
 
@@ -211,7 +222,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 JSONObject sys = obj.getJSONObject("sys");
                 String country = sys.getString("country");
-                Log.d("SwA", "ID [" + id + "]");
+                //Log.d("SwA", "ID [" + id + "]");
                 City c = new City(id, name, null, country);
 
                 cityList.add(c);
@@ -274,7 +285,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 } catch (Throwable t) {
                 }
 
-                Log.d("SwA", "Add weather forecast");
+                //Log.d("SwA", "Add weather forecast");
                 forecast.addForecast(hourForecast);
             }
         } catch (JSONException json) {

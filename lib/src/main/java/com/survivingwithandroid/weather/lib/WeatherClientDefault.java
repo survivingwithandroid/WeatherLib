@@ -41,6 +41,7 @@ import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
+import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.List;
 
@@ -122,16 +123,16 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getCurrentCondition(String location, final WeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCurrentWeatherURL(location);
-        Log.d("SwA", "URL [" + url + "]");
+        LogUtils.LOGD("Current Condition URL [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String data) {
                         // We handle the response
                         try {
-                            Log.d("SwA", "----");
-                            Log.d("SwA", data);
-                            Log.d("SwA", "----");
+                            //LogUtils.LOGD("-Response-");
+                            //LogUtils.LOGD(data);
+                            //LogUtils.LOGD("----");
                             CurrentWeather weather = provider.getCurrentCondition(data);
                             listener.onWeatherRetrieved(weather);
                         } catch (WeatherLibException t) {
@@ -168,6 +169,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
+        LogUtils.LOGD("Search city URL ["+url+"]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -213,7 +215,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getForecastWeather(String location, final ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryForecastWeatherURL(location);
-        Log.d("SwA", "URL [" + url + "]");
+        LogUtils.LOGD("Forecast URL [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -256,6 +258,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getHourForecastWeather(String location, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryHourForecastWeatherURL(location);
+        LogUtils.LOGD("Forecast Hourly URL ["+url+"]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -306,10 +309,9 @@ public class WeatherClientDefault extends WeatherClient {
     public void searchCityByLocation(Criteria criteria, final CityEventListener listener) throws LocationProviderNotFoundException {
         this.cityListener = listener;
         LocationManager locManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        Log.d("App", "LocManager");
         String locationProvider = locManager.getBestProvider(criteria, true);
 
-        Log.d("App", "Provider [" + locationProvider + "]");
+        LogUtils.LOGD("Provider [" + locationProvider + "]");
 
         if (locationProvider == null || "".equals(locationProvider))
             throw new LocationProviderNotFoundException();
@@ -360,7 +362,7 @@ public class WeatherClientDefault extends WeatherClient {
 
     private void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURLByLocation(location);
-        Log.d("App", "Url [" + url + "]");
+        LogUtils.LOGD("Search city by Loc Url [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

@@ -33,6 +33,7 @@ import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
+import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -111,6 +112,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getCurrentCondition(String location, WeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCurrentWeatherURL(location);
+        LogUtils.LOGD("Current cond URL ["+url+"]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -120,7 +122,7 @@ public class StandardHttpClient extends WeatherClient {
         }
 
         try {
-            Log.d("SwA", "Data [" + data + "]");
+            //LogUtils.LOGD("Data [" + data + "]");
             CurrentWeather weather = provider.getCurrentCondition(data);
             listener.onWeatherRetrieved(weather);
         } catch (WeatherLibException t) {
@@ -146,6 +148,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void searchCity(String pattern, CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
+        LogUtils.LOGD("Search city URL ["+url+"]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -155,7 +158,7 @@ public class StandardHttpClient extends WeatherClient {
         }
 
         try {
-            Log.d("SwA", "Data [" + data + "]");
+
             List<City> cityResult = provider.getCityResultList(data);
             listener.onCityListRetrieved(cityResult);
         } catch (WeatherLibException t) {
@@ -181,6 +184,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getForecastWeather(String location, ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryForecastWeatherURL(location);
+        LogUtils.LOGD("Forecast URL ["+url+"]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -190,7 +194,7 @@ public class StandardHttpClient extends WeatherClient {
         }
 
         try {
-            Log.d("SwA", "Data [" + data + "]");
+            //Log.d("SwA", "Data [" + data + "]");
             WeatherForecast forecast = provider.getForecastWeather(data);
             listener.onWeatherRetrieved(forecast);
         } catch (WeatherLibException t) {
@@ -216,6 +220,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getHourForecastWeather(String location, HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryHourForecastWeatherURL(location);
+        LogUtils.LOGD("Hourly forecast URL ["+url+"]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -324,7 +329,7 @@ public class StandardHttpClient extends WeatherClient {
         }
 
         try {
-            Log.d("SwA", "Data [" + data + "]");
+            //Log.d("SwA", "Data [" + data + "]");
             List<City> cityResult = provider.getCityResultList(data);
             listener.onCityListRetrieved(cityResult);
         } catch (WeatherLibException t) {

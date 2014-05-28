@@ -149,7 +149,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             try {
                 weather.location.setSunrise(sdf.parse(d1).getTime());
             } catch (ParseException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             JSONObject setObj = getObject("sunset", moonObj);
@@ -157,7 +157,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             try {
                 weather.location.setSunset(sdf.parse(d2).getTime());
             } catch (ParseException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
 
 
@@ -242,7 +242,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 String name = obj.getString("name");
                 String id = obj.getString("l");
                 String country = obj.getString("c");
-                Log.d("SwA", "ID [" + id + "]");
+                //Log.d("SwA", "ID [" + id + "]");
                 City c = new City(id, name, null, country);
 
                 cityList.add(c);

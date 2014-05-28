@@ -25,7 +25,7 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 public class WeatherUndergroundCodeProvider implements IWeatherCodeProvider {
     @Override
     public WeatherCode getWeatherCode(int code) {
-        Log.d("App", "Code [" + code + "]");
+        //Log.d("App", "Code [" + code + "]");
         throw new UnsupportedOperationException();
     }
 }
