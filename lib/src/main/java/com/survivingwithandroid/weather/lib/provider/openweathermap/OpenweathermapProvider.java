@@ -309,12 +309,12 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCurrentWeatherURL(String cityId) {
-        return BASE_URL_ID + cityId + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang;
+        return BASE_URL_ID + cityId + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
     }
 
     @Override
     public String getQueryForecastWeatherURL(String cityId) {
-        return BASE_FORECAST_URL_ID + cityId + "&lang=" + config.lang + "&cnt=" + config.numDays + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial");
+        return BASE_FORECAST_URL_ID + cityId + "&lang=" + config.lang + "&cnt=" + config.numDays + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
     }
 
     @Override
@@ -334,7 +334,14 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
-        return BASE_HOUR_FORECAST_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial");
+        return BASE_HOUR_FORECAST_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
+    }
+
+    private String createAPPID() {
+        if (config.ApiKey == null || config.ApiKey.equals(""))
+            return "";
+
+        return "&APPID=" + config.ApiKey;
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
