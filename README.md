@@ -48,7 +48,7 @@ Before using this lib, you have to modify build.gradle adding these lines:
 
 ``` java
 dependencies {    
-    compile 'com.survivingwithandroid:weatherlib:1.3.1'
+    compile 'com.survivingwithandroid:weatherlib:1.3.2'
 }
 ```
 
