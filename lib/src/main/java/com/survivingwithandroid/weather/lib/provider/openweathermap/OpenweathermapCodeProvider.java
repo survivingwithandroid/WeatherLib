@@ -17,15 +17,19 @@
 
 package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
-import android.util.Log;
-
 import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 
+/**
+* Openweathermap code provider. It converts the owm weather code to the unified code system provided by this library
+*
+* @author Francesco Azzola
+* */
 public class OpenweathermapCodeProvider implements IWeatherCodeProvider {
     @Override
-    public WeatherCode getWeatherCode(int code) {
-       // Log.d("App", "Code [" + code + "]");
+    public WeatherCode getWeatherCode(String weatherCode) {
+        // Log.d("App", "Code [" + code + "]");
+        int code = Integer.parseInt(weatherCode);
         switch (code) {
             case 900:
                 return WeatherCode.TORNADO;
@@ -112,4 +116,6 @@ public class OpenweathermapCodeProvider implements IWeatherCodeProvider {
                 throw new UnsupportedOperationException();
         }
     }
+
+
 }

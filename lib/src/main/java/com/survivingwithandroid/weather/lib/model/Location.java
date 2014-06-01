@@ -25,6 +25,7 @@ import java.io.Serializable;
 * */
 public class Location implements Serializable {
 
+
     private float longitude;
     private float latitude;
     private long sunset;
@@ -33,6 +34,7 @@ public class Location implements Serializable {
     private String city;
     private String region;
     private Astronomy astronomy = new Astronomy();
+    private long population;
 
     public float getLongitude() {
         return longitude;
@@ -96,6 +98,14 @@ public class Location implements Serializable {
 
     public void setAstronomy(Astronomy astronomy) {
         this.astronomy = astronomy;
+    }
+
+    public long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(long population) {
+        this.population = population;
     }
 
     public class Astronomy {

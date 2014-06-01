@@ -24,7 +24,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -130,9 +129,6 @@ public class WeatherClientDefault extends WeatherClient {
                     public void onResponse(String data) {
                         // We handle the response
                         try {
-                            //LogUtils.LOGD("-Response-");
-                            //LogUtils.LOGD(data);
-                            //LogUtils.LOGD("----");
                             CurrentWeather weather = provider.getCurrentCondition(data);
                             listener.onWeatherRetrieved(weather);
                         } catch (WeatherLibException t) {
@@ -169,7 +165,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
-        LogUtils.LOGD("Search city URL ["+url+"]");
+        LogUtils.LOGD("Search city URL [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -258,7 +254,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void getHourForecastWeather(String location, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryHourForecastWeatherURL(location);
-        LogUtils.LOGD("Forecast Hourly URL ["+url+"]");
+        LogUtils.LOGD("Forecast Hourly URL [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

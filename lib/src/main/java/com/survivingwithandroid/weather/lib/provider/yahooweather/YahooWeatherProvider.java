@@ -20,6 +20,7 @@ import android.location.Location;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
+import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.DayForecast;
@@ -47,7 +48,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
     private WeatherConfig config;
 
-    private Weather.WeatherUnit units = new Weather.WeatherUnit();
+    private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
 
     private IWeatherCodeProvider codeProvider;
 
@@ -120,7 +121,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         // Log.d("SwA", "Response ["+resp+"]");
         //Log.d("App", "Data [" + data + "]");
-        CurrentWeather weather = new CurrentWeather();
+        CurrentWeather cWeather = new CurrentWeather();
+        Weather weather = new Weather();
+
         try {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(new StringReader(data));
@@ -159,7 +162,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                             df.weather.currentCondition.setWeatherId(Integer.parseInt(parser.getAttributeValue(null, "code")));
 
                             if (codeProvider != null)
-                                df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(df.weather.currentCondition.getWeatherId()));
+                                df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
 
                             df.weather.currentCondition.setDescr(parser.getAttributeValue(null, "text"));
                             df.weather.currentCondition.setIcon("" + df.weather.currentCondition.getWeatherId());
@@ -172,7 +175,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
                         // Convert the code
                         if (codeProvider != null)
-                            weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getWeatherId()));
+                            weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
 
                         weather.currentCondition.setDescr(parser.getAttributeValue(null, "text"));
                         weather.temperature.setTemp(Integer.parseInt(parser.getAttributeValue(null, "temp")));
@@ -231,8 +234,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
             throw new WeatherLibException(t);
         }
 
-        weather.setUnit(units);
-        return weather;
+        cWeather.setUnit(units);
+        cWeather.weather = weather;
+        return cWeather;
     }
 
     @Override

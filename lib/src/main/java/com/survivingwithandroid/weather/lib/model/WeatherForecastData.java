@@ -16,20 +16,15 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
-/*
+/**
 * This is the basic class for weather forecast data. It holds some basic information
 *
 * @author Francesco Azzola
 * */
 public class WeatherForecastData {
 
-    /*
-    * Current weather information for the day.
-    *
-    * {@see CurrentWeather}
-    *
-    * */
-    public CurrentWeather weather = new CurrentWeather();
+
+    public Weather weather = new Weather();
 
     /*
     * Forecast timestamp. Using this parameter you know at what day/hour the forecast information is refering to.

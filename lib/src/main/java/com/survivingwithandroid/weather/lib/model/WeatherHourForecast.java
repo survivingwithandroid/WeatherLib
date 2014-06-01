@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class holds the hour weather forecast.
+ * This class holds the hourly weather forecast.
  *
  * @author Francesco Azzola
  */
-public class WeatherHourForecast extends Weather {
+public class WeatherHourForecast extends BaseWeather {
 
     /**
      * Hour forecast information as retrieved by the weather provider. Traversing this list
@@ -42,7 +42,7 @@ public class WeatherHourForecast extends Weather {
     }
 
     /*
-    * Retrieve the hour forecast in the list. For example if i want to know the next hour weather forecast you have to use 0 as index.
+    * Retrieve the hour forecast in the list. For example if i want to know the next hour weather forecast you have to use 1 as index.
     *
     * @param hourNum int
     * @return {@see HourForecast}

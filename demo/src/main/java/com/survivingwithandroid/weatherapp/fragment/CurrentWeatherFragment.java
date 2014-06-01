@@ -33,6 +33,7 @@ import com.survivingwithandroid.weather.lib.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.util.WindDirection;
 import com.survivingwithandroid.weatherapp.R;
@@ -176,22 +177,22 @@ public class CurrentWeatherFragment extends WeatherFragment {
 
         client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
             @Override
-            public void onWeatherRetrieved(CurrentWeather weather) {
-
+            public void onWeatherRetrieved(CurrentWeather cWeather) {
+                Weather weather = cWeather.weather;
                 getListener().requestCompleted();
                 cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
                 condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
                 LogUtils.LOGD("SwA", "Temp [" + temp + "]");
                 LogUtils.LOGD("SwA", "Val [" + weather.temperature.getTemp() + "]");
                 temp.setText("" + ((int) weather.temperature.getTemp()));
-                unitTemp.setText(weather.getUnit().tempUnit);
+                unitTemp.setText(cWeather.getUnit().tempUnit);
                 colorTextLine.setBackgroundResource(WeatherUtil.getResource(weather.temperature.getTemp(), config));
                 hum.setText(weather.currentCondition.getHumidity() + "%");
-                tempMin.setText(weather.temperature.getMinTemp() + weather.getUnit().tempUnit);
-                tempMax.setText(weather.temperature.getMaxTemp() + weather.getUnit().tempUnit);
-                windSpeed.setText(weather.wind.getSpeed() + weather.getUnit().speedUnit);
+                tempMin.setText(weather.temperature.getMinTemp() + cWeather.getUnit().tempUnit);
+                tempMax.setText(weather.temperature.getMaxTemp() + cWeather.getUnit().tempUnit);
+                windSpeed.setText(weather.wind.getSpeed() + cWeather.getUnit().speedUnit);
                 windDeg.setText((int) weather.wind.getDeg() + "° (" + WindDirection.getDir((int) weather.wind.getDeg()) + ")");
-                press.setText(weather.currentCondition.getPressure() + weather.getUnit().pressureUnit);
+                press.setText(weather.currentCondition.getPressure() + cWeather.getUnit().pressureUnit);
 
                 sunrise.setText(WeatherUtil.convertDate(weather.location.getSunrise()));
 
@@ -209,8 +210,8 @@ public class CurrentWeatherFragment extends WeatherFragment {
                 */
                 cloud.setText(weather.clouds.getPerc() + "%");
 
-                if (weather.rain.getTime() != null && weather.rain.getAmmount() != 0)
-                   rain.setText(weather.rain.getTime() + ":" + weather.rain.getAmmount());
+                if (weather.rain[0].getTime() != null && weather.rain[0].getAmmount() != 0)
+                   rain.setText(weather.rain[0].getTime() + ":" + weather.rain[0].getAmmount());
                 else
                     rain.setText("----");
 

@@ -18,12 +18,12 @@
 package com.survivingwithandroid.weather.lib.util;
 
 import com.survivingwithandroid.weather.lib.WeatherConfig;
-import com.survivingwithandroid.weather.lib.model.Weather;
+import com.survivingwithandroid.weather.lib.model.BaseWeather;
 
 public class WeatherUtility {
 
-    public static Weather.WeatherUnit createWeatherUnit(WeatherConfig.UNIT_SYSTEM unit) {
-        Weather.WeatherUnit weatherUnit = new Weather.WeatherUnit();
+    public static BaseWeather.WeatherUnit createWeatherUnit(WeatherConfig.UNIT_SYSTEM unit) {
+        BaseWeather.WeatherUnit weatherUnit = new BaseWeather.WeatherUnit();
 
         if (unit == null)
             return weatherUnit;

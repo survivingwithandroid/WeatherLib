@@ -17,11 +17,10 @@
 
 package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
-import android.util.Log;
-
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
+import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.DayForecast;
@@ -41,6 +40,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Concrete implementation of IWeatherProvider.  This class handles the protocol details for Openweathermap
+ * weather provider. It extracts the weather information building the weather model.
+ *
+ * @author Francesco Azzola
+ * */
 
 public class OpenweathermapProvider implements IWeatherProvider {
 
@@ -53,12 +58,13 @@ public class OpenweathermapProvider implements IWeatherProvider {
     private static String BASE_HOUR_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?mode=json&id=";
 
     private WeatherConfig config;
-    private Weather.WeatherUnit units = new Weather.WeatherUnit();
+    private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
     private IWeatherCodeProvider codeProvider;
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         //LogUtils.LOGD("JSON CurrentWeather ["+data+"]");
-        CurrentWeather weather = new CurrentWeather();
+        CurrentWeather cWeather = new CurrentWeather();
+        Weather weather = new Weather();
         try {
             // We create out JSONObject from the data
             JSONObject jObj = new JSONObject(data);
@@ -75,6 +81,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
             loc.setSunrise(getInt("sunrise", sysObj));
             loc.setSunset(getInt("sunset", sysObj));
             loc.setCity(getString("name", jObj));
+
             weather.location = loc;
 
             // We get weather info (This is an array)
@@ -86,7 +93,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
             // Convert internal code
             if (codeProvider != null)
-                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getWeatherId()));
+                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
 
             weather.currentCondition.setDescr(getString("description", JSONWeather));
             weather.currentCondition.setCondition(getString("main", JSONWeather));
@@ -103,37 +110,51 @@ public class OpenweathermapProvider implements IWeatherProvider {
             JSONObject wObj = getObject("wind", jObj);
             weather.wind.setSpeed(getFloat("speed", wObj));
             weather.wind.setDeg(getFloat("deg", wObj));
+            /*
             try {
                 weather.wind.setGust(getFloat("gust", wObj));
             } catch (Throwable t) {
             }
+            */
 
+            weather.wind.setGust((float) wObj.optDouble("gust"));
             // Clouds
             JSONObject cObj = getObject("clouds", jObj);
             weather.clouds.setPerc(getInt("all", cObj));
 
-            // Rain
-            try {
-                JSONObject rObj = getObject("rain", jObj);
-                weather.rain.setAmmount(getFloat("1h", rObj));
-                weather.rain.setTime("1h");
-            } catch (Throwable t) {
+            // Rain (use opt to handle option parameters
+            JSONObject rObj = jObj.optJSONObject("rain");
+            if (rObj != null) {
+
+                float amm1 = (float) rObj.optDouble("1h");
+                if (amm1 > 0) {
+                    weather.rain[0].setAmmount(amm1);
+                    weather.rain[0].setTime("1h");
+                }
+
+                float amm3 = (float) rObj.optDouble("3h");
+                if (amm3 > 0) {
+                    weather.rain[1].setAmmount(amm3);
+                    weather.rain[1].setTime("3h");
+                }
             }
 
             // Snow
-            try {
-                JSONObject sObj = getObject("snow", jObj);
-                weather.rain.setAmmount(getFloat("3h", sObj));
-            } catch (Throwable t) {
+            JSONObject sObj = jObj.optJSONObject("snow");
+            if (sObj != null) {
+                weather.snow.setAmmount((float) sObj.optDouble("3h"));
+                weather.snow.setTime("3h");
             }
+
 
         } catch (JSONException json) {
             json.printStackTrace();
             throw new WeatherLibException(json);
         }
-        weather.setUnit(units);
 
-        return weather;
+        cWeather.setUnit(units);
+        cWeather.weather = weather;
+        return cWeather;
     }
 
     public WeatherForecast getForecastWeather(String data) throws WeatherLibException {
@@ -144,6 +165,16 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
             // We create out JSONObject from the data
             JSONObject jObj = new JSONObject(data);
+
+            // Parse city
+            Location loc = new Location();
+            JSONObject cObj = jObj.getJSONObject("city");
+            loc.setCity(cObj.getString("name"));
+            JSONObject cooObj = cObj.getJSONObject("city");
+            loc.setLatitude((float) cooObj.getDouble("lat"));
+            loc.setLongitude((float) cooObj.getDouble("lon"));
+            loc.setCountry(cObj.getString("country"));
+            loc.setPopulation(cObj.getLong("Population"));
 
             JSONArray jArr = jObj.getJSONArray("list"); // Here we have the forecast for every day
 
@@ -156,21 +187,32 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 // We retrieve the timestamp (dt)
                 df.timestamp = jDayForecast.getLong("dt");
+                // Set location
+                df.weather.location = loc;
 
                 // Clouds
                 df.weather.clouds.setPerc(jDayForecast.getInt("clouds"));
 
 
-                // Rain
-                try {
-                 df.weather.rain.setAmmount((float) jDayForecast.getDouble("rain"));
-                }
-                catch(Throwable t) { // ignore
+                // Rain (use opt to handle option parameters
+                JSONObject rObj = jObj.optJSONObject("rain");
+                if (rObj != null) {
+
+                    float amm1 = (float) rObj.optDouble("1h");
+                    if (amm1 > 0) {
+                        df.weather.rain[0].setAmmount(amm1);
+                        df.weather.rain[0].setTime("1h");
+                    }
+
+                    float amm3 = (float) rObj.optDouble("3h");
+                    if (amm3 > 0) {
+                        df.weather.rain[1].setAmmount(amm3);
+                        df.weather.rain[1].setTime("3h");
+                    }
                 }
 
                 // Temp is an object
                 JSONObject jTempObj = jDayForecast.getJSONObject("temp");
-
                 df.forecastTemp.day = (float) jTempObj.getDouble("day");
                 df.forecastTemp.min = (float) jTempObj.getDouble("min");
                 df.forecastTemp.max = (float) jTempObj.getDouble("max");
@@ -189,7 +231,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 // Convert internal code
                 if (codeProvider != null)
-                    df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(df.weather.currentCondition.getWeatherId()));
+                    df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
 
                 df.weather.currentCondition.setDescr(getString("description", jWeatherObj));
                 df.weather.currentCondition.setCondition(getString("main", jWeatherObj));
@@ -266,7 +308,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 // Convert internal code
                 if (codeProvider != null)
-                    hourForecast.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(hourForecast.weather.currentCondition.getWeatherId()));
+                    hourForecast.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hourForecast.weather.currentCondition.getWeatherId())));
 
                 hourForecast.weather.currentCondition.setDescr(getString("description", JSONWeather));
                 hourForecast.weather.currentCondition.setCondition(getString("main", JSONWeather));
@@ -280,10 +322,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 JSONObject wObj = getObject("wind", jHour);
                 hourForecast.weather.wind.setSpeed(getFloat("speed", wObj));
                 hourForecast.weather.wind.setDeg(getFloat("deg", wObj));
-                try {
-                    hourForecast.weather.wind.setGust(getFloat("gust", wObj));
-                } catch (Throwable t) {
-                }
+                hourForecast.weather.wind.setGust((float) wObj.optDouble("gust"));
 
                 //Log.d("SwA", "Add weather forecast");
                 forecast.addForecast(hourForecast);

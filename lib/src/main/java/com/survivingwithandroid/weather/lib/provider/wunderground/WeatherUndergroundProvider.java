@@ -17,8 +17,6 @@
 
 package com.survivingwithandroid.weather.lib.provider.wunderground;
 
-import android.util.Log;
-
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -33,7 +31,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
-
+import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +41,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+/**
+ * This is a concrete implementaton of IWeatherProvider interface for Weather undergound provider
+ *
+ * @author Francesco Azzola
+ * */
 
 public class WeatherUndergroundProvider implements IWeatherProvider {
 
@@ -54,13 +59,14 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
 
     private WeatherConfig config;
-    private Weather.WeatherUnit units = new Weather.WeatherUnit();
+    private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
     private IWeatherCodeProvider codeProvider;
     private WeatherForecast forecast = new WeatherForecast();
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         //Log.d("SwA", "JSON CurrentWeather [" + data + "]");
-        CurrentWeather weather = new CurrentWeather();
+        CurrentWeather cWeather = new CurrentWeather();
+        Weather weather = new Weather();
         try {
             // We create out JSONObject from the data
             JSONObject rootObj = new JSONObject(data);
@@ -75,22 +81,16 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             loc.setLongitude(getFloat("longitude", dObj));
             loc.setCountry(getString("state_name", dObj));
             loc.setCity(getString("city", dObj));
-            /*
-         loc.setSunrise(getInt("sunrise", sysObj));
-         loc.setSunset(getInt("sunset", sysObj));
-         */
             weather.location = loc;
-            //weather.currentCondition.setWeatherId(getInt("id", JSONWeather));
-
             // Convert internal code
-            /*
-          if (codeProvider != null)
-              weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getWeatherId()));
-          */
+
 
             weather.currentCondition.setDescr(getString("weather", jObj));
             //weather.currentCondition.setCondition(getString("main", JSONWeather));
             weather.currentCondition.setIcon(getString("icon", jObj));
+
+            if (codeProvider != null)
+                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getIcon()));
 
             //JSONObject mainObj = getObject("main", jObj);
             String relUm = getString("relative_humidity", jObj);
@@ -157,7 +157,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             try {
                 weather.location.setSunset(sdf.parse(d2).getTime());
             } catch (ParseException e) {
-               // e.printStackTrace();
+                // e.printStackTrace();
             }
 
 
@@ -165,9 +165,11 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             //json.printStackTrace();
             throw new WeatherLibException(json);
         }
-        weather.setUnit(units);
 
-        return weather;
+        cWeather.setUnit(units);
+        cWeather.weather = weather;
+
+        return cWeather;
     }
 
 
@@ -182,7 +184,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return forecast;
     }
 
-    private void parseForecast(JSONObject root, CurrentWeather weather) throws JSONException {
+    private void parseForecast(JSONObject root, Weather weather) throws JSONException {
         // Start parsing forecast
         JSONObject forecast1 = getObject("forecast", root);
         JSONObject simpleForecast = getObject("simpleforecast", forecast1);
@@ -196,22 +198,26 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
             df.weather.currentCondition.setDescr(dayForecast.getString("conditions"));
             df.weather.currentCondition.setIcon(dayForecast.getString("icon"));
+
+            if (codeProvider != null)
+                df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(df.weather.currentCondition.getIcon()));
+
             if (WeatherUtility.isMetric(config.unitSystem)) {
                 df.forecastTemp.max = dayForecast.getJSONObject("high").getInt("celsius");
                 df.forecastTemp.min = dayForecast.getJSONObject("low").getInt("celsius");
                 df.weather.wind.setSpeed(dayForecast.getJSONObject("avewind").getInt("kph"));
                 df.weather.snow.setTime("Day");
                 df.weather.snow.setAmmount(dayForecast.getJSONObject("snow_allday").getInt("cm"));
-                df.weather.rain.setTime("Day");
-                df.weather.rain.setAmmount(dayForecast.getJSONObject("qpf_allday").getInt("mm"));
+                df.weather.rain[0].setTime("Day");
+                df.weather.rain[0].setAmmount(dayForecast.getJSONObject("qpf_allday").getInt("mm"));
             } else {
                 df.forecastTemp.max = dayForecast.getJSONObject("high").getInt("fahrenheit");
                 df.forecastTemp.min = dayForecast.getJSONObject("low").getInt("fahrenheit");
                 df.weather.wind.setSpeed(dayForecast.getJSONObject("avewind").getInt("mph"));
                 df.weather.snow.setTime("Day");
                 df.weather.snow.setAmmount(dayForecast.getJSONObject("snow_allday").getInt("in"));
-                df.weather.rain.setTime("Day");
-                df.weather.rain.setAmmount(dayForecast.getJSONObject("qpf_allday").getInt("in"));
+                df.weather.rain[0].setTime("Day");
+                df.weather.rain[0].setAmmount(dayForecast.getJSONObject("qpf_allday").getInt("in"));
             }
 
             df.weather.wind.setDeg(dayForecast.getJSONObject("avewind").getInt("degrees"));
@@ -292,7 +298,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 hourForecast.weather.wind.setSpeed(getFloat(tag, jWindSpeed));
                 hourForecast.weather.currentCondition.setFeelsLike(getFloat(tag, jFeelslike));
                 hourForecast.weather.currentCondition.setHeatIndex(getString(tag, jHeatIdx));
-                hourForecast.weather.rain.setAmmount(getFloat(tag, jQPF));
+                hourForecast.weather.rain[0].setAmmount(getFloat(tag, jQPF));
                 hourForecast.weather.snow.setAmmount(getFloat(tag, jSnow));
 
                 forecast.addForecast(hourForecast);

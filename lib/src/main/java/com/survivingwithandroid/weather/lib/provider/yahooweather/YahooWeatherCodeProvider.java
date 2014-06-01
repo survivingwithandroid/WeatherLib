@@ -23,7 +23,9 @@ import java.util.IllegalFormatCodePointException;
 
 public class YahooWeatherCodeProvider implements IWeatherCodeProvider {
     @Override
-    public WeatherCode getWeatherCode(int code) {
+    public WeatherCode getWeatherCode(String weatherCode) {
+        int code = Integer.parseInt(weatherCode);
+
         for (WeatherCode c : WeatherCode.values()) {
             if (c.getCode() == code)
                 return c;

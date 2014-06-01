@@ -23,7 +23,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.LocationProviderNotFoundException;
@@ -62,6 +61,7 @@ public class StandardHttpClient extends WeatherClient {
 
     public static int LOCATION_TIMEOUT = 5;
 
+    // weather provider
     private IWeatherProvider provider;
     private CityEventListener cityListener;
     private static StandardHttpClient me;
@@ -112,7 +112,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getCurrentCondition(String location, WeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCurrentWeatherURL(location);
-        LogUtils.LOGD("Current cond URL ["+url+"]");
+        LogUtils.LOGD("Current cond URL [" + url + "]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -148,7 +148,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void searchCity(String pattern, CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
-        LogUtils.LOGD("Search city URL ["+url+"]");
+        LogUtils.LOGD("Search city URL [" + url + "]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -184,7 +184,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getForecastWeather(String location, ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryForecastWeatherURL(location);
-        LogUtils.LOGD("Forecast URL ["+url+"]");
+        LogUtils.LOGD("Forecast URL [" + url + "]");
         String data = null;
         try {
             data = connectAndRead(url);
@@ -220,7 +220,7 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getHourForecastWeather(String location, HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryHourForecastWeatherURL(location);
-        LogUtils.LOGD("Hourly forecast URL ["+url+"]");
+        LogUtils.LOGD("Hourly forecast URL [" + url + "]");
         String data = null;
         try {
             data = connectAndRead(url);
