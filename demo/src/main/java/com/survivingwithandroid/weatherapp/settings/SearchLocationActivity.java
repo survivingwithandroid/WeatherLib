@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.survivingwithandroid.weather.lib.WeatherClient;
-import com.survivingwithandroid.weather.lib.WeatherClientDefault;
+import com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.exception.LocationProviderNotFoundException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weatherapp.R;

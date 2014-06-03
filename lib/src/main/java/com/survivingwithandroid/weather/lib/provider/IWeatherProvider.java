@@ -24,9 +24,11 @@ import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -51,6 +53,8 @@ public interface IWeatherProvider {
 
     public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
 
+    public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException;
+
     public String getQueryCityURLByLocation(Location location) throws ApiKeyRequiredException;
 
     public void setConfig(WeatherConfig config);
@@ -60,5 +64,7 @@ public interface IWeatherProvider {
     public String getQueryImageURL(String weatherId) throws ApiKeyRequiredException;
 
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
+
+    public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException;
 
 }

@@ -18,7 +18,6 @@
 package com.survivingwithandroid.weatherapp.util;
 
 import com.survivingwithandroid.weather.lib.WeatherConfig;
-import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.util.UnitUtility;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 import com.survivingwithandroid.weatherapp.R;

@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Forecast weather. This class holds the list of next day forecast
+ * Forecast weather. This class holds the list of next days forecast.
  *
  * @author Francesco Azzola
  */
-public class WeatherForecast extends Weather {
+public class WeatherForecast extends BaseWeather {
 
     private List<DayForecast> daysForecast = new ArrayList<DayForecast>();
 
@@ -38,7 +38,7 @@ public class WeatherForecast extends Weather {
     }
 
     /*
-    * Retrive the daynum day in the list. For example if i want to know the tomorrow weather i will use 0 as index.
+    * Retrieves the daynum day in the list. For example if i want to know the tomorrow weather i will use 0 as index.
     *
     * @param dayNum int
     * @return {@see DayForecast}

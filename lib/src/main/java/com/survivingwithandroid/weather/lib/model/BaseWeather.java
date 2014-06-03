@@ -14,25 +14,30 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.survivingwithandroid.weather.lib.provider.wunderground;
 
-import com.survivingwithandroid.weather.lib.provider.IProviderType;
+package com.survivingwithandroid.weather.lib.model;
 
 /**
- * Weatherundergound class provider
- *
- * @author Francesco Azzola
- * */
+* Base weather class that holds the unit system
+*
+* @author: Francesco Azzola
+* */
+public class BaseWeather {
 
-public class WeatherUndergroundProviderType implements IProviderType {
+    private WeatherUnit unit;
 
-    @Override
-    public String getProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundProvider";
+    public WeatherUnit getUnit() {
+        return unit;
     }
 
-    @Override
-    public String getCodeProviderClass() {
-        return "com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundCodeProvider";
+    public void setUnit(WeatherUnit unit) {
+        this.unit = unit;
+    }
+
+    public static class WeatherUnit {
+        public String speedUnit;
+        public String tempUnit;
+        public String pressureUnit;
+        public String distanceUnit;
     }
 }

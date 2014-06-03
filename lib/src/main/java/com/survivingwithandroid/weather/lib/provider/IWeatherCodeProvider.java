@@ -19,7 +19,12 @@ package com.survivingwithandroid.weather.lib.provider;
 
 import com.survivingwithandroid.weather.lib.WeatherCode;
 
+/**
+ * Interface for converting the internal weather provider code into a unified weather code system
+ *
+ * @author Francesco Azzola
+ * */
 public interface IWeatherCodeProvider {
 
-    public WeatherCode getWeatherCode(int code);
+    public WeatherCode getWeatherCode(String code);
 }

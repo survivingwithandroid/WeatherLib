@@ -23,8 +23,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.survivingwithandroid.weather.lib.WeatherClient;
-import com.survivingwithandroid.weather.lib.model.Weather;
+import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weatherapp.R;
 import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
@@ -46,7 +45,7 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
 	private Context ctx;
 	private final static SimpleDateFormat sdfDay = new SimpleDateFormat("E");
     private final static SimpleDateFormat sdfMonth = new SimpleDateFormat("dd/MMM");
-	private Weather.WeatherUnit units;
+	private BaseWeather.WeatherUnit units;
 
 	public WeatherAdapter(WeatherForecast forecast, Context ctx) {
 		super(ctx, R.layout.row_forecast_layout);
@@ -98,7 +97,7 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
         dayCloud.setText("" + forecast.weather.clouds.getPerc() + "%");
         dayDescr.setText(forecast.weather.currentCondition.getDescr());
         try {
-            float rainVal = forecast.weather.rain.getAmmount();
+            float rainVal = forecast.weather.rain[0].getAmmount();
             dayRain.setText("Rain:" + String.valueOf((int) rainVal));
         }
         catch(Throwable t) {}
