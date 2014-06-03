@@ -16,7 +16,7 @@ public class Weather {
     public Condition currentCondition = new Condition();
     public Temperature temperature = new Temperature();
     public Wind wind = new Wind();
-    public Rain[] rain = new Rain[2];
+    public Rain[] rain = {new Rain(), new Rain()};
     public Snow snow = new Snow();
     public Clouds clouds = new Clouds();
 

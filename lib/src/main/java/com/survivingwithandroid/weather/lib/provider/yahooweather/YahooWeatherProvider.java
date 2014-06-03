@@ -24,6 +24,7 @@ import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.DayForecast;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.Weather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
@@ -37,7 +38,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UnknownFormatConversionException;
 
 
 public class YahooWeatherProvider implements IWeatherProvider {
@@ -267,6 +270,11 @@ public class YahooWeatherProvider implements IWeatherProvider {
     }
 
     @Override
+    public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String getQueryCityURLByLocation(Location location) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
@@ -301,5 +309,8 @@ public class YahooWeatherProvider implements IWeatherProvider {
         this.codeProvider = codeProvider;
     }
 
-
+    @Override
+    public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
+        throw new UnsupportedOperationException();
+    }
 }

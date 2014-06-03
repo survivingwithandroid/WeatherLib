@@ -21,12 +21,15 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IProviderType;
+import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -146,12 +149,34 @@ public abstract class WeatherClient {
 
     public abstract void getHourForecastWeather(String location, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException;
 
+    /**
+     * Get the historical weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param location a String representing the location id
+     * @param d1 is the starting date
+     * @param2 d2 is the end date
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    public abstract void getHistoricalWeather(String location , Date d1, Date d2, final HistoricalWeatherEventListener listener);
+
+
+
     /*
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image
     * @param listener       {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
     * */
     public abstract void getDefaultProviderImage(String icon, final WeatherImageListener listener);
+
 
 
     /**
@@ -292,6 +317,22 @@ public abstract class WeatherClient {
         public void onWeatherRetrieved(WeatherHourForecast forecast);
     }
 
+    /**
+     * This interface must be implemented by the client that wants to get informed when
+     * the  historical weather data is ready.
+     */
+    public static interface HistoricalWeatherEventListener extends WeatherClientListener {
+
+        /**
+         * This method is called to notify to the listener that the historical Weather information is ready
+         *
+         * @param histWeather {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather}
+         */
+
+        public void onWeatherRetrieved(HistoricalWeather histWeather);
+    }
+
+
     /*
     * This method creates the Weather provider. It is the same:
     *
@@ -310,4 +351,7 @@ public abstract class WeatherClient {
     public void createProvider(IProviderType providerType, WeatherConfig config) throws WeatherProviderInstantiationException {
         provider = WeatherProviderFactory.createProvider(providerType, config);
     }
+
+    // Implements Builder pattern
+
 }

@@ -22,11 +22,13 @@ package com.survivingwithandroid.weatherapp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.survivingwithandroid.weather.lib.WeatherClientDefault;
+import com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
@@ -96,11 +98,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
         config = new WeatherConfig();
         config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
 
+
         IWeatherProvider provider = null;
         try {
             //provider = WeatherProviderFactory.createProvider(new YahooProviderType(), config);
              provider = WeatherProviderFactory.createProvider(new OpenweathermapProviderType(), config);
-             //provider = WeatherProviderFactory.createProvider(new WeatherUndergroundProviderType(), config);
+            // provider = WeatherProviderFactory.createProvider(new WeatherUndergroundProviderType(), config);
              client.setProvider(provider);
         }
         catch (Throwable t) {
@@ -108,6 +111,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
             // There's a problem
         }
 
+        /*
         setProgressBarIndeterminate(true);
         setProgressBarVisibility(true);
         if (!isThereForecast) {
@@ -129,6 +133,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
             ft1.add(R.id.forecastWeatherFrag, ff, "forecastWeather");
             ft1.commit();
         }
+        */
+
+
 	}
 
     @Override

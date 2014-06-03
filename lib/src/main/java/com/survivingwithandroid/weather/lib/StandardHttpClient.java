@@ -29,6 +29,7 @@ import com.survivingwithandroid.weather.lib.exception.LocationProviderNotFoundEx
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
@@ -38,6 +39,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -240,6 +242,44 @@ public class StandardHttpClient extends WeatherClient {
     @Override
     public void getDefaultProviderImage(String icon, WeatherImageListener listener) {
 
+    }
+
+
+    /**
+     * Get the historical weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param location a String representing the location id
+     * @param d1       is the starting date
+     * @param d2
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}  @param2 d2 is the end date
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getHistoricalWeather(String location, Date d1, Date d2, HistoricalWeatherEventListener listener) {
+        String url = provider.getQueryHistoricalWeatherURL(location, d1, d2);
+        LogUtils.LOGD("Historical Weather URL [" + url + "]");
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            HistoricalWeather historicalWeather = provider.getHistoricalWeather(data);
+            listener.onWeatherRetrieved(historicalWeather);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
     }
 
     @Override

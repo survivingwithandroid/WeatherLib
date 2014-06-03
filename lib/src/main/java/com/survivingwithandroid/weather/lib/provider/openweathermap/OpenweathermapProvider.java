@@ -431,6 +431,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return BASE_HOUR_FORECAST_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
     }
 
+    @Override
     public String getQueryHistoricalWeatherURL(String cityId, Date d1, Date d2) throws ApiKeyRequiredException {
         long timestamp1 = d1.getTime();
         long timestamp2 = d2.getTime();

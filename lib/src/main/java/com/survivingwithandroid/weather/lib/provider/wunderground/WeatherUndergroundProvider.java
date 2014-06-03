@@ -17,12 +17,16 @@
 
 package com.survivingwithandroid.weather.lib.provider.wunderground;
 
+import android.util.Log;
+
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.model.City;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.DayForecast;
+import com.survivingwithandroid.weather.lib.model.HistoricalHourWeather;
+import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.HourForecast;
 import com.survivingwithandroid.weather.lib.model.Location;
 import com.survivingwithandroid.weather.lib.model.Weather;
@@ -39,6 +43,9 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -311,6 +318,71 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     }
 
     @Override
+    public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
+        HistoricalWeather histWeather = new HistoricalWeather();
+        try {
+            JSONObject jObj = new JSONObject(data);
+            JSONObject histObj = jObj.getJSONObject("history");
+            // We move to the list tag
+            JSONArray wList = histObj.getJSONArray("observations");
+            for (int i=0; i < wList.length(); i++) {
+
+                HistoricalHourWeather hhWeather = new HistoricalHourWeather();
+
+                JSONObject jHour = wList.getJSONObject(i);
+                JSONObject utcObj = jHour.getJSONObject("utcdate");
+                int y = utcObj.getInt("year");
+                int m = utcObj.getInt("mon");
+                int mday = utcObj.getInt("mday");
+                int h = utcObj.getInt("hour");
+                int min = utcObj.getInt("min");
+
+                Calendar cal = GregorianCalendar.getInstance();
+
+                cal.set(y,Calendar.JANUARY,mday,h,min);
+                cal.add(Calendar.MONTH, m - 1);
+
+                hhWeather.timestamp = cal.getTimeInMillis();
+                String tag = null;
+                if (WeatherUtility.isMetric(config.unitSystem))
+                    tag = "m";
+                else
+                    tag = "i";
+
+                hhWeather.weather.temperature.setTemp((float) jHour.getDouble("temp" + tag));
+                hhWeather.weather.currentCondition.setDewPoint((float) jHour.getDouble("dewpt" + tag));
+                hhWeather.weather.currentCondition.setHumidity((float) jHour.getInt("hum"));
+                hhWeather.weather.wind.setSpeed((float) jHour.getDouble("wspd" + tag));
+                hhWeather.weather.wind.setGust((float) jHour.getDouble("wgust" + tag));
+                hhWeather.weather.wind.setDeg((float) jHour.getDouble("wdird"));
+                hhWeather.weather.wind.setChill((float) jHour.getDouble("windchill" + tag));
+                hhWeather.weather.currentCondition.setVisibility((float) jHour.getDouble("vis" + tag));
+                hhWeather.weather.currentCondition.setPressure((float) jHour.getDouble("pressure" + tag));
+                hhWeather.weather.currentCondition.setHeatIndex(jHour.getString("heatindex" + tag));
+                hhWeather.weather.rain[0].setAmmount((float) jHour.getDouble("precip" + tag));
+                hhWeather.weather.currentCondition.setDescr(jHour.getString("conds"));
+                hhWeather.weather.currentCondition.setIcon(jHour.getString("icon"));
+                if (codeProvider != null)
+                    hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(hhWeather.weather.currentCondition.getIcon()));
+
+                // fog, hail, tornado and so on still not supported
+
+                histWeather.addHistoricalHourWeather(hhWeather);
+
+            }
+
+        }
+        catch(JSONException json) {
+             throw new WeatherLibException(json);
+        }
+
+
+        histWeather.setUnit(units);
+
+        return histWeather;
+    }
+
+    @Override
     public void setConfig(WeatherConfig config) {
         this.config = config;
         units = WeatherUtility.createWeatherUnit(config.unitSystem);
@@ -375,6 +447,18 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             throw new ApiKeyRequiredException();
 
         return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
+    }
+
+    @Override
+    public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String url =  BASE_URL_ID + "/" + config.ApiKey + "/history_" + sdf.format(startDate);
+        url = addLanguage(url);
+        return url + cityId + ".json";
+
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {

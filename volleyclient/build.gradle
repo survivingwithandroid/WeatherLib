@@ -1,18 +1,19 @@
-apply plugin: 'android'
+apply plugin: 'android-library'
 
 android {
     compileSdkVersion 19
     buildToolsVersion '19.0.3'
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 19
+        packageName 'com.survivingwithandroid.weather.lib.client.volley'
+        minSdkVersion 9
+        targetSdkVersion 16
         versionCode 1
         versionName '1.0'
     }
     buildTypes {
         release {
             runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
@@ -20,8 +21,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/volley.jar')
     compile project(':lib')
-    compile project(':volleyclient')
 }
