@@ -23,18 +23,18 @@ header {
 }
 
 header h1 {
-  margin: 40px 0;
+  margin: 10px 0;
   font-size: 50px;
   line-height: 60px;
   font-weight: 100;
   text-rendering: auto;
 }
 .logo_img {
-	top: 10px;
-	left: 20px;
+//	top: 10px;
+//	left: 20px;
 	width: 120px;
 	height: 120px;
-	position: absolute;
+//	position: absolute;
 	border: 0;
 	z-index: 100;
 	background-image: none;
