@@ -30,11 +30,11 @@ header h1 {
   text-rendering: auto;
 }
 .logo_img {
-//	top: 10px;
-//	left: 20px;
+	top: 10px;
+	right: 20px;
 	width: 120px;
 	height: 120px;
-//	position: absolute;
+	position: absolute;
 	border: 0;
 	z-index: 100;
 	background-image: none;
