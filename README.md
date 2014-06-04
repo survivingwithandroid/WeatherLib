@@ -3,11 +3,10 @@ WeatherLib
 
 Android weather lib for creating easily weather app. The lib implements several protocols to get weather information from the most important weather data provider.
 
-Weatherlib web site
+[Weatherlib web site]:http://survivingwithandroid.github.io/WeatherLib/
 
 
-This is a library project that helps developers to create **easily** weather app without worrying about querying and extracting information from remote weather servers.
-It is very simple to use and you can easily extend it to support different weather provider or change the library behaviour. It is highly **customizable** and it is implemented in pure Java.
+
 ## Version
 1.4.0
 
@@ -39,9 +38,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[Yahoo! Weather]:http://developer.yahoo.com/weather/
-[Openweathermap]:http://openweathermap.org/
-[wiki page]:https://github.com/survivingwithandroid/WeatherLib/wiki/Tutorial
-[here]:https://github.com/survivingwithandroid/WeatherLib/tree/master/lib/release
-[Weatherlib web site]:http://survivingwithandroid.github.io/WeatherLib/
+
 
