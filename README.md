@@ -3,7 +3,7 @@ WeatherLib
 
 Android weather lib for creating easily weather app. The lib implements several protocols to get weather information from the most important weather data provider.
 
-[Weatherlib web site]:http://survivingwithandroid.github.io/WeatherLib/
+([Weatherlib web site](http://survivingwithandroid.github.io/WeatherLib/))
 
 
 
