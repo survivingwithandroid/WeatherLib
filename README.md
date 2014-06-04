@@ -3,7 +3,7 @@ WeatherLib
 
 Android weather lib for creating easily weather app. The lib implements several protocols to get weather information from the most important weather data provider.
 
-WeatherLib web site
+Weatherlib web site
 
 
 This is a library project that helps developers to create **easily** weather app without worrying about querying and extracting information from remote weather servers.
