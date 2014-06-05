@@ -174,7 +174,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
             Location loc = new Location();
             JSONObject cObj = jObj.getJSONObject("city");
             loc.setCity(cObj.getString("name"));
-            JSONObject cooObj = cObj.getJSONObject("city");
+            JSONObject cooObj = cObj.getJSONObject("coord");
             loc.setLatitude((float) cooObj.getDouble("lat"));
             loc.setLongitude((float) cooObj.getDouble("lon"));
             loc.setCountry(cObj.getString("country"));
