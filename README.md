@@ -6,6 +6,8 @@ Android weather lib for creating easily weather app. The lib implements several 
 ([Weatherlib web site](http://survivingwithandroid.github.io/WeatherLib/))
 
 
+##Travis integration
+Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
 ## Version
 1.4.0
