@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 16
-        versionCode 3
-        versionName "1.3.1"
+        versionCode 4
+        versionName "1.4.0"
     }
     buildTypes {
         release {
@@ -27,6 +27,10 @@ android {
                 srcDir 'src/../lib'
             }
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
