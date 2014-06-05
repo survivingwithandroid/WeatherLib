@@ -20,7 +20,7 @@ package com.survivingwithandroid.weather.lib;
 
 /**
  * Weather configuration class. It is used to pass some configuration parameters to the weather provider.
- * Some attributes of this class can be ignored in some weather provider implementation.
+ * Some attributes of this class can be ignored for some weather provider implementation.
  *
  * @author Francesco Azzola
  */
