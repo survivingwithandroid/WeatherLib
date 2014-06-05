@@ -1,64 +1,65 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf200
-{\fonttbl\f0\fnil\fcharset0 Monaco;}
-{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red135\green136\blue117;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww17120\viewh13100\viewkind0
-\deftab720
-\pard\pardeftab720
+language: java
 
-\f0\fs24 \cf2 language: java\
-\
-branches:\
-\'a0\'a0only:\
-\'a0\'a0\'a0\'a0- master\
-\
-jdk: oraclejdk7\
-\
-env:\
-\'a0\'a0global:\
-\'a0\'a0\'a0\'a0- ANDROID_SDK_VERSION="r22.6.2"\
-\
-notifications:\
-\'a0\'a0email: false\
-\
-\
-before_install:\
-\
-\'a0\'a0\cf3 # environment info\cf2 \
-\'a0\'a0- gradle -v\
-\'a0\'a0- uname -a\
-\
-\'a0\'a0\cf3 # required libs for android build tools\cf2 \
-\'a0\'a0\cf3 # Update a system for ia32 libraries\cf2 \
-\'a0\'a0- sudo apt-get update -qq\
-\'a0\'a0- if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi\
-\'a0\'a0- if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi\
-\
-\'a0\'a0\cf3 # for gradle output style\cf2 \
-\'a0\'a0- export TERM=dumb\
-\
-\'a0\'a0\cf3 # just to test gradle version, against our provided one\cf2 \
-\'a0\'a0- gradle -v\
-\
-\'a0\'a0\cf3 # newest android SDK\cf2 \
-\'a0\'a0- wget http://dl.google.com/android/android-sdk_$\{ANDROID_SDK_VERSION\}-linux.tgz\
-\'a0\'a0- tar -zxf android-sdk_$\{ANDROID_SDK_VERSION\}-linux.tgz\
-\'a0\'a0- export ANDROID_HOME=`pwd`/android-sdk-linux\
-\'a0\'a0- export PATH=$\{PATH\}:$\{ANDROID_HOME\}/tools:$\{ANDROID_HOME\}/platform-tools\
-\
-\'a0\'a0\cf3 # manually set sdk.dir variable, according to local paths\cf2 \
-\'a0\'a0- echo "sdk.dir=$ANDROID_HOME" > local.properties\
-\
-\'a0\'a0- echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null\
-\'a0\'a0- echo yes | android update sdk --all --filter build-tools-19.0.3 --no-ui --force > /dev/null\
-\'a0\'a0- echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null\
-\'a0\'a0- echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null\
-\'a0\'a0- echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null\
-\
-\'a0\'a0\cf3 # Otherwise\cf2 \
-\'a0\'a0\cf3 #- echo yes | android update sdk -t tools,platform-tools,extra-android-support,extra-android-m2repository,android-19 --force --no-ui\cf2 \
-\
-\
-\cf3 # Let's try to build...\cf2 \
-install: gradle clean build\
-\
-script: gradle check}
+branches:
+  only:
+    - master
+
+jdk: oraclejdk7
+
+env:
+  global:
+    - ANDROID_SDK_VERSION="r22.6.2"
+
+notifications:
+  email: false
+
+
+before_install:
+
+  # environment info
+  - gradle -v
+  - uname -a
+
+  # required libs for android build tools
+  # Update a system for ia32 libraries
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+
+  # for gradle output style
+  - export TERM=dumb
+
+  # newer version of gradle
+  # - wget http://services.gradle.org/distributions/gradle-1.11-bin.zip
+  # - unzip -qq gradle-1.11-bin.zip
+  # - export GRADLE_HOME=$PWD/gradle-1.11
+  # - export PATH=$GRADLE_HOME/bin:$PATH
+
+  # just to test gradle version, against our provided one
+  - gradle -v
+
+  # newest android SDK
+  - wget http://dl.google.com/android/android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+  - tar -zxf android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+  - export ANDROID_HOME=`pwd`/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+  # manually set sdk.dir variable, according to local paths
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+  # Install required components.
+  # For a full list, run `android list sdk -a --extended`
+  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
+  - echo yes | android update sdk --all --filter build-tools-19.0.3 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
+
+  # Otherwise
+  #- echo yes | android update sdk -t tools,platform-tools,extra-android-support,extra-android-m2repository,android-19 --force --no-ui
+
+
+# Let's try to build...
+install: gradle clean build
+
+script: gradle check
