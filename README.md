@@ -14,7 +14,7 @@ Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.sv
 
 If you experience problems try to upload the libray and download it again from maven central. From Terminal window in Android studio:
 ```
-$GRADLE_HOME\bin\gradle --refresh-dependencies
+gradlew --refresh-dependencies
 ```
 
 #Manifest.xml
