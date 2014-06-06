@@ -178,7 +178,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
             loc.setLatitude((float) cooObj.getDouble("lat"));
             loc.setLongitude((float) cooObj.getDouble("lon"));
             loc.setCountry(cObj.getString("country"));
-            loc.setPopulation(cObj.getLong("Population"));
+            loc.setPopulation(cObj.getLong("population"));
 
             JSONArray jArr = jObj.getJSONArray("list"); // Here we have the forecast for every day
 
