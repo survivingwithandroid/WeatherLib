@@ -6,11 +6,23 @@ Android weather lib for creating easily weather app. The lib implements several 
 ([Weatherlib web site](http://survivingwithandroid.github.io/WeatherLib/))
 
 
-##Travis integration
+#Travis integration
 Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
-## Version
+#Version
 1.4.0
+
+If you experience problems try to upload the libray and download it again from maven central. From Terminal window in Android studio:
+```
+$GRADLE_HOME\bin\gradle --refresh-dependencies
+```
+
+#Manifest.xml
+In order to use the library you should add the following line into your *Manifest.xm*:
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+```
 
 #Community
 If you like there is a Community to talk about new features, suggest tips or report bugs. Please join:
