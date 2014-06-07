@@ -35,6 +35,22 @@ If you like there is a Community to talk about new features, suggest tips or rep
 [![](http://4.bp.blogspot.com/-Bfh2unbdc84/UcGqVJKdMwI/AAAAAAAAAOc/W4kGiTU-fYk/s1600/google_plus_58.png)](http://www.google.com/+FrancescoAzzola)  [![](http://3.bp.blogspot.com/-_JSQStno9N8/UcGWEW7V9AI/AAAAAAAAAOM/_qFVUjIaySg/s1600/linkedin.png)](http://it.linkedin.com/in/francescoazzola)
 
 
+#Screenshots: Some screenshots
+
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_weather.png)
+
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_forecast.png)
+
+[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_settings.png)
+
+[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_weatherapp_search_city.png)
+
+[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_temperatura.png)
+
+[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_pressure.png)
+
+[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_maxmin_temp.png)
+
 #Licence
 ```
 Copyright 2012-2014 Francesco Azzola (Surviving with Android)
