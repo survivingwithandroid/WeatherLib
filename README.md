@@ -12,7 +12,7 @@ Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.sv
 #Version
 1.4.0
 
-If you experience problems try to upload the libray and download it again from maven central. From Terminal window in Android studio:
+If you experience problems try to download it again from maven central. From Terminal window in Android studio:
 ```
 gradlew --refresh-dependencies
 ```
