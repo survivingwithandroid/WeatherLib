@@ -31,7 +31,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import java.util.Date;
 import java.util.List;
 
-/*
+/**
 * Public interface that all the weather provider must implement. If you want to code
 * your weather provider you have to implement this interface.
 *

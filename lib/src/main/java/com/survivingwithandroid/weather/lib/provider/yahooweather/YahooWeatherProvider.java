@@ -84,7 +84,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("place")) {
                         // place Tag Found so we create a new CityResult
-                        cty = new City();
+                        cty = new City.CityBuilder().build();
                         //  Log.d("Swa", "New City found");
                     }
                     currentTag = tagName;

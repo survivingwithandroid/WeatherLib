@@ -1,0 +1,28 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion '19.0.3'
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 16
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':lib')
+    compile project(':OkHttpClient')
+    compile 'com.android.support:appcompat-v7:19.+'
+    compile project(':volleyclient')
+    compile files('libs/achartengine-1.1.0.jar')
+}

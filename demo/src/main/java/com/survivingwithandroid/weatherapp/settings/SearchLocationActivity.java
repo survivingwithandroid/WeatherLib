@@ -36,6 +36,7 @@ import com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.exception.LocationProviderNotFoundException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weatherapp.R;
+import com.survivingwithandroid.weatherapp.WeatherContext;
 import com.survivingwithandroid.weatherapp.adapter.CityAdapter;
 import com.survivingwithandroid.weather.lib.model.City;
 
@@ -71,7 +72,8 @@ public class SearchLocationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_location_activity);
 
-        client = WeatherClientDefault.getInstance();
+        client = WeatherContext.getInstance().getClient(this);
+
         Log.d("App", "Client ["+client+"]");
 
         cityListView = (ListView) findViewById(R.id.cityList);

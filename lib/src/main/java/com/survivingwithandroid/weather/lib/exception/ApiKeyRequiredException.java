@@ -17,10 +17,10 @@
 
 package com.survivingwithandroid.weather.lib.exception;
 
-/*
+/**
 * This excpetion is raised when the provider require the ApiKey and this is not provided.
 *
-* @see WeatherConfig
+* @see com.survivingwithandroid.weather.lib.WeatherConfig
 *
 * @author Francesco Azzola
 * */

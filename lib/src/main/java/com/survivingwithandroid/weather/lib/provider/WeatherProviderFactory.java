@@ -22,10 +22,11 @@ import android.util.Log;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
 
-/*
+/**
 * This class implements the weather provider class factory. It helps you to create
 * the weather provider providing the configuration parameters
 *
+* @deprecated You shouldn't use this class anymore to instantiate a weather provider from 1.4. Use instead {@link com.survivingwithandroid.weather.lib.WeatherClient.ClientBuilder}
 * @author Francesco Azzola
 * */
 public class WeatherProviderFactory {

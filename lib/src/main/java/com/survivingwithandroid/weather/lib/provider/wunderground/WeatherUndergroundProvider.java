@@ -256,7 +256,9 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 String id = obj.getString("l");
                 String country = obj.getString("c");
                 //Log.d("SwA", "ID [" + id + "]");
-                City c = new City(id, name, null, country);
+                City.CityBuilder builder = new City.CityBuilder().name(name).id(id).country(country);
+               // City c = new City(id, name, null, country);
+                City c = builder.build();
 
                 cityList.add(c);
             }

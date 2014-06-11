@@ -14,6 +14,12 @@ package com.survivingwithandroid.weather.lib;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.LocationProviderNotFoundException;
@@ -28,6 +34,7 @@ import com.survivingwithandroid.weather.lib.provider.IProviderType;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
+import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -54,9 +61,17 @@ public abstract class WeatherClient {
 
 
     private static WeatherClient me;
-    private IWeatherProvider provider;
+    protected IWeatherProvider provider;
     protected Context ctx;
-    private CityEventListener cityListener;
+    protected CityEventListener cityListener;
+
+    /*
+    * This parameter represents the amount of time before considering the location out of date
+    * It must be expressed in seconds
+    *
+    * */
+    public static int LOCATION_TIMEOUT = 5;
+
 
     /**
      * This method has to be called before any HTTP request
@@ -73,7 +88,6 @@ public abstract class WeatherClient {
      * @param config WeatherConfig info
      * @see com.survivingwithandroid.weather.lib.WeatherConfig
      */
-
     public void updateWeatherConfig(WeatherConfig config) {
         provider.setConfig(config);
     }
@@ -170,7 +184,7 @@ public abstract class WeatherClient {
 
 
 
-    /*
+    /**
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image
     * @param listener       {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
@@ -333,7 +347,7 @@ public abstract class WeatherClient {
     }
 
 
-    /*
+    /**
     * This method creates the Weather provider. It is the same:
     *
     * <code>
@@ -347,11 +361,157 @@ public abstract class WeatherClient {
     *        // There's a problem
     *    }
     *  </code>
+    *
+    *  @deprecated Version 1.4 use instead {@link com.survivingwithandroid.weather.lib.WeatherClient.ClientBuilder}
     **/
     public void createProvider(IProviderType providerType, WeatherConfig config) throws WeatherProviderInstantiationException {
         provider = WeatherProviderFactory.createProvider(providerType, config);
     }
 
-    // Implements Builder pattern
 
+    /**
+     * This class must be used to obtain a valid instance of WeatherClient. It accepts several config params
+     * and at the end you should call build() to create the client.
+     *
+     * Ex:
+     *      client = builder.attach(this)
+     *               .provider(new OpenweathermapProviderType())
+     *               .httpClient(com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault.class)
+     *               .config(new WeatherConfig())
+     *               .build();
+     */
+    public static final class ClientBuilder {
+        private Context ctx;
+        private IProviderType providerType;
+        private WeatherConfig config;
+        private Class httpWeatherClient;
+
+        /**
+         * Attach a {@link android.content.Context} to the WeatherClient
+         * */
+        public ClientBuilder attach(Context ctx) {
+            this.ctx = ctx;
+            return this;
+        }
+
+        /**
+         * Set the provider ({@link com.survivingwithandroid.weather.lib.provider.IProviderType})
+         * */
+        public ClientBuilder provider(IProviderType providerType) {
+            this.providerType = providerType;
+            return this;
+        }
+
+        /**
+        * Set the configuration ({@link com.survivingwithandroid.weather.lib.WeatherConfig})
+        * */
+        public ClientBuilder config(WeatherConfig config) {
+            this.config = config;
+            return this;
+        }
+
+        /**
+         * Attach the http Client that has to be used to make requests.
+         *
+         * @see com.survivingwithandroid.weather.lib.StandardHttpClient
+         **/
+        public ClientBuilder httpClient(Class httpClient) {
+            this.httpWeatherClient = httpClient;
+            return this;
+        }
+
+        /**
+         * Build the weather client setting the right parameters
+         * */
+        public WeatherClient build() throws WeatherProviderInstantiationException {
+            // Create provider
+            IWeatherProvider provider = _createProvider(providerType, config);
+            WeatherClient client = null;
+            try {
+                client = (WeatherClient) httpWeatherClient.newInstance();
+                client.init(ctx);
+                Log.d("SwA", "Client ["+client+"]");
+                client.setProvider(provider);
+                client.updateWeatherConfig(config);
+                return client;
+            }
+            catch (InstantiationException e) {
+                e.printStackTrace();
+                throw new WeatherProviderInstantiationException();
+            }
+            catch (IllegalAccessException e) {
+                e.printStackTrace();
+                throw new WeatherProviderInstantiationException();
+            }
+        }
+
+        private static IWeatherProvider _createProvider(IProviderType providerType, WeatherConfig config) throws WeatherProviderInstantiationException {
+            try {
+                Class<?> clazz = Class.forName(providerType.getProviderClass());
+                IWeatherProvider provider = (IWeatherProvider) clazz.newInstance();
+
+                if (config != null)
+                    provider.setConfig(config);
+
+                if (providerType.getCodeProviderClass() != null) {
+                    Class<?> clazzCodeProvider = Class.forName(providerType.getCodeProviderClass());
+                    IWeatherCodeProvider codeProvider = (IWeatherCodeProvider) clazzCodeProvider.newInstance();
+                    provider.setWeatherCodeProvider(codeProvider);
+                }
+
+                return provider;
+            } catch (ClassNotFoundException cnfe) {
+                cnfe.printStackTrace();
+                throw new WeatherProviderInstantiationException();
+            }
+            catch (InstantiationException e) {
+                e.printStackTrace();
+                throw new WeatherProviderInstantiationException();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                throw new WeatherProviderInstantiationException();
+            }
+        }
+    }
+
+
+    protected void handleLocation(Criteria criteria, final CityEventListener listener) throws LocationProviderNotFoundException {
+        this.cityListener = listener;
+        LocationManager locManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = locManager.getBestProvider(criteria, true);
+
+        LogUtils.LOGD("Provider [" + locationProvider + "]");
+
+        if (locationProvider == null || "".equals(locationProvider))
+            throw new LocationProviderNotFoundException();
+
+        Location loc = locManager.getLastKnownLocation(locationProvider);
+        if (loc == null ||
+                (SystemClock.elapsedRealtime() - loc.getTime()) > LOCATION_TIMEOUT * 1000) {
+
+            locManager.requestSingleUpdate(locationProvider, locListener, null);
+        } else
+            searchCityByLocation(loc, listener);
+    }
+
+    protected  LocationListener locListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            searchCityByLocation(location, cityListener);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+    };
+
+    protected abstract void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException;
 }

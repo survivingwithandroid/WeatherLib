@@ -44,6 +44,16 @@ public class City {
     * */
     private String region;
 
+    /**
+     * longitude
+     */
+    private double lon;
+
+    /**
+     * latitude
+    * */
+    private double lat;
+/*
     public City() {
     }
 
@@ -53,6 +63,16 @@ public class City {
         this.name = name;
         this.region = region;
         this.country = country;
+    }
+*/
+
+    public City(CityBuilder builder) {
+        this.id = builder.id;
+        this.region = builder.region;
+        this.country = builder.country;
+        this.name = builder.name;
+        this.lat = builder.lat;
+        this.lon = builder.lon;
     }
 
     public String getId() {
@@ -85,5 +105,68 @@ public class City {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public static class CityBuilder {
+        /*
+         * Unique city identfier
+        * */
+        private String id;
+
+        /**
+         * City name
+         */
+        private String name;
+
+        /*
+        * Country name
+        * */
+        private String country;
+
+        /*
+        * region
+        * */
+        private String region;
+
+        /**
+         * longitude
+         */
+        private double lon;
+
+        /**
+         * latitude
+         * */
+        private double lat;
+
+        public CityBuilder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public CityBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CityBuilder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public CityBuilder region(String region) {
+            this.region = region;
+            return this;
+        }
+
+        public CityBuilder geoCoord(double lon, double lat) {
+            this.lat = lat;
+            this.lon = lon;
+            return this;
+        }
+
+        public City build() {
+            return new City(this);
+        }
+
     }
 }

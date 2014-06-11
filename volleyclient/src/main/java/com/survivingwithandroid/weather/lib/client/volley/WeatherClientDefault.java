@@ -68,21 +68,15 @@ import java.util.List;
 
 public class WeatherClientDefault extends WeatherClient {
 
-    /*
-    * This parameter represents the amount of time before considering the location out of date
-    * It must be expressed in seconds
-    *
-    * */
-    public static int LOCATION_TIMEOUT = 5;
 
-    private IWeatherProvider provider;
+
     private CityEventListener cityListener;
     private static WeatherClientDefault me;
     private RequestQueue queue;
 
-    private WeatherClientDefault() {
-    }
-
+    /**
+     * @deprecated Release 1.4 repleaced by {@link com.survivingwithandroid.weather.lib.WeatherClient.ClientBuilder}
+     **/
     public static WeatherClientDefault getInstance() {
         if (me != null)
             return me;
@@ -327,7 +321,7 @@ public class WeatherClientDefault extends WeatherClient {
     }
 
 
-    /*
+    /**
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image
     * @param listener       {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
@@ -350,22 +344,7 @@ public class WeatherClientDefault extends WeatherClient {
 
     @Override
     public void searchCityByLocation(Criteria criteria, final CityEventListener listener) throws LocationProviderNotFoundException {
-        this.cityListener = listener;
-        LocationManager locManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = locManager.getBestProvider(criteria, true);
-
-        LogUtils.LOGD("Provider [" + locationProvider + "]");
-
-        if (locationProvider == null || "".equals(locationProvider))
-            throw new LocationProviderNotFoundException();
-
-        Location loc = locManager.getLastKnownLocation(locationProvider);
-        if (loc == null ||
-                (SystemClock.elapsedRealtime() - loc.getTime()) > LOCATION_TIMEOUT * 1000) {
-
-            locManager.requestSingleUpdate(locationProvider, locListener, null);
-        } else
-            searchCityByLocation(loc, listener);
+        super.handleLocation(criteria, listener);
     }
 
     /**
@@ -379,31 +358,13 @@ public class WeatherClientDefault extends WeatherClient {
      */
     @Override
     public void setProvider(IWeatherProvider provider) {
-        this.provider = provider;
+        super.setProvider(provider);
     }
 
 
-    private LocationListener locListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            searchCityByLocation(location, cityListener);
-        }
 
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-        }
-    };
-
-
-    private void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
+    @Override
+    protected void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURLByLocation(location);
         LogUtils.LOGD("Search city by Loc Url [" + url + "]");
         StringRequest req = new StringRequest(Request.Method.GET, url,

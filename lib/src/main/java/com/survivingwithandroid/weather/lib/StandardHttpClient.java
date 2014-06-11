@@ -64,10 +64,13 @@ public class StandardHttpClient extends WeatherClient {
     public static int LOCATION_TIMEOUT = 5;
 
     // weather provider
-    private IWeatherProvider provider;
+
     private CityEventListener cityListener;
     private static StandardHttpClient me;
 
+    /**
+     * @deprecated Release 1.4 repleaced by {@link com.survivingwithandroid.weather.lib.WeatherClient.ClientBuilder}
+     **/
     public static StandardHttpClient getInstance() {
         if (me == null)
             me = new StandardHttpClient();
@@ -151,6 +154,8 @@ public class StandardHttpClient extends WeatherClient {
     public void searchCity(String pattern, CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
         LogUtils.LOGD("Search city URL [" + url + "]");
+        // If the url is null trying to use geocoder
+
         String data = null;
         try {
             data = connectAndRead(url);
@@ -160,7 +165,6 @@ public class StandardHttpClient extends WeatherClient {
         }
 
         try {
-
             List<City> cityResult = provider.getCityResultList(data);
             listener.onCityListRetrieved(cityResult);
         } catch (WeatherLibException t) {
@@ -284,19 +288,7 @@ public class StandardHttpClient extends WeatherClient {
 
     @Override
     public void searchCityByLocation(Criteria criteria, CityEventListener listener) throws LocationProviderNotFoundException {
-        LocationManager locManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = locManager.getBestProvider(criteria, true);
-
-        if (locationProvider == null || "".equals(locationProvider))
-            throw new LocationProviderNotFoundException();
-
-        Location loc = locManager.getLastKnownLocation(locationProvider);
-        if (loc == null ||
-                (SystemClock.elapsedRealtime() - loc.getTime()) > LOCATION_TIMEOUT * 1000) {
-
-            locManager.requestSingleUpdate(locationProvider, locListener, null);
-        } else
-            searchCityByLocation(loc, listener);
+        super.handleLocation(criteria, listener);
     }
 
     /**
@@ -310,7 +302,7 @@ public class StandardHttpClient extends WeatherClient {
      */
     @Override
     public void setProvider(IWeatherProvider provider) {
-        this.provider = provider;
+        super.setProvider(provider);
     }
 
     private String connectAndRead(String url) throws Throwable {
@@ -358,8 +350,12 @@ public class StandardHttpClient extends WeatherClient {
         }
     };
 
-    private void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
+    @Override
+    protected void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURLByLocation(location);
+
+        // If the url is null trying to use geocoder
+
         String data = null;
         try {
             data = connectAndRead(url);

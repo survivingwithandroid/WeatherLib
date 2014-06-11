@@ -22,7 +22,7 @@ package com.survivingwithandroid.weather.lib.model;
 *
 * @author: Francesco Azzola
 * */
-public class BaseWeather {
+public abstract class BaseWeather {
 
     private WeatherUnit unit;
 

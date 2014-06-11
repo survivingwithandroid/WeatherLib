@@ -115,10 +115,7 @@ public class CurrentWeatherFragment extends WeatherFragment {
     }
 
     private void refresh() {
-
-        final WeatherClient client = WeatherClientDefault.getInstance();
-        config = new WeatherConfig();
-
+       config = new WeatherConfig();
         String cityId = prefs.getString("cityid", null);
         Log.d("Swa", "City Id [" + cityId + "]");
 
@@ -137,45 +134,10 @@ public class CurrentWeatherFragment extends WeatherFragment {
         else
             config.unitSystem = WeatherConfig.UNIT_SYSTEM.I;
 
-        // Test
-        client.getHourForecastWeather(cityId, new WeatherClient.HourForecastWeatherEventListener() {
 
-            /**
-             * This method is called to notify to the listener that the Weather information is ready
-             *
-             * @param forecast {@link com.survivingwithandroid.weather.lib.model.WeatherHourForecast}
-             */
-            @Override
-            public void onWeatherRetrieved(WeatherHourForecast forecast) {
+        weatherClient.updateWeatherConfig(config);
 
-            }
-
-            /**
-             * This method is called when an error occured during the data parsing
-             *
-             * @param wle {@link com.survivingwithandroid.weather.lib.exception.WeatherLibException}
-             */
-            @Override
-            public void onWeatherError(WeatherLibException wle) {
-
-            }
-
-            /**
-             * This method is called when an error occured during the HTTP connection
-             *
-             * @param t {@link Throwable}
-             */
-            @Override
-            public void onConnectionError(Throwable t) {
-
-            }
-        });
-
-
-        client.updateWeatherConfig(config);
-
-
-        client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
+        weatherClient.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
             @Override
             public void onWeatherRetrieved(CurrentWeather cWeather) {
                 Weather weather = cWeather.weather;
