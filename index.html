@@ -129,11 +129,8 @@ config.lang = "en"; // If you want to use english
 config.maxResult = 5; // Max number of cities retrieved
 config.numDays = 6; // Max num of days in the forecast
 	</pre>
-			<p>and then:</p>
-			<pre class="prettyprint">
-client.updateWeatherConfig(config);
-			</pre>
-			<p>Now the client is configured, the last step is choose what kind of provider we want to use:</p>
+			
+			<p>Now we have to instantiate the provider we want to use:</p>
 			<pre class="prettyprint">
 IWeatherProvider provider = null;
 try {
@@ -146,6 +143,10 @@ catch (Throwable t) {
 	// There's a problem
 }
 </pre>
+<p>and finally:</p>
+			<pre class="prettyprint">
+client.updateWeatherConfig(config);
+			</pre>
 <p>You should add these lines to your <code>Manifest.xml</code> so that the lib can connect to internet</p>
 <pre>
 &lt;uses-permission android:name="android.permission.INTERNET"/&gt;
