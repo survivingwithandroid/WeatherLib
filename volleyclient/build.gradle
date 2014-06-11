@@ -41,7 +41,7 @@ dependencies {
     compile project(':lib')
 }
 
-<<<<<<< HEAD
+
 task clearJar(type: Delete) {
     delete 'build/libs/' + POM_ARTIFACT_ID + '_' + VERSION_NAME + '.jar'
 }
@@ -55,7 +55,5 @@ task makeJar(type: Copy) {
 
 makeJar.dependsOn(clearJar, build)
 
-=======
->>>>>>> dev
 
 apply from: '../maven_push.gradle'
