@@ -16,7 +16,7 @@
  */
 package com.survivingwithandroid.weather.lib.provider;
 
-/*
+/**
 * This interface provides the description of the weather provider. For each weather provider implemented,
 * there must be a class that implements this interface and provides the fully qualified class name of the provider and
 * the fully qualified of the code provider

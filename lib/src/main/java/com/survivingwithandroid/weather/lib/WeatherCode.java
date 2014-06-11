@@ -17,14 +17,15 @@
 
 package com.survivingwithandroid.weather.lib;
 
-/*
+/**
 * Unified weather codes. These codes are indipendent from the weather provider used so that
 * a client that wants to use different weather providers at the same time doesn't have
 * to worry about different weather code to implement different custom icons
 *
-* @see com.survivingwithandroid.weather.lib.IWeatherCodeProvider
-* @see com.survivingwithandroid.weather.lib..openweathermap.WeatherUndergroundCodeProvider
-* @see com.survivingwithandroid.weather.lib.yahooweather.YahooWeatherCodeProvider
+* @see com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider
+* @see com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapCodeProvider
+* @see com.survivingwithandroid.weather.lib.provider.yahooweather.YahooWeatherCodeProvider
+* @see com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundCodeProvider
 *
 * @author Francesco Azzola
 * */

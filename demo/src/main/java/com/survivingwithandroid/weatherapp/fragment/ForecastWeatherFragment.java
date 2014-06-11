@@ -58,7 +58,7 @@ public class ForecastWeatherFragment extends WeatherFragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.forecast_fragment, container, false);
-       forecastList = (ListView) v.findViewById(R.id.forecastDays);
+        forecastList = (ListView) v.findViewById(R.id.forecastDays);
         return v;
 
     }
@@ -75,11 +75,11 @@ public class ForecastWeatherFragment extends WeatherFragment {
 
     private void refresh() {
         // Update forecast
-        WeatherClient client = WeatherClientDefault.getInstance();
+
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String cityId = prefs.getString("cityid", null);
 
-        client.getForecastWeather(cityId, new WeatherClient.ForecastWeatherEventListener() {
+        weatherClient.getForecastWeather(cityId, new WeatherClient.ForecastWeatherEventListener() {
             @Override
             public void onWeatherRetrieved(WeatherForecast forecast) {
                 WeatherAdapter adp = new WeatherAdapter(forecast, getActivity());

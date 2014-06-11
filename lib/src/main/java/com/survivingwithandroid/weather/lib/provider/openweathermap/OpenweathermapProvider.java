@@ -65,6 +65,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
     private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
     private IWeatherCodeProvider codeProvider;
 
+
+
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         //LogUtils.LOGD("JSON CurrentWeather ["+data+"]");
         CurrentWeather cWeather = new CurrentWeather();
@@ -174,11 +176,11 @@ public class OpenweathermapProvider implements IWeatherProvider {
             Location loc = new Location();
             JSONObject cObj = jObj.getJSONObject("city");
             loc.setCity(cObj.getString("name"));
-            JSONObject cooObj = cObj.getJSONObject("city");
+            JSONObject cooObj = cObj.getJSONObject("coord");
             loc.setLatitude((float) cooObj.getDouble("lat"));
             loc.setLongitude((float) cooObj.getDouble("lon"));
             loc.setCountry(cObj.getString("country"));
-            loc.setPopulation(cObj.getLong("Population"));
+            loc.setPopulation(cObj.getLong("population"));
 
             JSONArray jArr = jObj.getJSONArray("list"); // Here we have the forecast for every day
 
@@ -269,8 +271,9 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 JSONObject sys = obj.getJSONObject("sys");
                 String country = sys.getString("country");
                 //Log.d("SwA", "ID [" + id + "]");
-                City c = new City(id, name, null, country);
-
+                City.CityBuilder builder = new City.CityBuilder().id(id).country(country).name(name);
+                //City c = new City(id, name, null, country);
+                City c =  builder.build();
                 cityList.add(c);
             }
         } catch (JSONException json) {

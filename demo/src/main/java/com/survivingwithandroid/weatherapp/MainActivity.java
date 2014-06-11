@@ -19,44 +19,22 @@ package com.survivingwithandroid.weatherapp;
 
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
-import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
-import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
-import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
-import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
-import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
-import com.survivingwithandroid.weather.lib.provider.wunderground.WeatherUndergroundProviderType;
-import com.survivingwithandroid.weather.lib.provider.yahooweather.YahooProviderType;
-import com.survivingwithandroid.weatherapp.adapter.WeatherAdapter;
 
 import com.survivingwithandroid.weatherapp.fragment.CurrentWeatherFragment;
 import com.survivingwithandroid.weatherapp.fragment.ForecastWeatherFragment;
 import com.survivingwithandroid.weatherapp.fragment.WeatherFragment;
 import com.survivingwithandroid.weatherapp.settings.WeatherPreferenceActivity;
-import com.survivingwithandroid.weatherapp.util.LogUtils;
-import com.survivingwithandroid.weatherapp.util.WeatherIconMapper;
 
-import com.survivingwithandroid.weatherapp.util.WeatherUtil;
 import com.survivingwithandroid.weather.lib.WeatherClient;
-import com.survivingwithandroid.weather.lib.model.CurrentWeather;
-import com.survivingwithandroid.weather.lib.model.WeatherForecast;
-import com.survivingwithandroid.weather.lib.util.WindDirection;
-
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
@@ -91,6 +69,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
         if (v != null)
             isThereForecast = true;
 
+
+        /*
+        // Prior to 1.5.0
         client = WeatherClientDefault.getInstance();
         client.init(getApplicationContext());
         Log.d("App", "Client ["+client+"]");
@@ -110,8 +91,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
             t.printStackTrace();
             // There's a problem
         }
+        */
 
-        /*
         setProgressBarIndeterminate(true);
         setProgressBarVisibility(true);
         if (!isThereForecast) {
@@ -133,8 +114,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
             ft1.add(R.id.forecastWeatherFrag, ff, "forecastWeather");
             ft1.commit();
         }
-        */
-
 
 	}
 

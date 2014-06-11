@@ -283,8 +283,9 @@ public class Weather {
     public class Rain {
         private String time;
         private float ammount;
+        private float chance;
 
-        /*
+        /**
         * Hour interval
         *
         * @return string
@@ -297,7 +298,7 @@ public class Weather {
             this.time = time;
         }
 
-        /*
+        /**
         * Ammount of rain expected
         * @return float
         * */
@@ -307,6 +308,18 @@ public class Weather {
 
         public void setAmmount(float ammount) {
             this.ammount = ammount;
+        }
+
+        /**
+         * Chance of rain
+         * @return float
+         * */
+        public float getChance() {
+            return chance;
+        }
+
+        public void setChance(float chance) {
+            this.chance = chance;
         }
     }
 
