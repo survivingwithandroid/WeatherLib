@@ -3,7 +3,8 @@ language: java
 branches:
   only:
     - master
-
+    - dev
+    
 jdk: oraclejdk7
 
 env:
