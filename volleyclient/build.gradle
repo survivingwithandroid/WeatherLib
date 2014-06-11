@@ -24,3 +24,6 @@ dependencies {
     compile files('libs/volley.jar')
     compile project(':lib')
 }
+
+
+apply from: '../maven_push.gradle'

@@ -23,3 +23,5 @@ dependencies {
     compile files('libs/okhttp-2.0.0-RC2.jar')
     compile project(':lib')
 }
+
+apply from: '../maven_push.gradle'
