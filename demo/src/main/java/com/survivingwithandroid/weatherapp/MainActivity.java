@@ -93,10 +93,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
         }
         */
 
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
         setProgressBarIndeterminate(true);
         setProgressBarVisibility(true);
         if (!isThereForecast) {
@@ -118,11 +115,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Wea
             ft1.add(R.id.forecastWeatherFrag, ff, "forecastWeather");
             ft1.commit();
         }
-<<<<<<< HEAD
 
-
-=======
->>>>>>> dev
 
 	}
 
