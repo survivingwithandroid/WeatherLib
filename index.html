@@ -4,8 +4,8 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Weatherlib : Android Weather Library. Parse weather data from yahoo! weather, openweathermap, weatherunderground. Open source library for android" />
-	<meta content='android,code,example,tutorial,blog,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
+    <meta name="description" content="Weatherlib : Android Weather Library. Weather API, parse weather data from yahoo! weather, openweathermap, weatherunderground, forecastio Open source library for android" />
+	<meta content='android weather, weather api,code,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
 	<meta content='https://plus.google.com/111119552788205366558' name='author'/>
 	<meta content='https://plus.google.com/111119552788205366558' name='publisher'/>
 
@@ -21,22 +21,22 @@
     <title>Weatherlib</title>
   </head>
 
-   <body data-target=".content-nav">
+   <body data-target=".content-nav" >
   
-    <header>
+    <header >
 		
-      <div class="container">
-	   <img class="logo_img" src="images/weatherlib_icon.png" alt="Weather lib"/>
-        <div class="row">
+      <div class="container" >
+	   <a href="https://plus.google.com/communities/117946761543584564970" target="_blank"><img class="logo_img" src="images/weatherlib_icon.png" alt="Weather library"/></a>
+        <div class="row"  >
 		  
           <div class="span5">
 		    
-            <h1>WeatherLib</h1>
+            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">WeatherLib</h1>
           </div>
           <div class="span7">
             <menu>
               <ul>
-                <li>Latest version <strong>1.4.0</strong></li>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.0</strong></a></li>
                 <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>
                 <li><a href="http://www.survivingwithandroid.com/" data-title="Website" class="menu square"><img src="images/swa_icon.png" alt="Surviving with Android"/></a></li>
               </ul>
@@ -49,7 +49,7 @@
       <div class="container">
         <div class="row">
           <div class="span12">
-            <h2>An Android Weather library: build weather based app easily</h2>
+            <h2>Android Weather library: build weather based app easily</h2>
           </div>
         </div>
       </div>
@@ -100,10 +100,64 @@ Implement specific protocol to extract information from remote weather server</l
 				  <li><a href="http://www.openweathermap.org" target="_blank">Openweathermap</a></li>
 				  <li><a href="http://www.wunderground.com/weather/api" target="_blank">Weather Underground</li>
 				  <li><a href="https://developer.yahoo.com/weather/" target="_blank">Yahoo! Weather</a></li>
+				  <li><a href="https://developer.forecast.io/" target="_blank">Forecast.io</a></li>
 				</ul>
 			</p>
 		
             <h3 id="starthere">Getting started</h3>
+			<p>
+			 Starting from 1.5.0, many things are changed regarding the way they client is built. If you use a previous version please read <a href="#oldversion">Version 1.4.0 and before</a>.
+			</p>
+			<p>
+			 To create a WeatherClient we need a few lines:</p>
+			 <pre class="prettyprint">
+WeatherClient client = builder.attach(getActivity())
+            .provider(new ForecastIOProviderType())
+            .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
+            .config(config)
+            .build();</pre>
+			<p>
+			In this new way we use use a builder to create the <code>Weatherclient</code>.
+			At line 2, we set the Weather provider: as you already know there are four different weather provider supported by now by the lib:</p>
+			<ul>
+			  <li>Openweathermap -> <code>OpenweathermapProviderType</code></li>
+			  <li>Yahoo! Weather -> <code>YahooWeatherProviderType</code></li>
+			  <li>Weatherundergroung -> <code>WeatherundergroundProviderType</code></li>
+			  <li>Forecast.io -> <code>ForecastIOProviderType</code></li>
+			</ul>
+			<p>
+			At line 3 we set the HTTP client that the library uses to connect to the remote server: there a three different clients supported by the lib:</p>
+			<ul>
+               <li><a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank">Volley Client</a> -> <code>com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault</code></li> (available from 1.0 version)
+			   <li><a href="http://square.github.io/okhttp/" target="_blank">OkHttp Client</a> -> <code>com.survivingwithandroid.weather.lib.client.okhttp.WeatherClientDefault</code></li> (available from 1.5 version)
+			   <li>Standard client -> <code>com.survivingwithandroid.weather.lib.StandardHttpClient</code></li> (available from 1.0 version)
+			</ul>
+			<p>
+			<strong>One important aspect we must notice is that the first two client are asynchronous client, while the last one is synchronous.</strong>
+			</p>
+			<p>According to the typpe of the client you choose you have to introduce different dependencies:</p>
+			<p><i>Volley</i>:</p>
+<pre class="prettyprint">
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.0'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.0'
+}
+</pre>
+<p><i>OkHttp</i>:</p>
+<pre class="prettyprint">
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.0'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.0'
+}
+</pre>	
+<p><i>Standard client</i>:</p>
+<pre class="prettyprint">
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.0'	
+}
+</pre>		
+			
+			 <h4 id="oldversion">Version 1.4.0 and before</h4>
 			<p>
 			  Starting from version 1.4.0 the libray is built by two modules: the first module is the core module that provides the main features like weather provider protocol implementation and
 			  a simple HTTP client based on <code>HttpURLConnection</code>
@@ -116,20 +170,10 @@ dependencies {
 }
 </pre>
 			
-			<p>Now you are ready to use the library. There are some basic steps to do before using the lib:</p>
+			<p>Almost finished. There are some other basic steps to do before using the lib:</p>
 			<pre class="prettyprint">WeatherClient client = WeatherClientDefault.getInstance(); // initialize the client</pre>
 			<p>If we use Volley client the next step is:</p>
 			<pre class="prettyprint">client.init(ctx); // Ctx is the Context</pre>
-			<p>
-			now we have to configure our client passing to it the weather configuration:</p>
-			<pre class="prettyprint">
-WeatherConfig config = new WeatherConfig();
-config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
-config.lang = "en"; // If you want to use english
-config.maxResult = 5; // Max number of cities retrieved
-config.numDays = 6; // Max num of days in the forecast
-	</pre>
-			
 			<p>Now we have to instantiate the provider we want to use:</p>
 			<pre class="prettyprint">
 IWeatherProvider provider = null;
@@ -143,10 +187,22 @@ catch (Throwable t) {
 	// There's a problem
 }
 </pre>
-<p>and finally:</p>
+
+		<h4>Configuration</h4>
+			<p>
+			To configure our client we can use <code>WeatherConfig</code>:</p>
+			<pre class="prettyprint">
+WeatherConfig config = new WeatherConfig();
+config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
+config.lang = "en"; // If you want to use english
+config.maxResult = 5; // Max number of cities retrieved
+config.numDays = 6; // Max num of days in the forecast
+	</pre>
+			<p>and to update the configuration in our client and provider:</p>
 			<pre class="prettyprint">
 client.updateWeatherConfig(config);
 			</pre>
+	<h4>Permissions in Manifest</h4>		
 <p>You should add these lines to your <code>Manifest.xml</code> so that the lib can connect to internet</p>
 <pre>
 &lt;uses-permission android:name="android.permission.INTERNET"/&gt;
@@ -238,13 +294,16 @@ limitations under the License.
           </div>
     </div>
 	
-	<div class="row">
+	<div class="row" >
+	     
           <div class="span12 logo">
-            <a href="https://plus.google.com/+FrancescoAzzola">My G+ Profile</a>
-            &nbsp;&nbsp;
+           
+		   <a href="https://plus.google.com/+FrancescoAzzola">My G+ Profile</a>
+			
             <a href="http://www.survivingwithandroid.com"><img src="images/swa_icon.png" alt="Surviving with Android" width="50px" height="50px"/></a>
           </div>
         </div>
+		
       </div>	
 </section>
 
