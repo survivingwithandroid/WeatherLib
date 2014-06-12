@@ -10,7 +10,7 @@ Android weather lib for creating easily weather app. The lib implements several 
 Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
 #Version
-1.4.0
+1.5.0
 
 If you experience problems try to download it again from maven central. From Terminal window in Android studio:
 ```
