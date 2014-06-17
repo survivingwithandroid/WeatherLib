@@ -30,6 +30,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
+import com.survivingwithandroid.weather.lib.request.Params;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -312,5 +313,11 @@ public class YahooWeatherProvider implements IWeatherProvider {
     @Override
     public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
         throw new UnsupportedOperationException();
+    }
+
+
+    @Override
+    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
+        return null;
     }
 }

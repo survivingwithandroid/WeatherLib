@@ -27,6 +27,7 @@ import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
+import com.survivingwithandroid.weather.lib.request.Params;
 
 import java.util.Date;
 import java.util.List;
@@ -67,4 +68,5 @@ public interface IWeatherProvider {
 
     public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException;
 
+    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException;
 }

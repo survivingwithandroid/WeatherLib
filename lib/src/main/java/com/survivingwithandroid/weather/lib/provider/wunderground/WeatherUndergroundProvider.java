@@ -34,6 +34,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
+import com.survivingwithandroid.weather.lib.request.Params;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import org.json.JSONArray;
@@ -463,16 +464,28 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
     }
 
-    private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
+    @Override
+    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        String url = BASE_URL_ID + "/" + config.ApiKey + "/radar/" +
+                ( (cityId == null  || cityId.equals("")) ? "image.png" : cityId + ".png")  +
+                "?" + params.string();
+
+        return url;
+    }
+
+    private JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
         JSONObject subObj = jObj.getJSONObject(tagName);
         return subObj;
     }
 
-    private static String getString(String tagName, JSONObject jObj) throws JSONException {
+    private String getString(String tagName, JSONObject jObj) throws JSONException {
         return jObj.getString(tagName);
     }
 
-    private static float getFloat(String tagName, JSONObject jObj) throws JSONException {
+    private float getFloat(String tagName, JSONObject jObj) throws JSONException {
         try {
             return (float) jObj.getDouble(tagName);
         } catch (Throwable t) {
@@ -480,7 +493,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         }
     }
 
-    private static int getInt(String tagName, JSONObject jObj) throws JSONException {
+    private int getInt(String tagName, JSONObject jObj) throws JSONException {
         return jObj.getInt(tagName);
     }
 

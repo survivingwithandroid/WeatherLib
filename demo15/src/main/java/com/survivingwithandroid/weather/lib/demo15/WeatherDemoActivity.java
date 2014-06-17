@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.survivingwithandroid.weather.lib.demo15.fragment.ChartFragment;
 import com.survivingwithandroid.weather.lib.demo15.fragment.HttpClientFragment;
+import com.survivingwithandroid.weather.lib.demo15.fragment.RadarFragment;
 
 
 public class WeatherDemoActivity extends ActionBarActivity
@@ -59,6 +60,9 @@ public class WeatherDemoActivity extends ActionBarActivity
                 break;
             case 1:
                 frag = new ChartFragment();
+                break;
+            case 2:
+                frag = new RadarFragment();
 
         }
 
@@ -78,6 +82,9 @@ public class WeatherDemoActivity extends ActionBarActivity
                 break;
             case 1:
                 mTitle = getString(R.string.demo_chart);
+                break;
+            case 2:
+                mTitle = getString(R.string.demo_radar);
                 break;
         }
     }

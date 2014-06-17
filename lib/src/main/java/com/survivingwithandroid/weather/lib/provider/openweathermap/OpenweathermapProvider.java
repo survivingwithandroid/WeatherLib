@@ -33,6 +33,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
+import com.survivingwithandroid.weather.lib.request.Params;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.json.JSONArray;
@@ -440,6 +441,11 @@ public class OpenweathermapProvider implements IWeatherProvider {
         long timestamp2 = d2.getTime();
 
         return BASE_HISTORICAL_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
+    }
+
+    @Override
+    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
+        return null;
     }
 
 

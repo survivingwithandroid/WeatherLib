@@ -7,6 +7,7 @@
     <string name="title_activity_weather_demo">Weather Demo</string>
     <string name="demo_okhttp">OkHttp Demo client</string>
     <string name="demo_chart">Demo chart</string>
+    <string name="demo_radar">Demo Radar</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
