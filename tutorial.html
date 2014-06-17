@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Weatherlib : Android Weather Library. Weather API, parse weather data from yahoo! weather, openweathermap, weatherunderground, forecastio Open source library for android" />
+	<meta content='android weather, weather api,code,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='author'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='publisher'/>
+
+    
+	<link rel="stylesheet" href="./stylesheets/bootstrap-combined.min.css">
+	<link rel="stylesheet" href="./stylesheets/site.css">
+	<link rel="stylesheet" href="./stylesheets/bjqs.css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300" rel="stylesheet" type="text/css">
+	
+	<script src="./javascripts/jquery-1.7.1.min.js"></script>
+    <script src="./javascripts/bjqs-1.3.min.js"></script>
+	<script src="./javascripts/jquery.smooth-scroll.min.js"></script>
+    <title>Weatherlib</title>
+  </head>
+
+   <body data-target=".content-nav" >
+  
+    <header >
+		
+      <div class="container" >
+	   
+        <div class="row"  >
+		  <div class="span1" style="margin-top:5px">
+			<a href="https://plus.google.com/communities/117946761543584564970" target="_blank"><img class="img-circle" src="images/weatherlib_icon.png" alt="Weather library"/></a>
+		  </div>
+		  
+          <div class="span5">		    
+            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">WeatherLib</h1>
+          </div>
+          <div class="span6">
+            <menu>
+              <ul>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.0</strong></a></li>
+                <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>
+                <li><a href="http://www.survivingwithandroid.com/" data-title="Website" class="menu square"><img src="images/swa_icon.png" alt="Surviving with Android"/></a></li>
+              </ul>
+            </menu>
+          </div>
+      </div>
+	 
+    </header>
+	<section id="subtitle">
+      <div class="container">
+        <div class="row">
+          <div class="span12">
+            <h2>Android Weather library: build weather based app easily</h2>
+          </div>
+        </div>
+      </div>
+    </section>	
+<section id="body">
+<div class="container">
+        <div class="row">
+          <div class="span12">
+            
+			
+<h3>
+Weatherlib data model</h3>
+<p>
+This is the model that stands at the library base and you interact with it when you want to get weather information.</p>
+<a href="http://lh6.ggpht.com/-wFEL8dqdjgM/U3tZ4aSFObI/AAAAAAAABEY/GyD-k6sqRWs/s1600-h/Weatherlib%252520class%252520diagram%25255B4%25255D.png"><img alt="Weatherlib class diagram" border="0" src="http://lh3.ggpht.com/-aVGDdx9mHJg/U3tZ5OOvXNI/AAAAAAAABEg/wencFS7Qrac/Weatherlib%252520class%252520diagram_thumb%25255B2%25255D.png?imgmax=800" height="480" style="background-image: none; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; display: block; float: none; margin-left: auto; margin-right: auto; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="Weatherlib class diagram" width="638" /></a><br />
+
+<h3>
+Weatherlib provider</h3>
+<p>
+This layer is the heart of the library because it implements the logic to extract the information from the weather provider. By now the library supports three different weather provider. 
+Each provider is described by three different classes that must implements three interfaces:</p>
+<ul>
+<li>
+   <code class="code">IProviderType</code> that define the class name that must be instantiated to create the provider.
+</li>
+<li>
+<code class="code">IWeatherProvider</code> the main interface that all the weather provider must implement and holds all the method necessary to parse the data</li>
+<li>
+<code class="code">IWeatherCodeProvider</code> a simple interface to translate the weather code in a common format so that the weather code condition are indiependent from the provider.
+</li>
+<p>
+For example if we look at the openweathermap provider we have:</p>
+<a href="http://lh3.ggpht.com/-86ReR6WwFWg/U3tZ5538PhI/AAAAAAAABEo/jQV_OHlGTSw/s1600-h/Weatherlib%252520weather%252520provider%25255B4%25255D.png"><img alt="Weatherlib weather provider" border="0" src="http://lh4.ggpht.com/-v4R33x_ZfUI/U3tZ6UaHP8I/AAAAAAAABEw/Q8vBGAkWZVo/Weatherlib%252520weather%252520provider_thumb%25255B2%25255D.png?imgmax=800" height="394" style="background-image: none; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; display: block; float: none; margin-left: auto; margin-right: auto; padding-left: 0px; padding-right: 0px; padding-top: 0px;" title="Weatherlib weather provider" width="640" /></a><br />
+All the provider are created by the <code class="code">WeatherProviderFactory</code>.
+</p>
+<h3>
+Weather client</h3>
+<p>
+This is the last layer that handles the connection with the remote weather provider and retrieves the data. 
+You can use all the protocols you like but generally HTTP protocol is used. These classes handle also the connection errors and so on. 
+The lib provides two different implementation:</p>
+<ul>
+<li>One based on standard HttpConnection provided by Android</li>
+<li>One based on volley library  </li>
+<li>One based on OkHttp library</li>
+</ul>		
+<h3>
+Search for city id</h3>
+<p>Usually the next step is searching for the city. Almost all the weather provider wants a city id and you have to find it before asking weather information. 
+Now you can have two options:</p>
+
+<ul>
+<li>Searching it by name or part of the name </li>
+<li>Searching it by geographic coordinates</li>
+</ul>
+<p>
+In the first case you can use:</p>
+<pre>private void search(String pattern) {
+    client.searchCity(pattern, new WeatherClient.CityEventListener() {
+        @Override
+        public void onCityListRetrieved(List&lt;City&gt; cityList) {
+           // When the data is ready you can implement your logic here
+        }
+
+        @Override
+        public void onWeatherError(WeatherLibException t) {
+           // Error
+        }
+
+        @Override
+        public void onConnectionError(Throwable t) {
+           // Connection error
+        }
+    });
+}</pre>
+<p>
+where pattern is the partial city name you are looking for. In the <code>onCityListRetrived</code>
+you have a city list as reasult that can be passed to an <a href="http://developer.android.com/reference/android/widget/ArrayAdapter.html" target="_blank">ArrayAdapter</a> for example to show the result to the user.<br />
+</p>
+<p>In the second option, using geographic coordinates, you simply have:</p>
+<pre>client.searchCityByLocation(WeatherClient.createDefaultCriteria(), new WeatherClient.CityEventListener() {
+
+     @Override
+     public void onCityListRetrieved(List&lt;City&gt; cityList) {
+        // Here your logic when the data is available
+     }
+
+     @Override
+     public void onWeatherError(WeatherLibException wle) {
+         
+     }
+
+     @Override
+     public void onConnectionError(Throwable t) {
+         
+     }
+ });
+}
+catch(LocationProviderNotFoundException lpnfe) {
+
+}</pre>	
+<p>
+Notice that at line 1 we used WeatherClient.createDefaultCriteria(), 
+this method returns some default <a href="http://developer.android.com/reference/android/location/Criteria.html" target="_blank">criteria</a> that are used to select the best location provider. If you want to use your criteria you simply set them manually:</p>
+<pre>Criteria criteria = new Criteria();
+criteria.setPowerRequirement(Criteria.POWER_LOW);
+criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+criteria.setCostAllowed(false);</pre>
+<h3>
+Current Weather condition</h3>
+<p>
+Once you have the city id you can query the provider asking for the current weather condition:</p>
+<pre>client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
+    @Override
+    public void onWeatherRetrieved(CurrentWeather weather) {
+       // Here we can use the weather information to upadte the view
+    }
+
+    @Override
+    public void onWeatherError(WeatherLibException t) {
+        
+    }
+
+    @Override
+    public void onConnectionError(Throwable t) {
+        
+    }
+});</pre>
+<p>
+Notice that the client use a callback interface the notify the caller that the data is ready. 
+This happens only if you use the <code class="code">WeatherClientDefault</code>. Using these callback methods you don't have to worry about ANR problems because the HTTP request happens in a separate thread and those request don't block the app. When the data is ready at line 3 we can use it to update the UI, as the snippet below:</p>
+<pre>@Override
+protected void updateView(Object obj) {
+    CurrentWeather weather = (CurrentWeather) obj;
+    cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
+    condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
+    temp.setText("" + ((int) weather.temperature.getTemp()));
+    unitTemp.setText(weather.getUnit().tempUnit);
+    ....
+}</pre>
+
+<h3>
+WeatherForecast and Hourly WeatherForecast</h3>
+<p>
+If you want you can use the lib to query the forecast and the hourly forecast data. In the same way described above we have:</p>
+<pre class="brush: java;">client.getForecastWeather(cityId, new WeatherClient.ForecastWeatherEventListener() {
+    @Override
+    public void onWeatherRetrieved(WeatherForecast forecast) {        
+        updateView(forecast);
+    }
+
+    @Override
+    public void onWeatherError(WeatherLibException t) {
+
+    }
+
+    @Override
+    public void onConnectionError(Throwable t) {
+        //WeatherDialog.createErrorDialog("Error parsing data. Please try again", MainActivity.this);
+    }
+});</pre>
+<p>
+and for the hourly forecast we have:</p>
+<pre>client.getHourForecastWeather(cityId, new WeatherClient.HourForecastWeatherEventListener() {
+    @Override
+    public void onWeatherRetrieved(WeatherHourForecast forecast) {
+        updateView(foreacst);
+    }
+
+    @Override
+    public void onWeatherError(WeatherLibException wle) {
+
+    }
+
+    @Override
+    public void onConnectionError(Throwable t) {
+
+    }
+});</pre>
+
+<h2 >
+Cache Data</h2>
+<p>
+One aspect that should be considered while developing a weather app is the weather data don't change fast so 
+it could be a good practice to cache the data so that you don't have to request them all the time to the remote provider.
+he Weatherlib doesn't provide a caching mechanism by now so it has to implemented by you if you want to cache the results retrieved. 
+This can be done easily, creating a singleton class that holds the data you retrieve, for example:</p>
+<pre>public class AppWeatherClient {
+
+    private static AppWeatherClient me;
+    private Context ctx;
+    private WeatherClient client;
+    private WeatherConfig config;
+    private WeatherForecast forecast;
+
+    private CurrentWeather weather;
+
+    private AppWeatherClient() {}
+
+    public static AppWeatherClient getInstance() {
+        if (me == null)
+            me = new AppWeatherClient();
+
+        return me;
+    }
+  
+    public CurrentWeather getCurrentWeather() {
+        return this.weather;
+    }
+
+    public void setCurrentWeather(CurrentWeather weather) {
+        this.weather = weather;
+    }
+
+    public WeatherForecast getForecast() {
+        return forecast;
+    }
+
+    public void setForecast(WeatherForecast forecast) {
+        this.forecast = forecast;
+    }
+}</pre>
+
+<h3>
+Using API key</h3>
+<p>
+Some providers requires you to use a API key (i.e Weatherundergroud). 
+This API key is necessary to invoke the remote methods and retrieve the weather information.
+Weatherlib provides an easy way to handle this kind of requests and you don't have to worry how to send the key to the remote provider. 
+In the <a href="https://github.com/survivingwithandroid/WeatherLib/blob/master/lib/src/main/java/com/survivingwithandroid/weather/lib/WeatherConfig.java">WeatherConfig</a> class, you can add your key:<br />
+</p>
+<pre>config.ApiKey=your_key</pre>
+			</div>
+	</div>
+
+
+	<div class="row" style="height:80px;">
+	   <ul class="pager">
+		<li><a href="./index.html">Home</a></li>		
+	 </ul>
+	 </div>
+	<div class="row" >
+			  <div class="span3 offset3">
+				 <a href="mailto:survivingwithandroid@gmail.com">Contact me</a>
+			  </div>
+         		  
+			  <div class="span3">	
+				<a href="http://plus.google.com/+FrancescoAzzola" target="_blank">Follow me</a>
+			  </div>
+		 
+    </div>
+	
+	</div>	
+</section>
+
+ 
+
+
+    <script>
+	
+  	
+     
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51637300-1', 'survivingwithandroid.github.io');
+  ga('send', 'pageview');
+
+  
+</script>
+
+  </body>
+</html>
