@@ -35,6 +35,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 import com.survivingwithandroid.weather.lib.model.BaseWeather;
 import org.json.JSONArray;
@@ -401,6 +402,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return SEARCH_URL + cityNamePattern; // + "&cnt=" + config.maxResult;
     }
 
+    /*
     @Override
     public String getQueryCurrentWeatherURL(String cityId) {
         if (config.ApiKey == null)
@@ -412,7 +414,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return url;
 
     }
-
+*/
+    /*
     @Override
     public String getQueryForecastWeatherURL(String cityId) {
         if (config.ApiKey == null)
@@ -422,12 +425,14 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         url = addLanguage(url);
         return url + cityId + ".json";
     }
+*/
 
     @Override
     public String getQueryImageURL(String icon) throws ApiKeyRequiredException {
         return IMG_URL + icon + ".gif";
     }
 
+    /*
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
@@ -438,6 +443,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return url + cityId + ".json";
 
     }
+    */
 
     @Override
     public void setWeatherCodeProvider(IWeatherCodeProvider codeProvider) {
@@ -452,6 +458,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
     }
 
+    /*
     @Override
     public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
@@ -463,6 +470,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return url + cityId + ".json";
 
     }
+    */
 
     @Override
     public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
@@ -503,5 +511,68 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
         String nUrl = url + "/lang:" + config.lang.toUpperCase() + "/";
         return nUrl;
+    }
+
+
+    // New methods
+
+    @Override
+    public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        String url = BASE_URL_ID + "/" + config.ApiKey + "/forecast/conditions/astronomy/";
+        url = addLanguage(url);
+        if (request.getCityId() != null)
+            url = url + request.getCityId() + ".json";
+        else
+            url = url + request.getLat() + "," + request.getLon() + ".json";
+        return url;
+    }
+
+    @Override
+    public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/forecast/";
+        url = addLanguage(url);
+        if (request.getCityId() != null)
+            url = url + request.getCityId() + ".json";
+        else
+            url = url + request.getLat() + "," + request.getLon() + ".json";
+
+        return url;
+    }
+
+    @Override
+    public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/hourly/";
+        url = addLanguage(url);
+        if (request.getCityId() != null)
+            url = url + request.getCityId() + ".json";
+        else
+            url = url + request.getLat() + "," + request.getLon() + ".json";
+
+        return url;
+    }
+
+    @Override
+    public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String url =  BASE_URL_ID + "/" + config.ApiKey + "/history_" + sdf.format(startDate);
+        url = addLanguage(url);
+        if (request.getCityId() != null)
+            url = url + request.getCityId() + ".json";
+        else
+            url = url + request.getLat() + "," + request.getLon() + ".json";
+
+        return url;
     }
 }

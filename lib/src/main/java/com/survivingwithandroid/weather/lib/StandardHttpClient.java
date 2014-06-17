@@ -34,6 +34,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.io.BufferedReader;
@@ -111,29 +112,15 @@ public class StandardHttpClient extends WeatherClient {
      * onConnectionError if the errors happened during the HTTP connection
      * </p>
      *
+     *
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @deprecated use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getCurrentCondition(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener)}
      */
     @Override
     public void getCurrentCondition(String location, WeatherEventListener listener) throws ApiKeyRequiredException {
-        String url = provider.getQueryCurrentWeatherURL(location);
-        LogUtils.LOGD("Current cond URL [" + url + "]");
-        String data = null;
-        try {
-            data = connectAndRead(url);
-        } catch (Throwable t) {
-            listener.onConnectionError(t);
-            return;
-        }
-
-        try {
-            //LogUtils.LOGD("Data [" + data + "]");
-            CurrentWeather weather = provider.getCurrentCondition(data);
-            listener.onWeatherRetrieved(weather);
-        } catch (WeatherLibException t) {
-            listener.onWeatherError(t);
-        }
+       getCurrentCondition(new WeatherRequest(location), listener);
     }
 
     /**
@@ -187,26 +174,11 @@ public class StandardHttpClient extends WeatherClient {
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @deprecated use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getForecastWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener)}
      */
     @Override
     public void getForecastWeather(String location, ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
-        String url = provider.getQueryForecastWeatherURL(location);
-        LogUtils.LOGD("Forecast URL [" + url + "]");
-        String data = null;
-        try {
-            data = connectAndRead(url);
-        } catch (Throwable t) {
-            listener.onConnectionError(t);
-            return;
-        }
-
-        try {
-            //Log.d("SwA", "Data [" + data + "]");
-            WeatherForecast forecast = provider.getForecastWeather(data);
-            listener.onWeatherRetrieved(forecast);
-        } catch (WeatherLibException t) {
-            listener.onWeatherError(t);
-        }
+        getForecastWeather(new WeatherRequest(location), listener);
     }
 
     /**
@@ -223,25 +195,11 @@ public class StandardHttpClient extends WeatherClient {
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @deprecated use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getHourForecastWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener)}
      */
     @Override
     public void getHourForecastWeather(String location, HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
-        String url = provider.getQueryHourForecastWeatherURL(location);
-        LogUtils.LOGD("Hourly forecast URL [" + url + "]");
-        String data = null;
-        try {
-            data = connectAndRead(url);
-        } catch (Throwable t) {
-            listener.onConnectionError(t);
-            return;
-        }
-
-        try {
-            WeatherHourForecast forecast = provider.getHourForecastWeather(data);
-            listener.onWeatherRetrieved(forecast);
-        } catch (WeatherLibException t) {
-            listener.onWeatherError(t);
-        }
+        getHourForecastWeather(new WeatherRequest(location), listener);
     }
 
     @Override
@@ -266,25 +224,11 @@ public class StandardHttpClient extends WeatherClient {
      * @param d2
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}  @param2 d2 is the end date
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @deprecated use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getHistoricalWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, java.util.Date, java.util.Date, com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener)}
      */
     @Override
     public void getHistoricalWeather(String location, Date d1, Date d2, HistoricalWeatherEventListener listener) {
-        String url = provider.getQueryHistoricalWeatherURL(location, d1, d2);
-        LogUtils.LOGD("Historical Weather URL [" + url + "]");
-        String data = null;
-        try {
-            data = connectAndRead(url);
-        } catch (Throwable t) {
-            listener.onConnectionError(t);
-            return;
-        }
-
-        try {
-            HistoricalWeather historicalWeather = provider.getHistoricalWeather(data);
-            listener.onWeatherRetrieved(historicalWeather);
-        } catch (WeatherLibException t) {
-            listener.onWeatherError(t);
-        }
+        getHistoricalWeather(new WeatherRequest(location), d1, d2, listener);
     }
 
     @Override
@@ -386,4 +330,153 @@ public class StandardHttpClient extends WeatherClient {
             listener.onWeatherError(t);
         }
     }
+
+    // New methods
+
+    /**
+     * Get the current weather condition. It returns a class structure that is indipendent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the current weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getCurrentCondition(WeatherRequest request, WeatherEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryCurrentWeatherURL(request);
+        String data = null;
+
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            //LogUtils.LOGD("Data [" + data + "]");
+            CurrentWeather weather = provider.getCurrentCondition(data);
+            listener.onWeatherRetrieved(weather);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
+
+    }
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getForecastWeather(WeatherRequest request, ForecastWeatherEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryForecastWeatherURL(request);
+        LogUtils.LOGD("Forecast URL [" + url + "]");
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            //Log.d("SwA", "Data [" + data + "]");
+            WeatherForecast forecast = provider.getForecastWeather(data);
+            listener.onWeatherRetrieved(forecast);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
+    }
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherHourForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getHourForecastWeather(WeatherRequest request, HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryHourForecastWeatherURL(request);
+        LogUtils.LOGD("Hourly forecast URL [" + url + "]");
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            WeatherHourForecast forecast = provider.getHourForecastWeather(data);
+            listener.onWeatherRetrieved(forecast);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
+    }
+
+    /**
+     * Get the historical weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param d1       is the starting date
+     * @param d2
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}  @param2 d2 is the end date
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public void getHistoricalWeather(WeatherRequest request, Date d1, Date d2, HistoricalWeatherEventListener listener) {
+        String url = provider.getQueryHistoricalWeatherURL(request, d1, d2);
+        LogUtils.LOGD("Historical Weather URL [" + url + "]");
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            HistoricalWeather historicalWeather = provider.getHistoricalWeather(data);
+            listener.onWeatherRetrieved(historicalWeather);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
+    }
+
+
 }

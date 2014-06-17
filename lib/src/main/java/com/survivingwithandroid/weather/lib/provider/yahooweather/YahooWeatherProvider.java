@@ -31,6 +31,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -254,6 +255,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
         return YAHOO_GEO_URL + "/places.q('" + cityNamePattern + "%2A');count=" + config.maxResult + "?appid=" + config.ApiKey;
     }
 
+    /*
     @Override
     public String getQueryCurrentWeatherURL(String cityId) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
@@ -261,7 +263,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
         return YAHOO_WEATHER_URL + "?w=" + cityId + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
     }
+    */
 
+    /*
     @Override
     public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
@@ -269,6 +273,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
         return YAHOO_WEATHER_URL + "?w=" + cityId + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
     }
+    */
 
     @Override
     public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
@@ -288,10 +293,12 @@ public class YahooWeatherProvider implements IWeatherProvider {
         return YAHOO_IMG_URL + icon + ".gif";
     }
 
+    /*
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
         throw new UnsupportedOperationException();
     }
+    */
 
     @Override
     public WeatherForecast getForecastWeather(String data) throws WeatherLibException {
@@ -310,14 +317,50 @@ public class YahooWeatherProvider implements IWeatherProvider {
         this.codeProvider = codeProvider;
     }
 
+    /*
     @Override
     public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
         throw new UnsupportedOperationException();
     }
-
+    */
 
     @Override
     public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
         return null;
+    }
+
+    // New methods
+
+    @Override
+    public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        if (request.getCityId() == null)
+             throw new UnsupportedOperationException("Can't use lon and lat");
+
+        return YAHOO_WEATHER_URL + "?w=" + request.getCityId() + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
+    }
+
+    @Override
+    public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        if (request.getCityId() == null)
+            throw new UnsupportedOperationException("Can't use lon and lat");
+
+        return YAHOO_WEATHER_URL + "?w=" + request.getCityId() + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
+
+    }
+
+    @Override
+    public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
+        throw new UnsupportedOperationException();
     }
 }

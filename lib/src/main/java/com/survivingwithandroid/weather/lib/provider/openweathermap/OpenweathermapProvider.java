@@ -34,6 +34,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.json.JSONArray;
@@ -55,12 +56,16 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?mode=json&q=";
     private static String BASE_URL_ID = "http://api.openweathermap.org/data/2.5/weather?mode=json&id=";
+    private static String GEO_BASE_URL_ID = "http://api.openweathermap.org/data/2.5/weather?mode=json";
     private static String IMG_URL = "http://openweathermap.org/img/w/";
     private static String SEARCH_URL = "http://api.openweathermap.org/data/2.5/find?mode=json&type=like&q=";
     private static String SEARCH_URL_GEO = "http://api.openweathermap.org/data/2.5/find?mode=json&type=accurate";
     private static String BASE_FORECAST_URL_ID = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json&id=";
+    private static String GEO_BASE_FORECAST_URL_ID = "http://api.openweathermap.org/data/2.5/forecast/daily?mode=json";
     private static String BASE_HOUR_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?mode=json&id=";
+    private static String GEO_BASE_HOUR_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast?mode=json";
     private static String BASE_HISTORICAL_URL = "http://api.openweathermap.org/data/2.5/history/city?mode=json&id=";
+    private static String GEO_BASE_HISTORICAL_URL = "http://api.openweathermap.org/data/2.5/history/city?mode=json";
 
     private WeatherConfig config;
     private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
@@ -405,6 +410,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return SEARCH_URL + cityNamePattern; // + "&cnt=" + config.maxResult;
     }
 
+    /*
     @Override
     public String getQueryCurrentWeatherURL(String cityId) {
         return BASE_URL_ID + cityId + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
@@ -414,6 +420,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
     public String getQueryForecastWeatherURL(String cityId) {
         return BASE_FORECAST_URL_ID + cityId + "&lang=" + config.lang + "&cnt=" + config.numDays + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
     }
+    */
 
     @Override
     public String getQueryImageURL(String icon) throws ApiKeyRequiredException {
@@ -430,6 +437,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3";
     }
 
+    /*
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
         return BASE_HOUR_FORECAST_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
@@ -442,6 +450,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
         return BASE_HISTORICAL_URL + cityId + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
     }
+    */
 
     @Override
     public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
@@ -477,4 +486,43 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return jObj.getLong(tagName);
     }
 
+    // New methods
+
+
+    @Override
+    public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (request.getCityId() != null)
+            return BASE_URL_ID + request.getCityId() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+        else
+            return GEO_BASE_URL_ID + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+
+    }
+
+    @Override
+    public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (request.getCityId() != null)
+            return BASE_FORECAST_URL_ID + request.getCityId() + "&lang=" + config.lang + "&cnt=" + config.numDays + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
+        else
+            return GEO_BASE_FORECAST_URL_ID + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+    }
+
+    @Override
+    public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        if (request.getCityId() != null)
+            return BASE_HOUR_FORECAST_URL + request.getCityId() + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + createAPPID();
+        else
+            return GEO_BASE_HOUR_FORECAST_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+   }
+
+    @Override
+    public String getQueryHistoricalWeatherURL(WeatherRequest request, Date d1, Date d2) throws ApiKeyRequiredException {
+        long timestamp1 = d1.getTime();
+        long timestamp2 = d2.getTime();
+
+
+        if (request.getCityId() != null)
+            return BASE_HISTORICAL_URL + request.getCityId() + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
+        else
+            return GEO_BASE_HISTORICAL_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+    }
 }

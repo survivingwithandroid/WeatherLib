@@ -17,6 +17,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.json.JSONArray;
@@ -89,30 +90,38 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
         }
     }
 
+
     @Override
     public String getQueryCityURL(String cityNamePattern) throws ApiKeyRequiredException {
         return null;
     }
+    /*
+        @Override
+        public String getQueryCurrentWeatherURL(String cityId) throws ApiKeyRequiredException {
+            return createURL(cityId);
+        }
 
-    @Override
-    public String getQueryCurrentWeatherURL(String cityId) throws ApiKeyRequiredException {
-        return createURL(cityId);
-    }
+        @Override
+        public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
+            return createURL(cityId);
+        }
 
-    @Override
-    public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
-        return createURL(cityId);
-    }
+        @Override
+        public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
+          return createURL(cityId);
+        }
+*/
+        @Override
+        public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
+            return null;
+        }
 
-    @Override
-    public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
-        return null;
-    }
 
     @Override
     public String getQueryCityURLByLocation(Location location) throws ApiKeyRequiredException {
         return null;
     }
+
 
     @Override
     public void setConfig(WeatherConfig config) {
@@ -130,13 +139,9 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
         return null;
     }
 
-    @Override
-    public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
-        return createURL(cityId);
-    }
 
     @Override
-    public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {
+    public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
         throw new UnsupportedOperationException();
     }
 
@@ -145,13 +150,13 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
         return null;
     }
 
-    private String createURL(String cityId)throws ApiKeyRequiredException {
+    private String createURL(WeatherRequest request)throws ApiKeyRequiredException {
         if (config.ApiKey == null || config.ApiKey.equals(""))
             throw new ApiKeyRequiredException();
 
-        StringTokenizer st = new StringTokenizer(cityId, "#");
+        //StringTokenizer st = new StringTokenizer(cityId, "#");
 
-        return URL + config.ApiKey + "/" + st.nextToken() + "," + st.nextToken() + "?units=" + (WeatherUtility.isMetric(config.unitSystem) ? "ca" : "us") ;
+        return URL + config.ApiKey + "/" + request.getLat() + "," + request.getLon() + "?units=" + (WeatherUtility.isMetric(config.unitSystem) ? "ca" : "us") ;
     }
 
 
@@ -259,4 +264,23 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
         return false;
     }
+
+    // New methods
+
+    @Override
+    public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        return createURL(request);
+    }
+
+    @Override
+    public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        return createURL(request);
+    }
+
+    @Override
+    public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
+        return null;
+    }
+
+
 }

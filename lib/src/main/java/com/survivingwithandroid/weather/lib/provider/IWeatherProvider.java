@@ -28,6 +28,7 @@ import com.survivingwithandroid.weather.lib.model.HistoricalWeather;
 import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -50,9 +51,9 @@ public interface IWeatherProvider {
 
     public String getQueryCityURL(String cityNamePattern) throws ApiKeyRequiredException;
 
-    public String getQueryCurrentWeatherURL(String cityId) throws ApiKeyRequiredException;
+    // public String getQueryCurrentWeatherURL(String cityId) throws ApiKeyRequiredException;
 
-    public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
+   // public String getQueryForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
 
     public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException;
 
@@ -64,9 +65,20 @@ public interface IWeatherProvider {
 
     public String getQueryImageURL(String weatherId) throws ApiKeyRequiredException;
 
-    public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
+    //public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException;
 
-    public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException;
+    //public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException;
 
     public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException;
+
+
+
+    public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException;
+
+    public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException;
+
+    public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException;
+
+    public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException;
+
 }

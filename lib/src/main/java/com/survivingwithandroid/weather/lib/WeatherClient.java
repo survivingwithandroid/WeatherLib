@@ -35,6 +35,7 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.Date;
@@ -104,6 +105,8 @@ public abstract class WeatherClient {
      * onConnectionError if the errors happened during the HTTP connection
      * </p>
      *
+     * @deprecated 1.5.0 Use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getCurrentCondition(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener)}
+     *
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
@@ -138,6 +141,7 @@ public abstract class WeatherClient {
      * onConnectionError if the errors happened during the HTTP connection
      * </p>
      *
+     * @deprecated 1.5.0 Use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getForecastWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener)}
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
@@ -157,6 +161,7 @@ public abstract class WeatherClient {
      * onConnectionError if the errors happened during the HTTP connection
      * </p>
      *
+     * @deprecated 1.5.0 use instead {@link com.survivingwithandroid.weather.lib.WeatherClient#getHourForecastWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener)}
      * @param location a String representing the location id
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
@@ -175,6 +180,7 @@ public abstract class WeatherClient {
      * onConnectionError if the errors happened during the HTTP connection
      * </p>
      *
+     * @deprecated 1.5.0 {@link com.survivingwithandroid.weather.lib.WeatherClient#getHistoricalWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, java.util.Date, java.util.Date, com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener)}
      * @param location a String representing the location id
      * @param d1 is the starting date
      * @param2 d2 is the end date
@@ -525,4 +531,81 @@ public abstract class WeatherClient {
     };
 
     protected abstract void searchCityByLocation(Location location, final CityEventListener listener) throws ApiKeyRequiredException;
+
+    // New abstract methods
+
+    /**
+     * Get the current weather condition. It returns a class structure that is indipendent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the current weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    public abstract void getCurrentCondition(WeatherRequest request, final WeatherEventListener listener) throws ApiKeyRequiredException;
+
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+
+    public abstract void getForecastWeather(WeatherRequest request, final ForecastWeatherEventListener listener) throws ApiKeyRequiredException;
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.WeatherHourForecast} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HourForecastWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+
+    public abstract void getHourForecastWeather(WeatherRequest request, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException;
+
+
+    /**
+     * Get the historical weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param d1 is the starting date
+     * @param2 d2 is the end date
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    public abstract void getHistoricalWeather(WeatherRequest request, Date d1, Date d2, final HistoricalWeatherEventListener listener);
+
 }
