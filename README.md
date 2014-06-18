@@ -51,7 +51,7 @@ If you like there is a Community to talk about new features, suggest tips or rep
 
 [![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_maxmin_temp.png)
 
-#Licence
+#License
 ```
 Copyright 2012-2014 Francesco Azzola (Surviving with Android)
 
