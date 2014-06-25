@@ -17,6 +17,7 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.provider.forecastio.ForecastIOProviderType;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 
 public class HttpClientFragment extends Fragment {
@@ -29,7 +30,7 @@ public class HttpClientFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
         WeatherConfig config = new WeatherConfig();
-        config.ApiKey = "your_api_key";
+        config.ApiKey = getResources().getString(R.string.forecastio_key);
         try {
             client = builder.attach(getActivity())
                     .provider(new ForecastIOProviderType())
@@ -53,7 +54,8 @@ public class HttpClientFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        client.getCurrentCondition("43.11#12.23", new WeatherClient.WeatherEventListener() {
+        //client.getCurrentCondition("43.11#12.23", new WeatherClient.WeatherEventListener() {
+        client.getCurrentCondition(new WeatherRequest(43.11F, 12.23F), new WeatherClient.WeatherEventListener() {
             @Override
             public void onWeatherRetrieved(final CurrentWeather weather) {
 

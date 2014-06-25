@@ -5,11 +5,8 @@ package com.survivingwithandroid.weather.lib.request;
  */
 
 /**
- * This class encapsulates the request parameters that must be passed to the provider to get the weather condition.
- * It can hold:
- *
- * cityId the current city id
- * geographic coordinates
+ * This class encapsulates the request parameters that must be passed to the weather client to get the weather condition.
+ * The request can be made using cityId (a unique indentifier) or using latitude and longitude
  *
  * @author Francesco Azzola
  * @since 1.5.1

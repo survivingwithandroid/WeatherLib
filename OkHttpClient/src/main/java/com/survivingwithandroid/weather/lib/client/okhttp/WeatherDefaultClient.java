@@ -1,5 +1,7 @@
 package com.survivingwithandroid.weather.lib.client.okhttp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.os.Handler;
@@ -169,7 +171,8 @@ public class WeatherDefaultClient extends WeatherClient {
      */
     @Override
     public void getDefaultProviderImage(String icon, WeatherImageListener listener) {
-
+        String imageURL = provider.getQueryImageURL(icon);
+        downloadImage(imageURL, listener);
     }
 
     /**
@@ -201,8 +204,25 @@ public class WeatherDefaultClient extends WeatherClient {
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener} listener that gets notified when the image is ready to use
      */
     @Override
-    public void getWeatherImage(String cityId, Params params, WeatherImageListener listener) {
+    public void getWeatherImage(String cityId, Params params, final WeatherImageListener listener) {
+        String imageURL = provider.getQueryLayerURL(cityId, params);
+        downloadImage(imageURL, listener);
+    }
 
+    private void downloadImage(String urlImage, final WeatherImageListener listener)  {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(urlImage).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, Throwable throwable) {
+                listener.onConnectionError(throwable);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+            }
+        });
     }
 
 

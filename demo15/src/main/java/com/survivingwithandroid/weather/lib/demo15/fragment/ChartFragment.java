@@ -30,6 +30,7 @@ import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
+import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 
 import org.achartengine.ChartFactory;
@@ -108,7 +109,8 @@ public class ChartFragment extends Fragment {
 
     private void getData() {
         WeatherClient client = setupClient(getActivity());
-        client.getHourForecastWeather(CITY_ID, new WeatherClient.HourForecastWeatherEventListener() {
+        //client.getHourForecastWeather(CITY_ID, new WeatherClient.HourForecastWeatherEventListener() {
+        client.getHourForecastWeather(new WeatherRequest(CITY_ID), new WeatherClient.HourForecastWeatherEventListener() {
             @Override
             public void onWeatherRetrieved(WeatherHourForecast weatherHourForecast) {
                 nextHourForecast = weatherHourForecast.getHourForecast();
@@ -127,7 +129,8 @@ public class ChartFragment extends Fragment {
             }
         });
 
-        client.getForecastWeather(CITY_ID, new WeatherClient.ForecastWeatherEventListener() {
+        //client.getForecastWeather(CITY_ID, new WeatherClient.ForecastWeatherEventListener() {
+        client.getForecastWeather(new WeatherRequest(CITY_ID), new WeatherClient.ForecastWeatherEventListener() {
             @Override
             public void onWeatherRetrieved(WeatherForecast weatherForecast) {
                 dayForecast = weatherForecast.getForecast();

@@ -104,7 +104,8 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.demo_okhttp),
                         getString(R.string.demo_chart),
-                        getString(R.string.demo_radar)
+                        getString(R.string.demo_radar),
+                        getString(R.string.demo_satellite)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

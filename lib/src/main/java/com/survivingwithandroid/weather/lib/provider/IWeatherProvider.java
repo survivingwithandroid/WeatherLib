@@ -69,7 +69,7 @@ public interface IWeatherProvider {
 
     //public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException;
 
-    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException;
+    public String getQueryLayerURL(String cityId, Params params) throws ApiKeyRequiredException;
 
 
 

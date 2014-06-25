@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wunderground_key">86c6f2cc0d64bc7b</string>
+    <string name="forecastio_key">689f63818c22b9df84fc0f35bce407eb</string>
+</resources>

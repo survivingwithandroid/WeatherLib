@@ -34,8 +34,11 @@ public class Params {
     private int frameNumber ;
     private int delay ;
     private boolean timeLabel;
+    private String imageType;
+    private String satelliteImageType;
 
-    private Params(float minLat, float minLon, float maxLat, float maxLon, float centerLat, float centerLon, float radius, RAD_UNITS radUnits, int imageWidth, int imageHeight, boolean newMap, boolean rainSnow, boolean smooth, int frame, int frameNumber, int delay, boolean timeLabel) {
+
+    private Params(float minLat, float minLon, float maxLat, float maxLon, float centerLat, float centerLon, float radius, RAD_UNITS radUnits, int imageWidth, int imageHeight, boolean newMap, boolean rainSnow, boolean smooth, int frame, int frameNumber, int delay, boolean timeLabel, String imageType, String satelliteImageType) {
         this.minLat = minLat;
         this.minLon = minLon;
         this.maxLat = maxLat;
@@ -53,6 +56,8 @@ public class Params {
         this.frameNumber = frameNumber;
         this.delay = delay;
         this.timeLabel = timeLabel;
+        this.imageType = imageType;
+        this.satelliteImageType = satelliteImageType;
     }
 
     public String string() {
@@ -65,10 +70,18 @@ public class Params {
             buffer.append("&minLon=" + minLon);
         if ( checkNumber(maxLon))
             buffer.append("&maxlon=" + maxLon);
-        if ( checkNumber(centerLat))
-            buffer.append("&centerlat=" + centerLat);
-        if ( checkNumber(centerLon))
-            buffer.append("&centerlon=" + centerLon);
+        if ( checkNumber(centerLat)) {
+            if ("radar".equals(imageType))
+              buffer.append("&centerlat=" + centerLat);
+            else
+              buffer.append("&lat=" + centerLat);
+        }
+        if ( checkNumber(centerLon)) {
+            if ("radar".equals(imageType))
+                buffer.append("&centerlon=" + centerLon);
+            else
+                buffer.append("&lon=" + centerLon);
+        }
         if ( checkNumber(radius))
             buffer.append("&radius=" + radius);
         if ( checkNumber(imageWidth))
@@ -83,6 +96,9 @@ public class Params {
         buffer.append("&num=" + frameNumber);
         buffer.append("&deley=" + delay);
         buffer.append("&timelabel=" + frameNumber);
+
+        if ("satellite".equals(imageType))
+            buffer.append("&key=" + satelliteImageType);
 
         String paramQuery = buffer.substring(1);
 
@@ -103,7 +119,9 @@ public class Params {
         return 0;
     }
 
-
+    public String getImageType() {
+        return imageType;
+    }
 
     public static class ParamsBuilder {
         private float minLat = Integer.MIN_VALUE;
@@ -123,6 +141,21 @@ public class Params {
         private int frameNumber = 1;
         private int delay = 25;
         private boolean timeLabel;
+        private IMAGE_TYPE imageType;
+        private SATELLITE_IMAGE_TYPE satellite_image_type;
+
+        public enum SATELLITE_IMAGE_TYPE {
+            sat_ir4,
+            sat_ir4_bottom,
+            sat_vis,
+            sat_vis_bottom
+        }
+
+        public enum IMAGE_TYPE {
+            RADAR,
+            SATELLITE,
+            //RADAR_SATELLITE
+        }
 
         public ParamsBuilder setMinLat(float minLat) {
             this.minLat = minLat;
@@ -209,8 +242,46 @@ public class Params {
             return this;
         }
 
-        public Params build() {
-            return new Params(minLat, minLon, maxLat, maxLon, centerLat, centerLon, radius, radUnits, imageWidth, imageHeight, newMap, rainSnow, smooth, frame, frameNumber, delay, timeLabel);
+        public ParamsBuilder setImageType(IMAGE_TYPE type) {
+            imageType = type;
+            return this;
         }
+
+        public ParamsBuilder setSatelliteImageType(SATELLITE_IMAGE_TYPE type) {
+            satellite_image_type = type;
+            return this;
+        }
+
+        public Params build() {
+            String feature = null;
+            if (imageType.equals(IMAGE_TYPE.RADAR))
+                feature = "radar";
+            else if (imageType.equals(IMAGE_TYPE.SATELLITE))
+                feature = "satellite";
+          //  else if (imageType.equals(IMAGE_TYPE.RADAR_SATELLITE))
+          //      feature = "radar/satellite";
+
+            String satImageType = getSatelliteImageType(satellite_image_type);
+
+            return new Params(minLat, minLon, maxLat, maxLon, centerLat, centerLon, radius, radUnits, imageWidth, imageHeight, newMap, rainSnow, smooth, frame, frameNumber, delay, timeLabel, feature, satImageType);
+        }
+
+        private String getSatelliteImageType(SATELLITE_IMAGE_TYPE satellite_image_type) {
+            if (satellite_image_type == null)
+                return null;
+
+            if (satellite_image_type.equals(SATELLITE_IMAGE_TYPE.sat_ir4))
+                return "sat_ir4";
+            else if (satellite_image_type.equals(SATELLITE_IMAGE_TYPE.sat_ir4_bottom))
+                return "sat_ir4_bottom";
+            else if (satellite_image_type.equals(SATELLITE_IMAGE_TYPE.sat_vis))
+                return "sat_vis";
+            else if (satellite_image_type.equals(SATELLITE_IMAGE_TYPE.sat_vis_bottom))
+                return "sat_vis_bottom";
+
+            return null;
+        }
+
     }
+
 }

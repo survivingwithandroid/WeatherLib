@@ -155,8 +155,6 @@ public class WeatherClientDefault extends WeatherClient {
                         } catch (WeatherLibException t) {
                             listener.onWeatherError(t);
                         }
-
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -285,7 +283,7 @@ public class WeatherClientDefault extends WeatherClient {
      */
     @Override
     public void getWeatherImage(String cityId, Params params, final WeatherImageListener listener) {
-        String imageURL = provider.getQueryRadar(cityId, params);
+        String imageURL = provider.getQueryLayerURL(cityId, params);
         ImageRequest ir = new ImageRequest(imageURL, new Response.Listener<Bitmap>() {
 
             @Override
@@ -314,9 +312,7 @@ public class WeatherClientDefault extends WeatherClient {
                         } catch (WeatherLibException t) {
                             listener.onWeatherError(t);
                         }
-
-
-                    }
+                   }
                 },
                 new Response.ErrorListener() {
                     @Override

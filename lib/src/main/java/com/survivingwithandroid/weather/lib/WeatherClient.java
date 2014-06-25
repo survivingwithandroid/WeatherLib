@@ -323,7 +323,7 @@ public abstract class WeatherClient {
      * the forecast weather image is ready.
      */
 
-    public static interface WeatherImageListener {
+    public static interface WeatherImageListener extends WeatherClientListener {
         /**
          * This method is called to notify to the listener that the Weather information is ready
          *

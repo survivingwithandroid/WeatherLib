@@ -453,7 +453,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
     */
 
     @Override
-    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
+    public String getQueryLayerURL(String cityId, Params params) throws ApiKeyRequiredException {
         return null;
     }
 

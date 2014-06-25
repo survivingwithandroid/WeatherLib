@@ -17,6 +17,8 @@
 package com.survivingwithandroid.weather.lib;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -38,6 +40,9 @@ import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -204,7 +209,14 @@ public class StandardHttpClient extends WeatherClient {
 
     @Override
     public void getDefaultProviderImage(String icon, WeatherImageListener listener) {
-
+        String imageURL = provider.getQueryImageURL(icon);
+        try {
+            Bitmap bmp = readByte(imageURL);
+            listener.onImageReady(bmp);
+        }
+        catch (Throwable t) {
+            listener.onConnectionError(new WeatherLibException(t));
+        }
     }
 
 
@@ -259,8 +271,40 @@ public class StandardHttpClient extends WeatherClient {
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener} listener that gets notified when the image is ready to use
      */
     @Override
-    public void getWeatherImage(String cityId, Params params, WeatherImageListener listener) {
+    public void getWeatherImage(String cityId, Params params, final WeatherImageListener listener) {
+        String imageURL = provider.getQueryLayerURL(cityId, params);
+        try {
+            Bitmap bmp = readByte(imageURL);
+            listener.onImageReady(bmp);
+        }
+        catch (Throwable t) {
+            listener.onConnectionError(new WeatherLibException(t));
+        }
+    }
 
+    private Bitmap readByte(String url) throws  Throwable {
+        HttpURLConnection connection = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+
+            connection = (HttpURLConnection) (new URL(url)).openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            InputStream is = connection.getInputStream();
+            byte[] b = new byte[1024];
+
+            while ( is.read(b) != -1)
+                baos.write(b);
+
+            Bitmap img = BitmapFactory.decodeByteArray(baos.toByteArray(), 0, baos.toByteArray().length);
+            return img;
+        } catch (Throwable t) {
+            throw t;
+        } finally {
+            try {
+                connection.disconnect();
+            } catch (Throwable t) { }
+        }
     }
 
     private String connectAndRead(String url) throws Throwable {

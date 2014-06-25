@@ -473,15 +473,15 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     */
 
     @Override
-    public String getQueryRadar(String cityId, Params params) throws ApiKeyRequiredException {
+    public String getQueryLayerURL(String cityId, Params params) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 
-        String url = BASE_URL_ID + "/" + config.ApiKey + "/radar/" +
+        String url = BASE_URL_ID + "/" + config.ApiKey + "/" + params.getImageType() + "/" +
                 ( (cityId == null  || cityId.equals("")) ? "image.png" : cityId + ".png")  +
                 "?" + params.string();
 
-        return url;
+       return url;
     }
 
     private JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {

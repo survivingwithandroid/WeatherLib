@@ -61,8 +61,21 @@ public class WeatherDemoActivity extends ActionBarActivity
             case 1:
                 frag = new ChartFragment();
                 break;
-            case 2:
+            case 2: {
                 frag = new RadarFragment();
+                Bundle b = new Bundle();
+                b.putString("image_type", "radar");
+                frag.setArguments(b);
+                break;
+            }
+            case 3: {
+                frag = new RadarFragment();
+                Bundle b = new Bundle();
+                b.putString("image_type", "satellite");
+                frag.setArguments(b);
+                break;
+
+            }
 
         }
 
@@ -85,6 +98,9 @@ public class WeatherDemoActivity extends ActionBarActivity
                 break;
             case 2:
                 mTitle = getString(R.string.demo_radar);
+                break;
+            case 3:
+                mTitle = getString(R.string.demo_satellite);
                 break;
         }
     }
