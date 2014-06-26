@@ -205,6 +205,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 // Clouds
                 df.weather.clouds.setPerc(jDayForecast.getInt("clouds"));
 
+                df.weather.wind.setSpeed(getFloat("speed", jDayForecast));
+                df.weather.wind.setDeg(getFloat("deg", jDayForecast));
 
                 // Rain (use opt to handle option parameters
                 JSONObject rObj = jObj.optJSONObject("rain");
