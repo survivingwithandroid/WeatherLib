@@ -8,7 +8,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 19
         versionCode 1
-        versionName "1.0"
+        versionName "1.5.1"
     }
     buildTypes {
         release {
@@ -55,5 +55,4 @@ task makeJar(type: Copy) {
 }
 
 makeJar.dependsOn(clearJar, build)
-
-//apply from: '../maven_push.gradle'
+apply from: '../maven_push.gradle'
