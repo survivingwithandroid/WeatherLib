@@ -47,7 +47,7 @@ task clearJar(type: Delete) {
 }
 
 task makeJar(type: Copy) {
-    from('build/bundles/release/')
+    from('build/intermediates/bundles/release')
     into('release/')
     include('classes.jar')
     rename ('classes.jar', POM_ARTIFACT_ID + '_' +  VERSION_NAME + '.jar')
