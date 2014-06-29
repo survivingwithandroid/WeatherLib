@@ -1,3 +1,4 @@
+apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
 
 repositories {
@@ -27,6 +28,8 @@ android {
 }
 
 dependencies {
+	classpath 'com.android.tools.build:gradle:0.10.+'
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':lib')
     compile project(':OkHttpClient')
