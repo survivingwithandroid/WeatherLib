@@ -39,7 +39,7 @@
           <div class="span6">
             <menu>
               <ul>
-                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.0</strong></a></li>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.1</strong></a></li>
                 <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>               
               </ul>
             </menu>
@@ -90,6 +90,7 @@ Implement specific protocol to extract information from remote weather server</l
 <li>Abstract app implementation from the specific weather provider selected, so that you can reuse the same app with different weather provider</li>
 <li>Handling connection errors and parsing errors</li>
 <li>Implementing a notifition/listener mechanism so that your requests don't get locked while the library is processing the response or while the server is contacted</li>
+<li>Getting radar images</li>
 <li>You can easily extend the lib and implement your weather provider</li>
 </ul>
 </p>
@@ -141,21 +142,21 @@ WeatherClient client = builder.attach(getActivity())
 			<p><i>Volley</i>:</p>
 <pre class="prettyprint">
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.0'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.0'
+	compile 'com.survivingwithandroid:weatherlib:1.5.1'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.1'
 }
 </pre>
 <p><i>OkHttp</i>:</p>
 <pre class="prettyprint">
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.0'
-	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.0'
+	compile 'com.survivingwithandroid:weatherlib:1.5.1'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.1'
 }
 </pre>	
 <p><i>Standard client</i>:</p>
 <pre class="prettyprint">
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.0'	
+	compile 'com.survivingwithandroid:weatherlib:1.5.1'	
 }
 </pre>		
 			

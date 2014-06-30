@@ -38,7 +38,7 @@
           <div class="span6">
             <menu>
               <ul>
-                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.0</strong></a></li>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.1</strong></a></li>
                 <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>
               </ul>
             </menu>
@@ -163,7 +163,7 @@ criteria.setCostAllowed(false);</pre>
 Current Weather condition</h3>
 <p>
 Once you have the city id you can query the provider asking for the current weather condition:</p>
-<pre>client.getCurrentCondition(cityId, new WeatherClient.WeatherEventListener() {
+<pre>client.getCurrentCondition(new WeatherRequest("your_cityId"), new WeatherClient.WeatherEventListener() {
     @Override
     public void onWeatherRetrieved(CurrentWeather weather) {
        // Here we can use the weather information to upadte the view
@@ -179,6 +179,7 @@ Once you have the city id you can query the provider asking for the current weat
         
     }
 });</pre>
+
 <p>
 Notice that the client use a callback interface the notify the caller that the data is ready. 
 This happens only if you use the <code class="code">WeatherClientDefault</code>. Using these callback methods you don't have to worry about ANR problems because the HTTP request happens in a separate thread and those request don't block the app. When the data is ready at line 3 we can use it to update the UI, as the snippet below:</p>
@@ -196,7 +197,7 @@ protected void updateView(Object obj) {
 WeatherForecast and Hourly WeatherForecast</h3>
 <p>
 If you want you can use the lib to query the forecast and the hourly forecast data. In the same way described above we have:</p>
-<pre class="brush: java;">client.getForecastWeather(cityId, new WeatherClient.ForecastWeatherEventListener() {
+<pre class="brush: java;">client.getForecastWeather(new WeatherRequest(your_lat, your_long), new WeatherClient.ForecastWeatherEventListener() {
     @Override
     public void onWeatherRetrieved(WeatherForecast forecast) {        
         updateView(forecast);
@@ -214,7 +215,7 @@ If you want you can use the lib to query the forecast and the hourly forecast da
 });</pre>
 <p>
 and for the hourly forecast we have:</p>
-<pre>client.getHourForecastWeather(cityId, new WeatherClient.HourForecastWeatherEventListener() {
+<pre>client.getHourForecastWeather(new WeatherRequest(your_city_id), new WeatherClient.HourForecastWeatherEventListener() {
     @Override
     public void onWeatherRetrieved(WeatherHourForecast forecast) {
         updateView(foreacst);
@@ -230,7 +231,46 @@ and for the hourly forecast we have:</p>
 
     }
 });</pre>
+<h3>Radar Images</h3>
+<p>If you want to get radar image (Only Weatherunderground provider) you have to do:</p>
+<pre>
+Params params = new Params.ParamsBuilder()
+                .setImageHeight(600)
+                .setImageWidth(600)
+                .setCenterLat(40.710F)
+                .setCenterLon(-74F)
+                .setRadius(100)
+                .setNewMap(true)
+                .setImageType(Params.ParamsBuilder.IMAGE_TYPE.RADAR)
+                .build();
+				
+client.getWeatherImage("", params, new WeatherClient.WeatherImageListener() {
+            @Override
+            public void onImageReady(Bitmap image) {
+                imageView.setImageBitmap(image);
+            }
 
+            /**
+             * This method is called when an error occured during the HTTP connection
+             *
+             * @param t {@link Throwable}
+             */
+            @Override
+            public void onConnectionError(Throwable t) {
+                // handle errors here
+            }
+
+            /**
+             * This method is called when an error occured during the data parsing
+             *
+             * @param wle {@link com.survivingwithandroid.weather.lib.exception.WeatherLibException}
+             */
+            @Override
+            public void onWeatherError(WeatherLibException wle) {
+                // handle errors here
+            }
+        });				
+</pre>
 <h3 >
 Cache Data</h3>
 <p>

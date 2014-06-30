@@ -1,6 +1,4 @@
 com.survivingwithandroid.weather.lib
-com.survivingwithandroid.weather.lib.client.okhttp
-com.survivingwithandroid.weather.lib.client.volley
 com.survivingwithandroid.weather.lib.exception
 com.survivingwithandroid.weather.lib.model
 com.survivingwithandroid.weather.lib.provider
@@ -8,4 +6,5 @@ com.survivingwithandroid.weather.lib.provider.forecastio
 com.survivingwithandroid.weather.lib.provider.openweathermap
 com.survivingwithandroid.weather.lib.provider.wunderground
 com.survivingwithandroid.weather.lib.provider.yahooweather
+com.survivingwithandroid.weather.lib.request
 com.survivingwithandroid.weather.lib.util
