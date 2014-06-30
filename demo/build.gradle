@@ -1,9 +1,7 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
 
-repositories {
-    mavenCentral()
-}
+
 android {
     compileSdkVersion 19
     buildToolsVersion '19.1.0'
