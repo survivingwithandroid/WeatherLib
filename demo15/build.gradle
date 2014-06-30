@@ -1,3 +1,4 @@
+apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
 
 repositories {
@@ -27,7 +28,7 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:appcompat-v7:19.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':lib')
     compile project(':OkHttpClient')   
