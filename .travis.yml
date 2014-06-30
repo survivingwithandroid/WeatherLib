@@ -50,11 +50,6 @@ before_install:
   # manually set sdk.dir variable, according to local paths
   - echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-  # install android build tools
-  - wget https://dl-ssl.google.com/android/repository/build-tools_r19.0.1-linux.zip
-  - unzip build-tools_r19.0.1-linux.zip -d $ANDROID_HOME
-  - mkdir -p $ANDROID_HOME/build-tools/
-  - mv $ANDROID_HOME/android-4.4.2 $ANDROID_HOME/build-tools/19.0.1
 
   # Install required components.
   # For a full list, run `android list sdk -a --extended`
