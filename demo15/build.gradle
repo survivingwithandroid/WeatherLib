@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.0.1'
+    compile 'com.android.support:appcompat-v4:19.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':lib')
     compile project(':OkHttpClient')   
