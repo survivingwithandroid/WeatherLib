@@ -258,7 +258,7 @@ public abstract class WeatherClient {
      * @see com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener
      */
 
-    private static interface WeatherClientListener {
+    public static interface WeatherClientListener {
         /**
          * This method is called when an error occured during the data parsing
          *

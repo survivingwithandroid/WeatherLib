@@ -34,7 +34,7 @@ public class HttpClientFragment extends Fragment {
         try {
             client = builder.attach(getActivity())
                     .provider(new ForecastIOProviderType())
-                    .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
+                    .httpClient(com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault.class)
                     .config(config)
                     .build();
         } catch (WeatherProviderInstantiationException wpie) {

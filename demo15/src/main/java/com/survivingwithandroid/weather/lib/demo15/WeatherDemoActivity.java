@@ -77,6 +77,7 @@ public class WeatherDemoActivity extends ActionBarActivity
 
             }
 
+
         }
 
         onSectionAttached(position);

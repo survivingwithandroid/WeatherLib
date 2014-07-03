@@ -76,7 +76,8 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
+                //listener.onConnectionError(throwable);
             }
 
             @Override
@@ -92,7 +93,8 @@ public class WeatherDefaultClient extends WeatherClient {
                     });
 
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
             }
         });
@@ -215,12 +217,20 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                final Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                Handler handler = new Handler(ctx.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onImageReady(bmp);
+                    }
+                });
             }
         });
     }
@@ -234,16 +244,25 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 try {
-                    List<City> cityList = provider.getCityResultList(response.body().string());
-                    listener.onCityListRetrieved(cityList);
+                    final List<City> cityList = provider.getCityResultList(response.body().string());
+                    Handler handler = new Handler(ctx.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onCityListRetrieved(cityList);
+                        }
+                    });
+
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
             }
         });
@@ -276,7 +295,8 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
@@ -291,7 +311,8 @@ public class WeatherDefaultClient extends WeatherClient {
                         }
                     });
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
             }
         });
@@ -320,7 +341,8 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
@@ -335,7 +357,8 @@ public class WeatherDefaultClient extends WeatherClient {
                         }
                     });
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
             }
         });
@@ -364,7 +387,8 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+                //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
@@ -378,9 +402,10 @@ public class WeatherDefaultClient extends WeatherClient {
                             listener.onWeatherRetrieved(forecast);
                         }
                     });
-                    listener.onWeatherRetrieved(forecast);
+                    //listener.onWeatherRetrieved(forecast); // Issue OkHttpClient #7
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                   // listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
             }
         });
@@ -411,7 +436,8 @@ public class WeatherDefaultClient extends WeatherClient {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, Throwable throwable) {
-                listener.onConnectionError(throwable);
+               //listener.onConnectionError(throwable);
+                notifyConnectionError(throwable, listener);
             }
 
             @Override
@@ -427,8 +453,30 @@ public class WeatherDefaultClient extends WeatherClient {
                     });
 
                 } catch (WeatherLibException e) {
-                    listener.onWeatherError(e);
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
                 }
+            }
+        });
+    }
+
+    // Notify connection error on main thread so that the client can show dialogs,toast etc. to notify the error to the final user
+    private void notifyConnectionError(final Throwable t, final WeatherClientListener listener) {
+        Handler handler = new Handler(ctx.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                listener.onConnectionError(t);
+            }
+        });
+    }
+
+    private void notifyWeatherError(final WeatherLibException wle, final WeatherClientListener listener) {
+        Handler handler = new Handler(ctx.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                listener.onWeatherError(wle);
             }
         });
     }
