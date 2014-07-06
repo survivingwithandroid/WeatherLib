@@ -127,11 +127,6 @@ Weather</a></li>
 client is built. If you use a previous version please read <a href="#oldversion">Version 1.4.0 and before</a>.</p>
 <p>First, we have to instatiate the builder:</p>
 
-<pre class="prettyprint">WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();</pre>
-<p>and then we have to instantiate the <a href="./javadoc/com/survivingwithandroid/weather/lib/WeatherConfig.html">WeatherConfig </a>class that holds the main
-configuration parameters:</p>
-<pre class="prettyprint">WeatherConfig config = new WeatherConfig();</pre>
-<p>finally, we create a WeatherClient:</p>
 <pre class="prettyprint">WeatherClient client = builder.attach(getActivity())<br>            .provider(new ForecastIOProviderType())<br>            .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)<br>            .config(config)<br>            .build();</pre>
 <p> In this new way we use use a builder to create the <code>Weatherclient</code>.
 At line 2, we set the Weather provider: as you already know there are
@@ -186,7 +181,7 @@ the lib:</p>
 <p> To configure our client we can use <code>WeatherConfig</code>:</p>
 <pre class="prettyprint">WeatherConfig config = new WeatherConfig();<br>config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;<br>config.lang = "en"; // If you want to use english<br>config.maxResult = 5; // Max number of cities retrieved<br>config.numDays = 6; // Max num of days in the forecast<br>	</pre>
 <p>and to update the configuration in our client and provider:</p>
-<pre class="prettyprint">client.updateWeatherConfig(config);<br>			</pre>
+<pre class="prettyprint">client.updateWeatherConfig(config);</pre>
 <h4>Permissions in Manifest</h4>
 <p>You should add these lines to your <code>Manifest.xml</code> so
 that the lib can connect to internet</p>
