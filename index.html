@@ -113,6 +113,11 @@ Implement specific protocol to extract information from remote weather server</l
 			</p>
 			<p>
 			 To create a WeatherClient we need a few lines:</p>
+			 <p>The first thing, we have to instantiate the builder</p>
+			 <pre class="prettyprint">WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();</pre>
+			 <p>then we have to instantiate the WeatherConfig</p>
+			 <pre class="prettyprint">WeatherConfig config = new WeatherConfig();</pre>
+			 <p>and finally:</p>
 			 <pre class="prettyprint">
 WeatherClient client = builder.attach(getActivity())
             .provider(new ForecastIOProviderType())
