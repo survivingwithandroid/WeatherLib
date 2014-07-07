@@ -237,7 +237,7 @@ public class WeatherClientDefault extends WeatherClient {
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image
     * @param listener       {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
-    * */
+    */
     @Override
     public void getDefaultProviderImage(String icon, final WeatherImageListener listener) {
         String imageURL = provider.getQueryImageURL(icon);

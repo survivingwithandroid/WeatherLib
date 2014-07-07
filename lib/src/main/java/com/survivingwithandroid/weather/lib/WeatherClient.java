@@ -183,7 +183,7 @@ public abstract class WeatherClient {
      * @deprecated 1.5.0 {@link com.survivingwithandroid.weather.lib.WeatherClient#getHistoricalWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, java.util.Date, java.util.Date, com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener)}
      * @param location a String representing the location id
      * @param d1 is the starting date
-     * @param2 d2 is the end date
+     * @param d2 is the end date
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
      */
@@ -223,7 +223,7 @@ public abstract class WeatherClient {
      * @param cityId String representing the city id
      * @param params {@link Params}: list of parameters used to create the image
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener} listener that gets notified when the image is ready to use
-     * */
+     */
     public abstract void getWeatherImage(String cityId, Params params, final WeatherImageListener listener);
 
     /**
@@ -601,7 +601,7 @@ public abstract class WeatherClient {
      *
      * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
      * @param d1 is the starting date
-     * @param2 d2 is the end date
+     * @param d2 is the end date
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
      */

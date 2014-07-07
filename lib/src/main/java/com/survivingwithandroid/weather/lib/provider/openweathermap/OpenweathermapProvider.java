@@ -529,6 +529,6 @@ public class OpenweathermapProvider implements IWeatherProvider {
         if (request.getCityId() != null)
             return BASE_HISTORICAL_URL + request.getCityId() + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
         else
-            return GEO_BASE_HISTORICAL_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+            return GEO_BASE_HISTORICAL_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang  + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
     }
 }

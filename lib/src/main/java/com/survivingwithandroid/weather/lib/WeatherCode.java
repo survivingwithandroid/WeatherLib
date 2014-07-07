@@ -18,7 +18,7 @@
 package com.survivingwithandroid.weather.lib;
 
 /**
-* Unified weather codes. These codes are indipendent from the weather provider used so that
+* Unified weather codes. These codes are independent from the weather provider used so that
 * a client that wants to use different weather providers at the same time doesn't have
 * to worry about different weather code to implement different custom icons
 *
