@@ -74,10 +74,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                notifyConnectionError(throwable, listener);
-                //listener.onConnectionError(throwable);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override
@@ -215,11 +215,12 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(urlImage).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
+
 
             @Override
             public void onResponse(Response response) throws IOException {
@@ -242,10 +243,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override
@@ -293,10 +294,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override
@@ -339,10 +340,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override
@@ -385,10 +386,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-                //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override
@@ -434,10 +435,10 @@ public class WeatherDefaultClient extends WeatherClient {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onFailure(Request request, Throwable throwable) {
-               //listener.onConnectionError(throwable);
-                notifyConnectionError(throwable, listener);
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
             }
 
             @Override

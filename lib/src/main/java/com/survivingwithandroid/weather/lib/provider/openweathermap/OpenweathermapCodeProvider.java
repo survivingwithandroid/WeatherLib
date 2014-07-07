@@ -19,6 +19,7 @@ package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
 import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
+import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 /**
 * Openweathermap code provider. It converts the owm weather code to the unified code system provided by this library
@@ -28,7 +29,7 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 public class OpenweathermapCodeProvider implements IWeatherCodeProvider {
     @Override
     public WeatherCode getWeatherCode(String weatherCode) {
-        // Log.d("App", "Code [" + code + "]");
+
         int code = Integer.parseInt(weatherCode);
         switch (code) {
             case 900:
@@ -72,6 +73,7 @@ public class OpenweathermapCodeProvider implements IWeatherCodeProvider {
                 return WeatherCode.HEAVY_SHOWERS;
             case 600:
             case 601:
+            case 620:
                 return WeatherCode.SNOW;
             case 906:
                 return WeatherCode.HAIL;

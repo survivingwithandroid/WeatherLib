@@ -190,7 +190,6 @@ public abstract class WeatherClient {
     public abstract void getHistoricalWeather(String location , Date d1, Date d2, final HistoricalWeatherEventListener listener);
 
 
-
     /**
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image

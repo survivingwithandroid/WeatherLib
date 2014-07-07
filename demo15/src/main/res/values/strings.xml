@@ -6,12 +6,17 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_weather_demo">Weather Demo</string>
     <string name="demo_okhttp">Volley Demo client</string>
-    <string name="demo_chart">Demo chart</string>
-    <string name="demo_radar">Demo Radar</string>
-    <string name="demo_historic">Demo Historic Weather (OPM)</string>
-    <string name="demo_satellite">Demo Satellite</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="demo_list">
+        <item>Demo Temperature</item>
+        <item>Demo chart</item>
+        <item>Demo Radar</item>
+        <item>Demo Satellite</item>
+        <item>Demo Historic Weather (OPM)</item>
+
+    </string-array>
 </resources>

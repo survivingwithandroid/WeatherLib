@@ -17,6 +17,8 @@
 
 package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
+import android.util.Log;
+
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -35,6 +37,7 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
+import com.survivingwithandroid.weather.lib.util.LogUtils;
 import com.survivingwithandroid.weather.lib.util.WeatherUtility;
 
 import org.json.JSONArray;
@@ -365,7 +368,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 JSONObject cObj = getObject("clouds", jHour);
                 hhWeather.weather.clouds.setPerc(getInt("all", cObj));
 
-                hhWeather.timestamp = jHour.getLong("dt");
+                hhWeather.timestamp = jHour.getLong("dt") * 1000;
 
                 JSONObject mainObj = getObject("main", jHour);
 
@@ -375,12 +378,13 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 hhWeather.weather.temperature.setMaxTemp((float) mainObj.getDouble("temp_max"));
                 hhWeather.weather.temperature.setMinTemp((float) mainObj.getDouble("temp_min"));
 
-                JSONObject wObj = getObject("weather", jHour);
+                JSONObject wObj = jHour.getJSONArray("weather").getJSONObject(0);
                 hhWeather.weather.currentCondition.setDescr(wObj.getString("description"));
                 hhWeather.weather.currentCondition.setIcon(wObj.getString("icon"));
                 hhWeather.weather.currentCondition.setCondition(wObj.getString("main"));
 
                 hhWeather.weather.currentCondition.setWeatherId(getInt("id", wObj));
+                String tmp = String.valueOf(hhWeather.weather.currentCondition.getWeatherId())+"]";
                 // Convert internal code
                 if (codeProvider != null)
                     hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hhWeather.weather.currentCondition.getWeatherId())));
@@ -518,8 +522,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryHistoricalWeatherURL(WeatherRequest request, Date d1, Date d2) throws ApiKeyRequiredException {
-        long timestamp1 = d1.getTime();
-        long timestamp2 = d2.getTime();
+        long timestamp1 = d1.getTime() / 1000; // Unix time stamp
+        long timestamp2 = d2.getTime() / 1000; // unix time stamp
 
 
         if (request.getCityId() != null)

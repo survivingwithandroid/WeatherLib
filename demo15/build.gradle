@@ -6,11 +6,11 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 'android-L'
     buildToolsVersion '19.1.0'
 
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
@@ -35,4 +35,5 @@ dependencies {
     compile project(':volleyclient')
     compile files('libs/achartengine-1.1.0.jar')
     compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.android.support:support-v4:+'
 }

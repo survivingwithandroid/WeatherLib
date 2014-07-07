@@ -36,9 +36,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/okhttp-2.0.0-RC2.jar')
-    compile files('libs/okio-1.0.0.jar')
     compile project(':lib')
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
 }
 
 
