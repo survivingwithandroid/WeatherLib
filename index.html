@@ -39,7 +39,7 @@
           <div class="span6">
             <menu>
               <ul>
-                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.1</strong></a></li>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.2</strong></a></li>
                 <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>               
               </ul>
             </menu>
@@ -108,6 +108,9 @@ Implement specific protocol to extract information from remote weather server</l
 			</p>
 
             <h3 id="starthere">Getting started</h3>
+                        <p class="bg-info">Starting from version 1.5.2 the external lib dependency has been removed from aar, so you have to add the library manualle</p>
+                        
+                        
 			<p>
 			 Starting from 1.5.0, many things are changed regarding the way they client is built. If you use a previous version please read <a href="#oldversion">Version 1.4.0 and before</a>.
 			</p>
@@ -144,14 +147,30 @@ WeatherClient client = builder.attach(getActivity())
 			<strong>One important aspect we must notice is that the first two client are asynchronous client, while the last one is synchronous.</strong>
 			</p>
 			<p>According to the typpe of the client you choose you have to introduce different dependencies:</p>
-			<p><i>Volley</i>:</p>
+			<p><i>Volley (from 1.5.2)</i>:</p>
+<pre class="prettyprint">
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.2'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.2'
+	 compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
+}
+</pre>
+<p>before 1.5.2</p>
 <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.1'
 	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.1'
 }
 </pre>
-<p><i>OkHttp</i>:</p>
+<p><i>OkHttp (from 1.5.2)</i>:</p>
+<pre class="prettyprint">
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.2'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.2'
+	compile 'com.squareup.okhttp:okhttp:2.0.+'
+}
+</pre>	
+<p>or before 1.5.2</p>
 <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.1'
