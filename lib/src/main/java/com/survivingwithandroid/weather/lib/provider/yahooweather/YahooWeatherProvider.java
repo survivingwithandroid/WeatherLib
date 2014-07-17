@@ -350,7 +350,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
         if (request.getCityId() == null)
             throw new UnsupportedOperationException("Can't use lon and lat");
 
-        return YAHOO_WEATHER_URL + "?w=" + request.getCityId() + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
+        return YAHOO_WEATHER_URL + "?w=" + request.getCityId()
+                + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f")
+                + "&d=" + config.numDays;
 
     }
 
