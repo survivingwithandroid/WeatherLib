@@ -181,8 +181,8 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         // Convert the code
                         if (codeProvider != null)
                             weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
-
-                        weather.currentCondition.setDescr(parser.getAttributeValue(null, "text"));
+;
+                        weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         weather.temperature.setTemp(Integer.parseInt(parser.getAttributeValue(null, "temp")));
                         //result.condition.date = parser.getAttributeValue(null, "date");
                     } else if (tagName.equals("yweather:units")) {
