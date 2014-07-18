@@ -169,7 +169,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                             if (codeProvider != null)
                                 df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
 
-                            df.weather.currentCondition.setDescr(parser.getAttributeValue(null, "text"));
+                            df.weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                             df.weather.currentCondition.setIcon("" + df.weather.currentCondition.getWeatherId());
                             forecast.addForecast(df);
                         }
@@ -181,7 +181,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         // Convert the code
                         if (codeProvider != null)
                             weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
-;
+
                         weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         weather.temperature.setTemp(Integer.parseInt(parser.getAttributeValue(null, "temp")));
                         //result.condition.date = parser.getAttributeValue(null, "date");
@@ -339,7 +339,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
         if (request.getCityId() == null)
              throw new UnsupportedOperationException("Can't use lon and lat");
 
-        return YAHOO_WEATHER_URL + "?w=" + request.getCityId() + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f");
+        return YAHOO_WEATHER_URL + "?w=" + request.getCityId()
+                + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f")
+                + "&d=" + config.numDays;
     }
 
     @Override
@@ -353,7 +355,6 @@ public class YahooWeatherProvider implements IWeatherProvider {
         return YAHOO_WEATHER_URL + "?w=" + request.getCityId()
                 + "&u=" + (WeatherUtility.isMetric(config.unitSystem) ? "c" : "f")
                 + "&d=" + config.numDays;
-
     }
 
     @Override
