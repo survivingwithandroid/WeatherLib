@@ -420,6 +420,28 @@ public class StandardHttpClient extends WeatherClient {
     }
 
     /**
+     * Get the current weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data. This method is synchronous so it has not to be run on
+     * the main UI thread.
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @throws com.survivingwithandroid.weather.lib.exception.WeatherLibException
+     * @return a valid CurrentWeather object
+     */
+    public CurrentWeather getCurrentCondition(WeatherRequest request)
+            throws ApiKeyRequiredException, WeatherLibException {
+        String url = provider.getQueryCurrentWeatherURL(request);
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            throw new WeatherLibException(t);
+        }
+        return provider.getCurrentCondition(data);
+    }
+
+    /**
      * Get the forecast weather condition. It returns a class structure that is independent from the
      * provider used to ge the weather data.
      * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener} to
@@ -453,6 +475,29 @@ public class StandardHttpClient extends WeatherClient {
         } catch (WeatherLibException t) {
             listener.onWeatherError(t);
         }
+    }
+
+    /**
+     * Get the forecast weather condition. It returns a class structure that is independent from the
+     * provider used to ge the weather data. This method is synchronous so it has not to be run on
+     * the main UI thread.
+     *
+     * @param request  {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @throws com.survivingwithandroid.weather.lib.exception.WeatherLibException
+     * @return a valid WeatherForecast object
+     */
+    public WeatherForecast getForecastWeather(WeatherRequest request)
+            throws ApiKeyRequiredException, WeatherLibException {
+        String url = provider.getQueryForecastWeatherURL(request);
+        LogUtils.LOGD("Forecast URL [" + url + "]");
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            throw new WeatherLibException(t);
+        }
+        return provider.getForecastWeather(data);
     }
 
     /**

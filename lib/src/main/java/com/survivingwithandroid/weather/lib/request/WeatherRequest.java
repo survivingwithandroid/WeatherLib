@@ -25,14 +25,14 @@ package com.survivingwithandroid.weather.lib.request;
  * */
 public class WeatherRequest {
     private String cityId;
-    private float lon;
-    private float lat;
+    private double lon;
+    private double lat;
 
     public WeatherRequest(String cityId) {
         this.cityId = cityId;
     }
 
-    public WeatherRequest(float lon, float lat) {
+    public WeatherRequest(double lon, double lat) {
         this.lon = lon;
         this.lat = lat;
     }
@@ -41,11 +41,11 @@ public class WeatherRequest {
         return cityId;
     }
 
-    public float getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 }
