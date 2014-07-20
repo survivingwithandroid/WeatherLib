@@ -23,6 +23,7 @@ import com.survivingwithandroid.weather.lib.demo15.fragment.ChartFragment;
 import com.survivingwithandroid.weather.lib.demo15.fragment.HistoricalWeatherFragment;
 import com.survivingwithandroid.weather.lib.demo15.fragment.HttpClientFragment;
 import com.survivingwithandroid.weather.lib.demo15.fragment.RadarFragment;
+import com.survivingwithandroid.weather.lib.demo15.fragment.WebcamFragment;
 
 public class WeatherDemoActivity extends Activity {
 
@@ -102,7 +103,11 @@ public class WeatherDemoActivity extends Activity {
             case 4: {
                 frag = new HistoricalWeatherFragment();
                 break;
-         }
+            }
+            case 5: {
+                    frag = new WebcamFragment();
+                    break;
+            }
         }
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

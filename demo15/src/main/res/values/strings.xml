@@ -17,6 +17,6 @@
         <item>Demo Radar</item>
         <item>Demo Satellite</item>
         <item>Demo Historic Weather (OPM)</item>
-
+        <item>Demo Webcam (Wunder)</item>
     </string-array>
 </resources>

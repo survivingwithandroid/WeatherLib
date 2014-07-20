@@ -35,7 +35,9 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherProviderFeature;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
+import com.survivingwithandroid.weather.lib.response.GenericResponseParser;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.Date;
@@ -364,6 +366,18 @@ public abstract class WeatherClient {
 
 
     /**
+     * This interface must be implemented by the client that wants to get informed when
+     * the  generic request is available
+     *
+     * @since 1.5.3
+     */
+    public static interface GenericRequestWeatherEventListener<T> extends WeatherClientListener {
+
+        public void onResponseRetrieved(T data);
+    }
+
+
+    /**
     * This method creates the Weather provider. It is the same:
     *
     * <code>
@@ -607,4 +621,31 @@ public abstract class WeatherClient {
      */
     public abstract void getHistoricalWeather(WeatherRequest request, Date d1, Date d2, final HistoricalWeatherEventListener listener);
 
+
+    /**
+     * Get a specific weather provider feature not implemented in all weather provider
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param extRequest is the extended request as required by the weather provider
+     * @param parser  is the parser used to parsed the response {@link com.survivingwithandroid.weather.lib.response.GenericResponseParser}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.GenericRequestWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+
+    public abstract <T extends WeatherProviderFeature, S extends Object>  void getProviderWeatherFeature(WeatherRequest request, T extRequest, GenericResponseParser<S> parser, GenericRequestWeatherEventListener<S> listener);
+
+
+    /**
+     * Get an image at the specified URL and inform the listener when the image is ready
+     *
+     * @param url String representing the url
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
+     * @since 1.5.3
+     * */
+    public abstract void getImage(String url, WeatherImageListener listener);
 }
