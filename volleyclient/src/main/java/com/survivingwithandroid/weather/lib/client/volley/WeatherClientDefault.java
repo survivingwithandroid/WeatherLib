@@ -271,6 +271,7 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void setProvider(IWeatherProvider provider) {
         super.setProvider(provider);
+        // Set a new provider
     }
 
 
