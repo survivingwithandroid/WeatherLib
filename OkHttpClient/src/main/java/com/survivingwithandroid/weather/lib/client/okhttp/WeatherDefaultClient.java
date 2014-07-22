@@ -74,6 +74,62 @@ public class WeatherDefaultClient extends WeatherClient {
     @Override
     public void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
+        _doSearchCity(url, listener);
+        /*
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                notifyConnectionError(e, listener);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    final List<City> result = provider.getCityResultList(response.body().string());
+                    Handler handler = new Handler(ctx.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onCityListRetrieved(result);
+                        }
+                    });
+
+                } catch (WeatherLibException e) {
+                    //listener.onWeatherError(e);
+                    notifyWeatherError(e, listener);
+                }
+            }
+        });
+        */
+    }
+
+    /**
+     * Search the city using latitude and longitude. It returns a class structure that is indipendent from the
+     * provider used that holds the city list matching the pattern.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param lat      a double representing the latitude
+     * @param lon      a double representing the longitude
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @since 1.5.3
+     */
+    @Override
+    public void searchCity(double lat, double lon, CityEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryCityURLByCoord(lon, lat);
+        _doSearchCity(url, listener);
+    }
+
+    private void _doSearchCity(String url, final CityEventListener listener) throws ApiKeyRequiredException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {

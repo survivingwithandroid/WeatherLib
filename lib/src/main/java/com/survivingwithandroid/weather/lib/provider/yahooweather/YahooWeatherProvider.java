@@ -268,6 +268,14 @@ public class YahooWeatherProvider implements IWeatherProvider {
     }
 
     @Override
+    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        return YAHOO_GEO_URL + "/places.q('" + lat + "," + lon + "')?appid=" + config.ApiKey;
+    }
+
+    @Override
     public String getQueryImageURL(String icon) throws ApiKeyRequiredException {
         return YAHOO_IMG_URL + icon + ".gif";
     }

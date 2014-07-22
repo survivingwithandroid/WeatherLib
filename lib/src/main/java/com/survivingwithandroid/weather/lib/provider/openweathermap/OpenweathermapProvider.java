@@ -443,6 +443,12 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3";
     }
 
+    @Override
+    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+        return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3";
+    }
+
+
     /*
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {

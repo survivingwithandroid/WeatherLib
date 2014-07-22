@@ -380,6 +380,46 @@ public class StandardHttpClient extends WeatherClient {
         }
     }
 
+    /**
+     * Search the city using latitude and longitude. It returns a class structure that is indipendent from the
+     * provider used that holds the city list matching the pattern.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param lat      a double representing the latitude
+     * @param lon      a double representing the longitude
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @since 1.5.3
+     */
+    @Override
+    public void searchCity(double lat, double lon, CityEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryCityURLByCoord(lat, lon);
+
+        // If the url is null trying to use geocoder
+
+        String data = null;
+        try {
+            data = connectAndRead(url);
+        } catch (Throwable t) {
+            listener.onConnectionError(t);
+            return;
+        }
+
+        try {
+            //Log.d("SwA", "Data [" + data + "]");
+            List<City> cityResult = provider.getCityResultList(data);
+            listener.onCityListRetrieved(cityResult);
+        } catch (WeatherLibException t) {
+            listener.onWeatherError(t);
+        }
+    }
+
     // New methods
 
     /**

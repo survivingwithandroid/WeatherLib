@@ -458,6 +458,14 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
     }
 
+    @Override
+    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+        if (config.ApiKey == null)
+            throw new ApiKeyRequiredException();
+
+        return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + lat + "," + lon + ".json";
+    }
+
     /*
     @Override
     public String getQueryHistoricalWeatherURL(String cityId, Date startDate, Date endDate) throws ApiKeyRequiredException {

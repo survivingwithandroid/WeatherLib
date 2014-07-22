@@ -133,6 +133,26 @@ public abstract class WeatherClient {
     public abstract void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException;
 
     /**
+     * Search the city using latitude and longitude. It returns a class structure that is indipendent from the
+     * provider used that holds the city list matching the pattern.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param lat  a double representing the latitude
+     * @param lon a double representing the longitude
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     *
+     * @since 1.5.3
+     */
+    public abstract void searchCity(double lat, double lon, final CityEventListener listener) throws ApiKeyRequiredException;
+
+    /**
      * Get the forecast weather condition. It returns a class structure that is independent from the
      * provider used to ge the weather data.
      * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener} to
