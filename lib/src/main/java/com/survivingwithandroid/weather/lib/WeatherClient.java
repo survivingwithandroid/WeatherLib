@@ -35,7 +35,9 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.provider.WeatherProviderFactory;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherProviderFeature;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
+import com.survivingwithandroid.weather.lib.response.GenericResponseParser;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.Date;
@@ -131,6 +133,26 @@ public abstract class WeatherClient {
     public abstract void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException;
 
     /**
+     * Search the city using latitude and longitude. It returns a class structure that is indipendent from the
+     * provider used that holds the city list matching the pattern.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param lat  a double representing the latitude
+     * @param lon a double representing the longitude
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     *
+     * @since 1.5.3
+     */
+    public abstract void searchCity(double lat, double lon, final CityEventListener listener) throws ApiKeyRequiredException;
+
+    /**
      * Get the forecast weather condition. It returns a class structure that is independent from the
      * provider used to ge the weather data.
      * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.ForecastWeatherEventListener} to
@@ -183,7 +205,7 @@ public abstract class WeatherClient {
      * @deprecated 1.5.0 {@link com.survivingwithandroid.weather.lib.WeatherClient#getHistoricalWeather(com.survivingwithandroid.weather.lib.request.WeatherRequest, java.util.Date, java.util.Date, com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener)}
      * @param location a String representing the location id
      * @param d1 is the starting date
-     * @param2 d2 is the end date
+     * @param d2 is the end date
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
      */
@@ -223,7 +245,7 @@ public abstract class WeatherClient {
      * @param cityId String representing the city id
      * @param params {@link Params}: list of parameters used to create the image
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener} listener that gets notified when the image is ready to use
-     * */
+     */
     public abstract void getWeatherImage(String cityId, Params params, final WeatherImageListener listener);
 
     /**
@@ -360,6 +382,18 @@ public abstract class WeatherClient {
          */
 
         public void onWeatherRetrieved(HistoricalWeather histWeather);
+    }
+
+
+    /**
+     * This interface must be implemented by the client that wants to get informed when
+     * the  generic request is available
+     *
+     * @since 1.5.3
+     */
+    public static interface GenericRequestWeatherEventListener<T> extends WeatherClientListener {
+
+        public void onResponseRetrieved(T data);
     }
 
 
@@ -601,10 +635,37 @@ public abstract class WeatherClient {
      *
      * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
      * @param d1 is the starting date
-     * @param2 d2 is the end date
+     * @param d2 is the end date
      * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.HistoricalWeatherEventListener}
      * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
      */
     public abstract void getHistoricalWeather(WeatherRequest request, Date d1, Date d2, final HistoricalWeatherEventListener listener);
 
+
+    /**
+     * Get a specific weather provider feature not implemented in all weather provider
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param extRequest is the extended request as required by the weather provider
+     * @param parser  is the parser used to parsed the response {@link com.survivingwithandroid.weather.lib.response.GenericResponseParser}
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.GenericRequestWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+
+    public abstract <T extends WeatherProviderFeature, S extends Object>  void getProviderWeatherFeature(WeatherRequest request, T extRequest, GenericResponseParser<S> parser, GenericRequestWeatherEventListener<S> listener);
+
+
+    /**
+     * Get an image at the specified URL and inform the listener when the image is ready
+     *
+     * @param url String representing the url
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
+     * @since 1.5.3
+     * */
+    public abstract void getImage(String url, WeatherImageListener listener);
 }

@@ -443,6 +443,12 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3";
     }
 
+    @Override
+    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+        return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3";
+    }
+
+
     /*
     @Override
     public String getQueryHourForecastWeatherURL(String cityId) throws ApiKeyRequiredException {
@@ -529,6 +535,6 @@ public class OpenweathermapProvider implements IWeatherProvider {
         if (request.getCityId() != null)
             return BASE_HISTORICAL_URL + request.getCityId() + "&lang=" + config.lang + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
         else
-            return GEO_BASE_HISTORICAL_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang + createAPPID();
+            return GEO_BASE_HISTORICAL_URL + "&lat=" + request.getLat() + "&lon=" + request.getLon() + "&units=" + (WeatherUtility.isMetric(config.unitSystem) ? "metric" : "imperial") + "&lang=" + config.lang  + "&type=hour&start=" + timestamp1 + "&end=" + timestamp2 + createAPPID();
     }
 }

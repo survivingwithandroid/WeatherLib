@@ -44,7 +44,9 @@ import com.survivingwithandroid.weather.lib.model.WeatherForecast;
 import com.survivingwithandroid.weather.lib.model.WeatherHourForecast;
 import com.survivingwithandroid.weather.lib.provider.IWeatherProvider;
 import com.survivingwithandroid.weather.lib.request.Params;
+import com.survivingwithandroid.weather.lib.request.WeatherProviderFeature;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
+import com.survivingwithandroid.weather.lib.response.GenericResponseParser;
 import com.survivingwithandroid.weather.lib.util.LogUtils;
 
 import java.util.Date;
@@ -143,7 +145,58 @@ public class WeatherClientDefault extends WeatherClient {
     @Override
     public void searchCity(String pattern, final CityEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryCityURL(pattern);
+        _doSearch(url, listener);
+        /*
         LogUtils.LOGD("Search city URL [" + url + "]");
+        StringRequest req = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String data) {
+                        // We handle the response
+                        try {
+                            List<City> cityResult = provider.getCityResultList(data);
+                            listener.onCityListRetrieved(cityResult);
+                        } catch (WeatherLibException t) {
+                            listener.onWeatherError(t);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        listener.onConnectionError(volleyError.getCause());
+                    }
+                }
+        );
+
+        queue.add(req);
+        */
+    }
+
+    /**
+     * Search the city using latitude and longitude. It returns a class structure that is indipendent from the
+     * provider used that holds the city list matching the pattern.
+     * This method is an async method, in other word you have to implement your listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener} to
+     * get notified when the weather data is ready.
+     * <p>
+     * When the data is ready this method calls the onCityListRetrieved passing a {@link java.util.List} of cities.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param lat      a double representing the latitude
+     * @param lon      a double representing the longitude
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.CityEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     * @since 1.5.3
+     */
+    @Override
+    public void searchCity(double lat, double lon, CityEventListener listener) throws ApiKeyRequiredException {
+        String url = provider.getQueryCityURLByCoord(lon, lat);
+        _doSearch(url, listener);
+    }
+
+    private void _doSearch(String url, final CityEventListener listener) throws ApiKeyRequiredException {
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -237,7 +290,7 @@ public class WeatherClientDefault extends WeatherClient {
     * This is the default image Provider that can be used to get the image provided by the Weather provider
     * @param icon String    The icon containing the weather code to retrieve the image
     * @param listener       {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
-    * */
+    */
     @Override
     public void getDefaultProviderImage(String icon, final WeatherImageListener listener) {
         String imageURL = provider.getQueryImageURL(icon);
@@ -502,5 +555,70 @@ public class WeatherClientDefault extends WeatherClient {
         );
 
         queue.add(req);
+    }
+
+
+    /**
+     * Get a specific weather provider feature not implemented in all weather provider
+     * <p>
+     * When the data is ready this method calls the onWeatherRetrieved passing the {@link com.survivingwithandroid.weather.lib.model.HistoricalWeather} weather information.
+     * If there are some errors during the request parsing, it calls onWeatherError passing the exception or
+     * onConnectionError if the errors happened during the HTTP connection
+     * </p>
+     *
+     * @param request    {@link com.survivingwithandroid.weather.lib.request.WeatherRequest}
+     * @param extRequest is the extended request as required by the weather provider
+     * @param parser     is the parser used to parsed the response {@link com.survivingwithandroid.weather.lib.response.GenericResponseParser}
+     * @param listener   {@link com.survivingwithandroid.weather.lib.WeatherClient.GenericRequestWeatherEventListener}
+     * @throws com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException
+     */
+    @Override
+    public <T extends WeatherProviderFeature, S extends Object> void getProviderWeatherFeature(WeatherRequest request, T extRequest, final GenericResponseParser<S> parser, final GenericRequestWeatherEventListener<S> listener) {
+        String url = extRequest.getURL();
+        LogUtils.LOGD("Generic Weather feature URL [" + url + "]");
+        StringRequest req = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String data) {
+                        // We handle the response
+                        try {
+                            S result = parser.parseData(data);
+                            listener.onResponseRetrieved(result);
+                        } catch (WeatherLibException t) {
+                            listener.onWeatherError(t);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        listener.onConnectionError(volleyError.getCause());
+                    }
+                }
+        );
+
+        queue.add(req);
+    }
+
+
+    /**
+     * Get an image at the specified URL and inform the listener when the image is ready
+     *
+     * @param url      String representing the url
+     * @param listener {@link com.survivingwithandroid.weather.lib.WeatherClient.WeatherImageListener}
+     * @since 1.5.3
+     */
+    @Override
+    public void getImage(String url, final WeatherImageListener listener) {
+        ImageRequest ir = new ImageRequest(url, new Response.Listener<Bitmap>() {
+
+            @Override
+            public void onResponse(Bitmap response) {
+                if (listener != null)
+                    listener.onImageReady(response);
+            }
+        }, 0, 0, null, null);
+
+        queue.add(ir);
     }
 }

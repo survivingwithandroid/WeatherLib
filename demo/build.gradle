@@ -25,9 +25,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':lib')
-    compile project(':volleyclient')
-	
+    compile 'com.survivingwithandroid:weatherlib:1.5.2'
+    compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.2'
+    compile 'com.mcxiaoke.volley:library:1.0.6@aar'
+    compile 'com.android.support:support-v4:20.0.0'
 }
