@@ -314,6 +314,122 @@ This can be done easily, creating a singleton class that holds the data you retr
     }
 }</pre>
 
+<h3>Specific Provider features</h3>
+<p>Starting from version 1.5.3, Weatherlib introduces a new way to call specific provider features. There two new classes to consider:</p>
+<ul>
+<li>WeatherProviderFeature</li>
+<li>GenericResponseParser</li>
+</ul>
+<p>
+The <code>WeatherProviderFeature</code> is an abstract class that represents the provider feature that we want to invoke. It accepts as parameter the WeatherRequest holding
+the data about the location and a set of additional paramters.The aim of this class is to produce an URL that will be invoked by the client. This URL is provider specific and it is built using the WeatherRequest data and the additional parameters. So if you want to invoke a specific provider feature like Webcams you have to extends this class.</p>
+<p>The <code>GenericResponseParser</code> is the response parser that can parse the response returned by the provider. It is an abstract class with only one method <code>parseData(String data)</code>. It is up to you to implement the right logic to parse the responde coming from the weather provider invoked using the <cdoe>WeatherProviderFeature</code>.
+</p>
+<p>The last aspect is how we make the request. Once we have a valid client instance we can simply invoke a specific weather provider feature using the method <cod>getProviderWeatherFeature</code>, passing the WeatherRequest, a concrete class that extends the WeatherProviderFeature, a concrete parser that extend the abstract class GenericResponseParser and a listener to get notified when the data is ready.</p>
+<p>Let us suppose we want to get the Webcam images using WeatherUnderground as weatherProvider. The first step is creating a concrete class that extends the WeatherProviderFeature and that produces the URL to invoke:</p>
+<pre>
+public class WebcamFeatureRequest extends WeatherUndergroundProviderFeature {
+
+    public WebcamFeatureRequest(WeatherRequest request, WeatherConfig config) {
+        super(request, config);
+    }
+
+    @Override
+    public String getURL() throws ApiKeyRequiredException {
+        if (config.ApiKey == null || config.ApiKey.equals(""))
+            throw new ApiKeyRequiredException();
+
+        String url = "http://api.wunderground.com/api" + "/" + config.ApiKey + "/webcams/";
+        url = addLanguage(url);
+
+        if (request.getCityId() != null)
+            url = url + request.getCityId() + ".json";
+        else
+            url = url + request.getLat() + "," + request.getLon() + ".json";
+
+        return url;
+    }
+}
+</pre>
+<p>Now we have to create the parser that is able to extract the right info from the data received:</p>
+<pre>
+public class WebcamResponseParser extends GenericResponseParser&lt;List&lt;WebcamFeatureResponse&gt;&gt; {
+    @Override
+    public List&lt;WebcamFeatureResponse&gt; parseData(String data) throws WeatherLibException {
+        List&lt;WebcamFeatureResponse&gt; result = new ArrayList&lt;WebcamFeatureResponse&gt;();
+        try {
+            JSONObject jObj = new JSONObject(data);
+            JSONArray webcams = jObj.getJSONArray("webcams");
+            for (int i=0; i < webcams.length(); i++) {
+                JSONObject webcam = webcams.getJSONObject(i);
+
+                WebcamFeatureResponse resp = new WebcamFeatureResponse();
+                resp.city = webcam.getString("city");
+                resp.state = webcam.getString("state");
+                resp.country = webcam.getString("country");
+                resp.camId = webcam.getString("camid");
+                resp.handle = webcam.getString("handle");
+                resp.link = webcam.getString("link");
+                resp.linkText = webcam.getString("linktext");
+                resp.currentImageUrl = webcam.getString("CURRENTIMAGEURL");
+                resp.widgetCurrentImageUrl = webcam.getString("WIDGETCURRENTIMAGEURL");
+
+                result.add(resp);
+            }
+        }
+        catch(Throwable t) {
+            throw new WeatherLibException(t);
+        }
+
+        return result;
+    }
+}
+</pre>
+<p>and then we have to call the weather provider:</p>
+<pre>
+       client.getProviderWeatherFeature(wRequest, req, parser, new WeatherClient.GenericRequestWeatherEventListener&lt;List&lt;WebcamFeatureResponse&gt;&gt;() {
+           @Override
+           public void onResponseRetrieved(List&lt;WebcamFeatureResponse&gt; data) {
+               Log.d("Webcam", "Data ["+data+"]");
+               for (WebcamFeatureResponse resp : data) {
+                   Log.d("Wecbam", "Name ["+resp.city+"] - URL ["+resp.currentImageUrl+"]");
+
+               }
+               if (data != null && data.size() > 0) {
+                   // We take the first element
+                   WebcamFeatureResponse resp = data.get(0);
+                   client.getImage(resp.currentImageUrl, new WeatherClient.WeatherImageListener() {
+                       @Override
+                       public void onImageReady(Bitmap image) {
+                           webcamView.setImageBitmap(image);
+                       }
+
+                       @Override
+                       public void onWeatherError(WeatherLibException wle) {
+                            // Never used in this case
+                       }
+
+                       @Override
+                       public void onConnectionError(Throwable t) {
+                           Toast.makeText(getActivity(), "Connection error", Toast.LENGTH_SHORT).show();
+                       }
+                   });
+               }
+           }
+
+           @Override
+           public void onWeatherError(WeatherLibException wle) {
+               //
+           }
+
+           @Override
+           public void onConnectionError(Throwable t) {
+
+           }
+       });
+    }
+</pre>
+
 <h3>
 Using API key</h3>
 <p>
