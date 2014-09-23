@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
   <head>
@@ -62,20 +61,26 @@
           <div class="span9">
             <h3 id="overview">Overview</h3>
 			<p>
-			 <b>Weatherlib</b> is an Android library that helps developer to create weather app easily and fast. 
-			 With this lib you can focus only on the app development without worrying about extracting information from weather provider or handling request/response.
+			 <b>Weatherlib</b> is an Android library that helps developers to create weather app easily and fast. 
+			</p>
+			<div class="bs-callout-info">
+				<p>Weatherlib aggregates proprietary 3rd party weather APIs and presents those functions through a <b>simple</b>, <b>unified</b>, <b>normalized API</b>.
+				By aggregating and normalizing 3rd party APIs, Weatherlib creates a single access point to those weather services without concern for service and API changes.
+				The library can connect to several weather provider using a specific protocol and it can create the right request according to the weather provider and parse the response.
+				The library abstracts 3rd party protocol implementation providing the weather information in the same way indipendently from the weather provider chosen.</p>
+			</div>
+			<img src="images/weatherlib_aggregator.png" alt="Weatherlib weather aggregator" />
+			<p>
+			 With this lib you can focus your mind only on the app development without worrying about extracting information from weather provider or handling request/response.
 			 The WeatherLib handles HTTP request and response in a separate thread so you don't have to handle them by yourself and at the same time you don't have to worry about ANR.
-			 The library can connect to several weather provider using a specific protocol and it can create the right request and parse the response.
-			 The most important thing is that you can change your weather provider without changing a line of code in your app because the library abstracts specific protocol 
-			 implementation providing the weather information in the same way indipendently from the weather provider chosen.			 
 			 </p>
-
+			
             <h3 id="features">Main features</h3>
 			<p>
 			  These are the main features provided by the WeatherLib:
 			  <ul>
 			   <li>
-				Remote service invocation
+				Remote weather service invocation
 			  </li>
 			  <li>
 Handling HTTP requests and response in a separate thread respect to the main Android thread, so that you don't have to worry about ANR (Application Not Responding) problems</li>
@@ -91,11 +96,13 @@ Implement specific protocol to extract information from remote weather server</l
 <li>Handling connection errors and parsing errors</li>
 <li>Implementing a notifition/listener mechanism so that your requests don't get locked while the library is processing the response or while the server is contacted</li>
 <li>Getting radar images</li>
+<li>Getting specific weather provider feature (like webcams and so on)</li>
+<li>Support the most used Android HTTP library (like Android Volley, OkHttp and so on)</li>
 <li>You can easily extend the lib and implement your weather provider</li>
 </ul>
 </p>
 
-            <h3 id="providers">Weather provider</h3>
+            <h3 id="providers">Supported Weather provider</h3>
 			<p>
 				The library supports the following weather provider
 
@@ -111,7 +118,7 @@ Implement specific protocol to extract information from remote weather server</l
                          
                         
 			<p>
-			 Starting from 1.5.0, many things are changed regarding the way they client is built. If you use a previous version please read <a href="#oldversion">Version 1.4.0 and before</a>.
+			 Starting from 1.5.0, many things are changed regarding the way they client is built.
 			</p>
 			<p>
 			 To create a WeatherClient we need a few lines:</p>
@@ -145,76 +152,74 @@ WeatherClient client = builder.attach(getActivity())
 			<p>
 			<strong>One important aspect we must notice is that the first two client are asynchronous client, while the last one is synchronous.</strong>
 			</p>
-  <p class="text-info">Starting from version 1.5.2 the external lib dependency has been removed from aar, so you have to add the library manually</p>
-                     
-			<p>According to the typpe of the client you choose you have to introduce different dependencies:</p>
-			<p><i>Volley (from 1.5.2)</i>:</p>
-<pre class="prettyprint">
+			<div class="bs-callout-warning">
+			<p>Starting from version 1.5.2 the external lib dependency has been removed from aar, so you have to add the library manually</p>
+             </div>
+			 
+			<p>According to the type of the client you choose you have to introduce different dependencies:</p>
+			
+			<div class="panel panel-info">
+			  <div class="panel-heading"><h4 class="panel-title">Volley (from 1.5.2)</h4></div>
+			  <p>
+			    <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.2'
 	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.2'
 	compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
 }
 </pre>
-<p>before 1.5.2</p>
-<pre class="prettyprint">
+			  </p>
+			</div>
+			  
+<div class="panel panel-info">
+			  <div class="panel-heading"><h4 class="panel-title">Volley HTTP client (before 1.5.2)</h4></div>
+			  <p>
+			    <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.1'
 	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.1'
 }
 </pre>
-<p><i>OkHttp (from 1.5.2)</i>:</p>
-<pre class="prettyprint">
+			  </p>
+			</div>			  
+			  
+			
+			<div class="panel panel-info">
+			  <div class="panel-heading"><h4 class="panel-title">OkHttp (from 1.5.2)</h4></div>
+			  <p>
+			    <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.2'
 	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.2'
 	compile 'com.squareup.okhttp:okhttp:2.0.+'
 }
-</pre>	
-<p>or before 1.5.2</p>
-<pre class="prettyprint">
+</pre>
+			  </p>
+			</div>
+
+			
+			<div class="panel panel-info">
+			  <div class="panel-heading"><h4 class="panel-title">OkHttp (before 1.5.2)</h4></div>
+			  <p>
+			    <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.1'
 	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.1'
 }
 </pre>	
-<p><i>Standard client</i>:</p>
-<pre class="prettyprint">
+			  </p>
+			</div>
+
+	<div class="panel panel-info">
+			  <div class="panel-heading"><h4 class="panel-title">Standard client</h4></div>
+			  <p>
+			    <pre class="prettyprint">
 dependencies {					
 	compile 'com.survivingwithandroid:weatherlib:1.5.1'	
 }
-</pre>		
-
-			 <h4 id="oldversion">Version 1.4.0 and before</h4>
-			<p>
-			  Starting from version 1.4.0 the libray is built by two modules: the first module is the core module that provides the main features like weather provider protocol implementation and
-			  a simple HTTP client based on <code>HttpURLConnection</code>
-			  The other module optional is the HTTP client that is based on  Volley library. So if you don't want to use volley you don't have to include this module.
-			  If you use Android Studio to build the app you can simply add this two lines to the gradle file:</p>
-			  <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.4.0'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.4.0'
-}
-</pre>
-
-			<p>Almost finished. There are some other basic steps to do before using the lib:</p>
-			<pre class="prettyprint">WeatherClient client = WeatherClientDefault.getInstance(); // initialize the client</pre>
-			<p>If we use Volley client the next step is:</p>
-			<pre class="prettyprint">client.init(ctx); // Ctx is the Context</pre>
-			<p>Now we have to instantiate the provider we want to use:</p>
-			<pre class="prettyprint">
-IWeatherProvider provider = null;
-try {
-	//provider = WeatherProviderFactory.createProvider(new YahooProviderType(), config);
-	provider = WeatherProviderFactory.createProvider(new OpenweathermapProviderType(), config);
-	//provider = WeatherProviderFactory.createProvider(new WeatherUndergroundProviderType(), config);
-	client.setProvider(provider);
-}
-catch (Throwable t) {    
-	// There's a problem
-}
-</pre>
+</pre>	
+			  </p>
+			</div>
 
 		<h4>Configuration</h4>
 			<p>
@@ -228,8 +233,7 @@ config.numDays = 6; // Max num of days in the forecast
 	</pre>
 			<p>and to update the configuration in our client and provider:</p>
 			<pre class="prettyprint">
-client.updateWeatherConfig(config);
-			</pre>
+client.updateWeatherConfig(config);	</pre>
 	<h4>Permissions in Manifest</h4>		
 <p>You should add these lines to your <code>Manifest.xml</code> so that the lib can connect to internet</p>
 <pre>
