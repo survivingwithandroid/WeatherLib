@@ -107,6 +107,10 @@ public class City {
         this.region = region;
     }
 
+    public String toString(){
+        return this.name + ", " + this.country;
+    }
+
     public static class CityBuilder {
         /*
          * Unique city identfier
