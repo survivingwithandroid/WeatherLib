@@ -54,8 +54,8 @@ before_install:
   # Install required components.
   # For a full list, run `android list sdk -a --extended`
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --all --filter build-tools-19.1.0 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
+  - echo yes | android update sdk --all --filter build-tools-21.0.0 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-21 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-google-m2repository --no-ui --force > /dev/null
