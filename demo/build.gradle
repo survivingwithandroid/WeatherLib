@@ -3,8 +3,9 @@ apply plugin: 'android'
 
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '21.1.1'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 19
