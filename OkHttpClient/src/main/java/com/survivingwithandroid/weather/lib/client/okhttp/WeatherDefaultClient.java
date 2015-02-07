@@ -443,32 +443,37 @@ public class WeatherDefaultClient extends WeatherClient {
     public void getHourForecastWeather(WeatherRequest wRequest, final HourForecastWeatherEventListener listener) throws ApiKeyRequiredException {
         String url = provider.getQueryHourForecastWeatherURL(wRequest);
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new Callback() {
+        if (url == null) {
+            url = provider.getQueryForecastWeatherURL(wRequest);
+        }
+        if (url != null) {
+            Request request = new Request.Builder().url(url).build();
+            client.newCall(request).enqueue(new Callback() {
 
-            @Override
-            public void onFailure(Request request, IOException e) {
-                notifyConnectionError(e, listener);
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                try {
-                    final WeatherHourForecast forecast = provider.getHourForecastWeather(response.body().string());
-                    Handler handler = new Handler(ctx.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.onWeatherRetrieved(forecast);
-                        }
-                    });
-                    //listener.onWeatherRetrieved(forecast); // Issue OkHttpClient #7
-                } catch (WeatherLibException e) {
-                   // listener.onWeatherError(e);
-                    notifyWeatherError(e, listener);
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    notifyConnectionError(e, listener);
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    try {
+                        final WeatherHourForecast forecast = provider.getHourForecastWeather(response.body().string());
+                        Handler handler = new Handler(ctx.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onWeatherRetrieved(forecast);
+                            }
+                        });
+                        //listener.onWeatherRetrieved(forecast); // Issue OkHttpClient #7
+                    } catch (WeatherLibException e) {
+                        // listener.onWeatherError(e);
+                        notifyWeatherError(e, listener);
+                    }
+                }
+            });
+        }
     }
 
     /**

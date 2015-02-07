@@ -1,6 +1,7 @@
 package com.survivingwithandroid.weather.lib.provider.forecastio;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
@@ -182,6 +183,8 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
             // Parse current weather
             JSONObject currently = rootObj.getJSONObject("currently");
+            Log.d("FIOW", currently.toString() + "");
+
             loc.setSunrise(currently.optLong("sunriseTime"));
             loc.setSunset(currently.optLong("sunsetTime"));
             weather = parseWeather(currently);
@@ -211,8 +214,9 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
             forecast = new WeatherForecast();
 
             JSONArray jsonDailyData = daily.getJSONArray("data");
+
             for (int i=0; i < jsonDailyData.length(); i++) {
-                JSONObject jsonDay = jsonData.getJSONObject(i);
+                JSONObject jsonDay = jsonDailyData.getJSONObject(i);
                 Weather hWeather = parseWeather(jsonDay);
                 DayForecast dayForecast = new DayForecast();
                 dayForecast.timestamp = jsonDay.optLong("time");
@@ -235,13 +239,15 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
     private Weather parseWeather(JSONObject jsonWeather) throws JSONException {
         Weather weather = new Weather();
+
         weather.currentCondition.setDescr(jsonWeather.optString("summary"));
         weather.currentCondition.setIcon(jsonWeather.optString("icon"));
 
 
 
         weather.rain[0].setAmmount((float) jsonWeather.optDouble("precipIntensity"));
-        weather.rain[0].setChance((float) jsonWeather.optDouble("precipProbability"));
+
+        weather.rain[0].setChance((float) jsonWeather.optDouble("precipProbability") * 100);
 
         weather.temperature.setTemp((float) jsonWeather.optDouble("temperature"));
         weather.temperature.setMinTemp((float) jsonWeather.optDouble("temperatureMin"));
@@ -252,7 +258,7 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
         weather.wind.setDeg((float) jsonWeather.optDouble("windBearing"));
 
         weather.clouds.setPerc((int) jsonWeather.optDouble("cloudCover") * 100); // We transform it in percentage
-        weather.currentCondition.setHumidity((int) jsonWeather.optDouble("humidity") * 100);
+        weather.currentCondition.setHumidity((float) jsonWeather.optDouble("humidity") * 100);
         weather.currentCondition.setVisibility((float) jsonWeather.optDouble("visibility"));
         weather.currentCondition.setPressure((float) jsonWeather.optDouble("pressure"));
 
