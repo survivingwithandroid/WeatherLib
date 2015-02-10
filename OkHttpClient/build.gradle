@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
-        versionCode 153
-        versionName "1.5.3"
+        versionCode 154
+        versionName "1.5.4"
     }
     buildTypes {
         release {
@@ -37,7 +37,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':lib')
-    compile 'com.squareup.okhttp:okhttp:2.0.+'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
 }
 
 
