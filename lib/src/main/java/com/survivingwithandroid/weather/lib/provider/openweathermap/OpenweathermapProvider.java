@@ -116,7 +116,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
             JSONObject mainObj = getObject("main", jObj);
             weather.currentCondition.setHumidity(getInt("humidity", mainObj));
-            weather.currentCondition.setPressure(getInt("pressure", mainObj));
+            weather.currentCondition.setPressure(getFloat("pressure", mainObj)); //#18
             weather.temperature.setMaxTemp(getFloat("temp_max", mainObj));
             weather.temperature.setMinTemp(getFloat("temp_min", mainObj));
             weather.temperature.setTemp(getFloat("temp", mainObj));
