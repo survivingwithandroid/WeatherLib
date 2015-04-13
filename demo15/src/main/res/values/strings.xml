@@ -21,4 +21,5 @@
     </string-array>
 
     <string name="wunderground_key">your_key</string>
+    <string name="forecastio_key">your_key</string>
 </resources>
