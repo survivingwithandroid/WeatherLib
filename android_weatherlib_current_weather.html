@@ -1,0 +1,239 @@
+
+<html>
+  
+    <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Do you want to develo an android weather app to get the current weather condition using the most known weather provider:Yahoo! Weather, Openweathermap, Weatherunderground, Weather.com or Forecast.io? Follow this tutorial and you can create and full android weather app" />
+	<meta content='android weather, weather api,code,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='author'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='publisher'/>
+
+    <meta name="google-site-verification" content="2gOcYkpKozlNli7dQdtWHFue5qWjPw7YCynvKKb9Xkk" />
+
+	<link rel="stylesheet" href="./css/bootstrap-combined.min.css">
+	<link rel="stylesheet" href="./css/site.css">
+	<link rel="stylesheet" href="./css/bjqs.css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300" rel="stylesheet" type="text/css">
+
+	<script src="./javascripts/jquery-1.7.1.min.js"></script>
+    <script src="./javascripts/bjqs-1.3.min.js"></script>
+	<script src="./javascripts/jquery.smooth-scroll.min.js"></script>
+    <title>Android Weatherlib Get current weather</title>
+  </head>
+
+
+   <body data-target=".content-nav" >
+
+
+    <header style="background-color:#3F51B5">
+    
+    <ul class="nav nav-pills" style="background:#FFFFFF; width:100%">
+  <li role="presentation"><a href="./index.html">Home</a></li>
+  <li role="presentation"><a href="./android_weatherlib_start.html">Getting started</a></li>
+  <li role="presentation"><a href="./android_weatherlib_search_city.html">Documentation</a></li>
+  <li role="presentation"><a href="./javadoc/index.html">Javadoc</a></li>
+
+</ul>
+
+      <div class="container" >
+
+        <div class="row"  >
+		  <div class="span1" style="margin-top:5px">
+			<a href="https://plus.google.com/communities/117946761543584564970" target="_blank"><img class="img-circle" src="images/weatherlib_icon.png" alt="Weather library"/></a>
+		  </div>
+
+          <div class="span5">		    
+            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">Weatherlib <br/> <font style="font-size:large; font-style:italic;">Get current weather</font></h1> 
+          </div>
+          <div class="span6">
+            <menu>
+              <ul>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.4</strong></a></li>
+                <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>               
+              </ul>
+            </menu>
+          </div>
+      </div>
+
+    </header>
+
+
+
+<section id="body">
+<div class="container">
+<div class="row">
+<div class="span12"> 
+<br/><br/></br/><h2>Introduction</h2>
+In this paragraph we will see how to get current weather conditions.
+Weatherlib helps you to get weather condition<br>
+creating weather data model indipendently from the weather provider you
+used.<br>
+You can query the current weather condition using city id, retrieved
+using search city, or using latitude and longitude. The library will
+check the way you are querying the condition and choses the right
+remote service to invoke.<br>
+Notice that city id has the precedence respect to geo coords, so if you
+create a request, using <code>WeatherRequest</code>, holding both
+information, the
+library will select the city id to create the query.<br>
+<br>
+The <em>Current weather</em> features is supported by:<br/><br/>
+    <table class="table_support">
+      <tr> 
+        <td><strong>Openweathermap</strong></td>
+        <td><font class="ok_support">Yes</font></td>
+      </tr>
+      <tr>
+        <td><strong>Weatherunderground<br/>Weather.com</strong></td>
+         <td><font class="ok_support">Yes</font></td>
+      </tr>
+      <tr>
+        <td><strong>Yahoo! Weather</strong></td>
+        <td><font class="ok_support">Yes</font></td>
+      </tr>
+      <tr>
+        <td><strong>Forecast.io</strong></td>
+         <td><font class="ok_support">Yes</font></td>
+      </tr>
+    </table>
+<h2>Get current weather by city id</h2>
+If you want to get current weather condition using city id, first you
+have to create the WeatherRequest:<br>
+<br>
+<pre class="prettyprint">WeatherRequest req = new WeatherRequest(cityId);<br></pre>
+<br>
+Now we have the request, we can query the current weather. As always, our
+weatherClient object must be correctly instantiated and configured.
+The method to use to get the weather is:
+<br>
+<br>
+<pre class="prettyprint">   weatherClient.getCurrentCondition(req, new WeatherClient.WeatherEventListener() {<br>            @Override<br>            public void onWeatherRetrieved(CurrentWeather cWeather) {<br>                Weather weather = cWeather.weather;<br>		// The weather condition object is ready and we can use it <br>           }<br><br>            @Override<br>            public void onWeatherError(WeatherLibException t) {<br>                // Something went wrong maybe we should inform the user<br>            }<br><br>            @Override<br>            public void onConnectionError(Throwable t) {<br>               // There was a connection error<br>            }<br>        });<br></pre>
+<br>
+<br>
+As you can see it is very simple, we have to provide a listener so that we get informed
+when the weather data is ready.
+<br>
+The <code>onWeatherRetrieved(CurrentWeather cWeather)</code> is called as soon as the data
+is ready. <br/>
+We can use <em>CurrentWeather</em> to get the <strong>current weather condition</strong>. 
+This class holds <em>WeatherUnit</em> that is filled with the unit measure system retrieved
+from the <strong>weather provider</strong>.
+<em>Weather</em> class hold all the information about current weather.
+Weather is built as:
+<pre class="prettyprint">
+public class Weather {
+    public Location location = new Location();
+    public Condition currentCondition = new Condition();
+    public Temperature temperature = new Temperature();
+    public Wind wind = new Wind();
+    public Rain[] rain = {new Rain(), new Rain()};
+    public Snow snow = new Snow();
+    public Clouds clouds = new Clouds();
+..
+}
+</pre>
+<br/>
+As you can see there are all <strong>weather information in the Android app</strong>
+<br/>
+For example, in the <code>onWeatherRetrieved</code> in your <strong>Android weather app</strong>, you
+should fill your <strong>Android UI app</strong>:
+<pre class="prettyprint">
+weatherClient.getCurrentCondition(req, new WeatherClient.WeatherEventListener() {
+            @Override
+            public void onWeatherRetrieved(CurrentWeather cWeather) {
+                Weather weather = cWeather.weather;
+                getListener().requestCompleted();
+                cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
+                condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
+                LogUtils.LOGD("SwA", "Temp [" + temp + "]");
+                LogUtils.LOGD("SwA", "Val [" + weather.temperature.getTemp() + "]");
+                temp.setText("" + ((int) weather.temperature.getTemp()));
+                unitTemp.setText(cWeather.getUnit().tempUnit);
+                colorTextLine.setBackgroundResource(WeatherUtil.getResource(weather.temperature.getTemp(), config));
+                hum.setText(weather.currentCondition.getHumidity() + "%");
+                tempMin.setText(weather.temperature.getMinTemp() + cWeather.getUnit().tempUnit);
+                tempMax.setText(weather.temperature.getMaxTemp() + cWeather.getUnit().tempUnit);
+                windSpeed.setText(weather.wind.getSpeed() + cWeather.getUnit().speedUnit);
+                windDeg.setText((int) weather.wind.getDeg() + "° (" + WindDirection.getDir((int) weather.wind.getDeg()) + ")");
+                press.setText(weather.currentCondition.getPressure() + cWeather.getUnit().pressureUnit);
+
+                sunrise.setText(WeatherUtil.convertDate(weather.location.getSunrise()));
+
+                sunset.setText(WeatherUtil.convertDate(weather.location.getSunset()));
+                ....
+             }
+}
+</pre>
+<br/>
+You should notice, that some fields could be null depending on the <em>weather provider</em>.
+
+ </div>
+</div>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+<!-- Add next and back -->
+<div class="row" style="height: 80px;">
+<ul class="pager">
+  <li><a href="./android_weatherlib_search_city.html">Search city</a></li>
+  <li><a href="./android_weatherlib_forecast.html">Weather forecast</a></li>
+</ul>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+	<div class="container" style="width:100%; padding-left:10px; padding-right:10px;">
+	<footer style="width:100%">
+	<div class="row" style="background:#BBDEFB;">
+		<span class="12">
+			<center><h6>Project maintained by Francesco Azzola</h6></center>
+		</span>
+	</div>
+	<div class="row" style="background:#BBDEFB;">
+
+		<div class="span3">
+			<h4>Info</h4>
+			<ul>
+			  <li><a href="mailto:survivingwithandroid@gmail.com">Contact me</a></li>
+			  <li><a href="https://github.com/survivingwithandroid">My Github Projects</a></li>
+			  <li><a href="https://github.com/survivingwithandroid/WeatherLib/wiki/Tutorial">Wiki</a></li>
+			</ul>
+
+		</div>
+		<div class="span3">
+			<h4>Social</h4>
+			<ul>
+			  <li><a href="http://plus.google.com/+FrancescoAzzola" target="_blank">Follow me</a></li>
+			  <li><a href="https://plus.google.com/communities/117946761543584564970">Join the G+ Weather community</a></li>
+			  <li><a href="http://it.linkedin.com/in/francescoazzola">Linkedin profile</a></li>
+			</ul>
+
+		</div>
+		<div class="span3">
+			<h4>Useful links</h4>
+			<ul>
+			  <li><a href="http://openweathermap.org/" target="_blank">Openweathermap</a></li>
+			  <li><a href="https://developer.yahoo.com/weather/" target="_blank">Yahoo! Weather</a></li>
+			  <li><a href="http://www.wunderground.com/weather/api/" target="_blank">Weather underground</a></li>
+			  <li><a href="http://forecast.io/" target="_blank">Forecast.io</a></li>
+			</ul>
+		</div>	
+		<div class="span3">
+			<h4>Blog</h4>
+			<ul>
+			  <li><a href="http://www.survivingwithandroid.com" target="_blank">Surviving with android blog</a></li>
+			</ul>
+		</div>		
+
+    </div>	
+	</footer>
+	</div> </div>
+</section>
+</body>
+</html>

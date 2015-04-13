@@ -5,7 +5,7 @@ html, body {
 body {
   background-color: #f6f6f6;
   padding-bottom: 50px;
-  padding-top: 80px;
+  padding-top: 140px;
 }
 
 header, #subtitle {
@@ -56,7 +56,7 @@ h2 {
   line-height: 30px;
   padding: 15px 0;
   margin: 0;
-  color: #FFFFFF;
+  color: #6E6E6E;
 }
 h2 strong {
   font-weight: 300;
@@ -180,4 +180,16 @@ color: inherit;
 
 panel-body {
 	margin-left:10px;
+}
+
+.table_support, tr, td  {
+    border: 1px dashed black;
+}
+
+.ok_support {
+    color: #00AA00;
+}
+
+.no_support {
+    color: #AA0000;
 }

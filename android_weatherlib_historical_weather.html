@@ -1,0 +1,201 @@
+
+<html>
+  
+    <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="You can get android weather historical data using the app. In this tutorial you have a detailed example how to create and android app to get weather data" />
+	<meta content='android weather, weather api,code,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='author'/>
+	<meta content='https://plus.google.com/111119552788205366558' name='publisher'/>
+
+    <meta name="google-site-verification" content="2gOcYkpKozlNli7dQdtWHFue5qWjPw7YCynvKKb9Xkk" />
+
+	<link rel="stylesheet" href="./css/bootstrap-combined.min.css">
+	<link rel="stylesheet" href="./css/site.css">
+	<link rel="stylesheet" href="./css/bjqs.css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300" rel="stylesheet" type="text/css">
+
+	<script src="./javascripts/jquery-1.7.1.min.js"></script>
+    <script src="./javascripts/bjqs-1.3.min.js"></script>
+	<script src="./javascripts/jquery.smooth-scroll.min.js"></script>
+    <title>Android Weatherlib Weather historical data</title>
+  </head>
+
+
+   <body data-target=".content-nav" >
+
+
+    <header style="background-color:#3F51B5">
+    
+    <ul class="nav nav-pills" style="background:#FFFFFF; width:100%">
+  <li role="presentation"><a href="./index.html">Home</a></li>
+  <li role="presentation"><a href="./android_weatherlib_start.html">Getting started</a></li>
+  <li role="presentation"><a href="./android_weatherlib_search_city.html">Documentation</a></li>
+  <li role="presentation"><a href="./javadoc/index.html">Javadoc</a></li>
+
+</ul>
+
+      <div class="container" >
+
+        <div class="row"  >
+		  <div class="span1" style="margin-top:5px">
+			<a href="https://plus.google.com/communities/117946761543584564970" target="_blank"><img class="img-circle" src="images/weatherlib_icon.png" alt="Weather library"/></a>
+		  </div>
+
+          <div class="span5">		    
+            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">Weatherlib <br/> <font style="font-size:large; font-style:italic;">Historical weather data</font></h1> 
+          </div>
+          <div class="span6">
+            <menu>
+              <ul>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.4</strong></a></li>
+                <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>               
+              </ul>
+            </menu>
+          </div>
+      </div>
+
+    </header>
+
+
+
+<section id="body">
+<div class="container">
+<div class="row">
+<div class="span12"> 
+<br/><br/></br/><h2>Introduction</h2>
+This feature of <strong>Android Weatherlib</strong> helps you to get <em>historical weather</em>.
+<br/>
+The <em>Daily forecast</em> features is supported by:<br/><br/>
+
+    <table class="table_support">
+      <tr> 
+        <td><strong>Openweathermap</strong></td>
+        <td><font class="ok_support">Yes</font></td>
+      </tr>
+      <tr>
+        <td><strong>Weatherunderground<br/>Weather.com</strong></td>
+         <td><font class="ok_support">Yes</font></td>
+      </tr>
+      <tr>
+        <td><strong>Yahoo! Weather</strong></td>
+        <td><font class="no_support">NO</font></td>
+      </tr>
+      <tr>
+        <td><strong>Forecast.io</strong></td>
+         <td><font class="no_support">NO</font></td>
+      </tr>
+    </table>
+<br>
+Be aware this feature is not supported by all the provider managed by Weatherlib.
+<br/>
+<h2>Get Historical Weather in Android</h2>
+Always let us suppose, you have already <em>city id</em>, then:
+<br/>
+<pre class="prettyprint">
+       weatherClient.getHistoricalWeather(new WeatherRequest(cityId), 
+                      new Date(), // Start date,
+                      new Date(), //end date
+                      new WeatherClient.HistoricalWeatherEventListener() {
+            @Override
+            public void onWeatherRetrieved(HistoricalWeather historicalWeather) {
+                
+            }
+
+            @Override
+            public void onWeatherError(WeatherLibException e) {
+
+            }
+
+            @Override
+            public void onConnectionError(Throwable throwable) {
+
+            }
+        });
+</pre><br/>
+In this case, the method accepts two <em>java.util.Date</em>. These dates represent the time interval 
+to use when querying the <strong>historical weather information</strong>.
+<br/>
+Once we have our <em>HistoricalWeather</em> object, it is  possible to traverse it:
+<br/>
+<br/>
+<pre class="prettyprint">
+ List<HistoricalHourWeather> histData = historicalWeather.getHoistoricalData();
+ for (HistoricalHourWeather histHour : histData) {
+       Weather weather = histHour.weather;
+       long timestamp = histHour.timestamp;
+ }
+</pre>
+<br/>
+We can use the List containing the weather info to create an <strong>Android ListView</strong>, maybe
+coding a custom adapter.
+ </div>
+</div>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+<!-- Add next and back -->
+<div class="row" style="height: 80px;">
+<ul class="pager">
+  <li><a href="./android_weatherlib_forecast.html">Weather forecast</a></li>
+  <li><a href="./android_weatherlib_extended_features.html">Extended feature</a></li>
+</ul>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+	<div class="container" style="width:100%; padding-left:10px; padding-right:10px;">
+	<footer style="width:100%">
+	<div class="row" style="background:#BBDEFB;">
+		<span class="12">
+			<center><h6>Project maintained by Francesco Azzola</h6></center>
+		</span>
+	</div>
+	<div class="row" style="background:#BBDEFB;">
+
+		<div class="span3">
+			<h4>Info</h4>
+			<ul>
+			  <li><a href="mailto:survivingwithandroid@gmail.com">Contact me</a></li>
+			  <li><a href="https://github.com/survivingwithandroid">My Github Projects</a></li>
+			  <li><a href="https://github.com/survivingwithandroid/WeatherLib/wiki/Tutorial">Wiki</a></li>
+			</ul>
+
+		</div>
+		<div class="span3">
+			<h4>Social</h4>
+			<ul>
+			  <li><a href="http://plus.google.com/+FrancescoAzzola" target="_blank">Follow me</a></li>
+			  <li><a href="https://plus.google.com/communities/117946761543584564970">Join the G+ Weather community</a></li>
+			  <li><a href="http://it.linkedin.com/in/francescoazzola">Linkedin profile</a></li>
+			</ul>
+
+		</div>
+		<div class="span3">
+			<h4>Useful links</h4>
+			<ul>
+			  <li><a href="http://openweathermap.org/" target="_blank">Openweathermap</a></li>
+			  <li><a href="https://developer.yahoo.com/weather/" target="_blank">Yahoo! Weather</a></li>
+			  <li><a href="http://www.wunderground.com/weather/api/" target="_blank">Weather underground</a></li>
+			  <li><a href="http://forecast.io/" target="_blank">Forecast.io</a></li>
+			</ul>
+		</div>	
+		<div class="span3">
+			<h4>Blog</h4>
+			<ul>
+			  <li><a href="http://www.survivingwithandroid.com" target="_blank">Surviving with android blog</a></li>
+			</ul>
+		</div>		
+
+    </div>	
+	</footer>
+	</div> </div>
+</section>
+</body>
+</html>

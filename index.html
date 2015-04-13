@@ -1,29 +1,40 @@
-<html>
 
-  <head>
+<html>
+  
+    <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Weatherlib : Android Weather Library. Weather API, parse weather data from yahoo! weather, openweathermap, weatherunderground, forecastio Open source library for android" />
+    <meta name="description" content="This is an open source library to get weather information in Android. It supports several weather provider: Yahoo! Weather, Openweathermap, Weatherunderground, Weather.com and Forecast.io. You can get current weather conditions, forecast and historical weather data." />
 	<meta content='android weather, weather api,code,source,weather,weather library,yahoo! weather, weatherunderground,api,android weather,android app,open source library' name='keywords'/>
 	<meta content='https://plus.google.com/111119552788205366558' name='author'/>
 	<meta content='https://plus.google.com/111119552788205366558' name='publisher'/>
 
-        <meta name="google-site-verification" content="2gOcYkpKozlNli7dQdtWHFue5qWjPw7YCynvKKb9Xkk" />
+    <meta name="google-site-verification" content="2gOcYkpKozlNli7dQdtWHFue5qWjPw7YCynvKKb9Xkk" />
 
-	<link rel="stylesheet" href="./stylesheets/bootstrap-combined.min.css">
-	<link rel="stylesheet" href="./stylesheets/site.css">
-	<link rel="stylesheet" href="./stylesheets/bjqs.css">
+	<link rel="stylesheet" href="./css/bootstrap-combined.min.css">
+	<link rel="stylesheet" href="./css/site.css">
+	<link rel="stylesheet" href="./css/bjqs.css">
 	<link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300" rel="stylesheet" type="text/css">
 
 	<script src="./javascripts/jquery-1.7.1.min.js"></script>
     <script src="./javascripts/bjqs-1.3.min.js"></script>
 	<script src="./javascripts/jquery.smooth-scroll.min.js"></script>
-    <title>Weatherlib</title>
+    <title>Android Weatherlib </title>
   </head>
 
+
    <body data-target=".content-nav" >
-  
-    <header >
+
+
+    <header style="background-color:#">
+    
+    <ul class="nav nav-pills" style="background:#FFFFFF; width:100%">
+  <li role="presentation"><a href="./index.html">Home</a></li>
+  <li role="presentation"><a href="./android_weatherlib_start.html">Getting started</a></li>
+  <li role="presentation"><a href="./android_weatherlib_search_city.html">Documentation</a></li>
+  <li role="presentation"><a href="./javadoc/index.html">Javadoc</a></li>
+
+</ul>
 
       <div class="container" >
 
@@ -33,12 +44,12 @@
 		  </div>
 
           <div class="span5">		    
-            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">Weatherlib</h1>
+            <h1 style="text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);">Weatherlib <br/> <font style="font-size:large; font-style:italic;"></font></h1> 
           </div>
           <div class="span6">
             <menu>
               <ul>
-                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.3</strong></a></li>
+                <li><a href="#starthere" class="menu download">Latest version <strong>1.5.4</strong></a></li>
                 <li><a href="https://github.com/survivingwithandroid/WeatherLib" data-title="View GitHub Project" class="menu github"><img src="images/icon-github.png" alt="GitHub"/></a></li>               
               </ul>
             </menu>
@@ -46,20 +57,14 @@
       </div>
 
     </header>
-	<section id="subtitle">
-      <div class="container">
-        <div class="row">
-          <div class="span12">
-            <h2>Android Weather library: build weather based app easily</h2>
-          </div>
-        </div>
-      </div>
-    </section>	
+
+
+
 <section id="body">
 <div class="container">
-        <div class="row">
-          <div class="span9">
-            <h3 id="overview">Overview</h3>
+<div class="row">
+<div class="span12"> 
+<br/><br/></br/>            <h3 id="overview">Overview</h3>
 			<p>
 			 <b>Weatherlib</b> is an Android library that helps developers to create weather app easily and fast. 
 			</p>
@@ -69,16 +74,15 @@
 				The library can connect to several weather provider using a specific protocol and it can create the right request according to the weather provider and parse the response.
 				The library abstracts 3rd party protocol implementation providing the weather information in the same way indipendently from the weather provider chosen.</p>
 			</div>
-			<img src="images/weatherlib_aggregator.png" alt="Weatherlib weather aggregator" />
-			<p>
-			 With this lib you can focus your mind only on the app development without worrying about extracting information from weather provider or handling request/response.
-			 The WeatherLib handles HTTP request and response in a separate thread so you don't have to handle them by yourself and at the same time you don't have to worry about ANR.
+			<div style="text-align: center;"><img title="Weatherlib weather aggregator" style="width: 500px; height: 324px;" src="images/weatherlib_aggregator.png" alt="Weatherlib weather aggregator">
+			</div><p>
+			 With this lib you can focus your mind only on the app development without worrying about extracting information from weather provider or handling request/response.&nbsp;
 			 </p>
 			
             <h3 id="features">Main features</h3>
 			<p>
 			  These are the main features provided by the WeatherLib:
-			  <ul>
+			  </p><ul>
 			   <li>
 				Remote weather service invocation
 			  </li>
@@ -100,246 +104,47 @@ Implement specific protocol to extract information from remote weather server</l
 <li>Support the most used Android HTTP library (like Android Volley, OkHttp and so on)</li>
 <li>You can easily extend the lib and implement your weather provider</li>
 </ul>
-</p>
+<p></p>
 
             <h3 id="providers">Supported Weather provider</h3>
 			<p>
 				The library supports the following weather provider
 
-				<ul>
+				</p><ul>
 				  <li><a href="http://www.openweathermap.org" target="_blank">Openweathermap</a></li>
-				  <li><a href="http://www.wunderground.com/weather/api" target="_blank">Weather Underground</li>
-				  <li><a href="https://developer.yahoo.com/weather/" target="_blank">Yahoo! Weather</a></li>
+				  <li><a href="http://www.wunderground.com/weather/api" target="_blank">Weather Underground / Weather.com<br></a></li>
+<a href="http://www.wunderground.com/weather/api" target="_blank">				  </a><li><a href="https://developer.yahoo.com/weather/" target="_blank">Yahoo! Weather</a></li>
 				  <li><a href="https://developer.forecast.io/" target="_blank">Forecast.io</a></li>
-				</ul>
-			</p>
-
-            <h3 id="starthere">Getting started</h3>
-                         
-                        
-			<p>
-			 Starting from 1.5.0, many things are changed regarding the way they client is built.
-			</p>
-			<p>
-			 To create a WeatherClient we need a few lines:</p>
-			 <p>The first thing, we have to instantiate the builder</p>
-			 <pre class="prettyprint">WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();</pre>
-			 <p>then we have to instantiate the WeatherConfig</p>
-			 <pre class="prettyprint">WeatherConfig config = new WeatherConfig();</pre>
-			 <p>and finally:</p>
-			 <pre class="prettyprint">
-WeatherClient client = builder.attach(getActivity())
-            .provider(new ForecastIOProviderType())
-            .httpClient(com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient.class)
-            .config(config)
-            .build();</pre>
-			<p>
-			In this new way we use use a builder to create the <code>Weatherclient</code>.
-			At line 2, we set the Weather provider: as you already know there are four different weather provider supported by now by the lib:</p>
-			<ul>
-			  <li>Openweathermap -> <code>OpenweathermapProviderType</code></li>
-			  <li>Yahoo! Weather -> <code>YahooWeatherProviderType</code></li>
-			  <li>Weatherundergroung -> <code>WeatherundergroundProviderType</code></li>
-			  <li>Forecast.io -> <code>ForecastIOProviderType</code></li>
-			</ul>
-			<p>
-			At line 3 we set the HTTP client that the library uses to connect to the remote server: there a three different clients supported by the lib:</p>
-			<ul>
-               <li><a href="https://android.googlesource.com/platform/frameworks/volley" target="_blank">Volley Client</a> -> <code>com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault</code></li> (available from 1.0 version)
-			   <li><a href="http://square.github.io/okhttp/" target="_blank">OkHttp Client</a> -> <code>com.survivingwithandroid.weather.lib.client.okhttp.WeatherClientDefault</code></li> (available from 1.5 version)
-			   <li>Standard client -> <code>com.survivingwithandroid.weather.lib.StandardHttpClient</code></li> (available from 1.0 version)
-			</ul>
-			<p>
-			<strong>One important aspect we must notice is that the first two client are asynchronous client, while the last one is synchronous.</strong>
-			</p>
-			<div class="bs-callout-warning">
-			<p>Starting from version 1.5.2 the external lib dependency has been removed from aar, so you have to add the library manually</p>
-             </div>
-			 
-			<p>According to the type of the client you choose you have to introduce different dependencies:</p>
-			
-			<div class="panel panel-info">
-			  <div class="panel-heading"><h4 class="panel-title">Volley (from 1.5.2)</h4></div>
-			  <p>
-			    <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.2'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.2'
-	compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
-}
-</pre>
-			  </p>
-			</div>
-			  
-<div class="panel panel-info">
-			  <div class="panel-heading"><h4 class="panel-title">Volley HTTP client (before 1.5.2)</h4></div>
-			  <p>
-			    <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.1'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.1'
-}
-</pre>
-			  </p>
-			</div>			  
-			  
-			
-			<div class="panel panel-info">
-			  <div class="panel-heading"><h4 class="panel-title">OkHttp (from 1.5.2)</h4></div>
-			  <p>
-			    <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.2'
-	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.2'
-	compile 'com.squareup.okhttp:okhttp:2.0.+'
-}
-</pre>
-			  </p>
-			</div>
-
-			
-			<div class="panel panel-info">
-			  <div class="panel-heading"><h4 class="panel-title">OkHttp (before 1.5.2)</h4></div>
-			  <p>
-			    <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.1'
-	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.1'
-}
-</pre>	
-			  </p>
-			</div>
-
-	<div class="panel panel-info">
-			  <div class="panel-heading"><h4 class="panel-title">Standard client</h4></div>
-			  <p>
-			    <pre class="prettyprint">
-dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.1'	
-}
-</pre>	
-			  </p>
-			</div>
-
-		<h4>Configuration</h4>
-			<p>
-			To configure our client we can use <code>WeatherConfig</code>:</p>
-			<pre class="prettyprint">
-WeatherConfig config = new WeatherConfig();
-config.unitSystem = WeatherConfig.UNIT_SYSTEM.M;
-config.lang = "en"; // If you want to use english
-config.maxResult = 5; // Max number of cities retrieved
-config.numDays = 6; // Max num of days in the forecast
-	</pre>
-			<p>and to update the configuration in our client and provider:</p>
-			<pre class="prettyprint">
-client.updateWeatherConfig(config);	</pre>
-	<h4>Permissions in Manifest</h4>		
-<p>You should add these lines to your <code>Manifest.xml</code> so that the lib can connect to internet</p>
-<pre>
-&lt;uses-permission android:name="android.permission.INTERNET"/&gt;
-&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /&gt;	
-</pre>
-<p>If you want to have more information please give a look at the <a href="./tutorial.html">Tutorial</a>
-
-            <h3 id="eclipse">Eclipse users</h3>
-			<p>
-			The project is built using Android Studio, anyway if you want to use the lib with Eclipse you can download the library jar <a href="https://github.com/survivingwithandroid/WeatherLib/tree/master/lib/release">here</a>
-			<p>
-
-			<h3 id="app">App</h3>
-		<p>
-		  To help you to have an idea about the library i created a demo app that can be used as guide. Here there are some screenshots:</p>
-		<center>
-		  <div id="banner-fade">
-        <!-- start Basic Jquery Slider -->
-        <ul class="bjqs">
-          <li><img src="images/demo/android_weatherapp_weather.png" title="Automatically generated caption"></li>
-          <li><img src="images/demo/android_weatherapp_forecast.png" title="Automatically generated caption"></li>
-          <li><img src="images/demo/android_weatherapp_search_city.png" title="Automatically generated caption"></li>
-		  <li><img src="images/demo/android_weatherapp_settings.png" title="Automatically generated caption"></li>
-        </ul>
-      </div>
-	  </center>
-	  <p>&nbsp;</p>
-	  <p>
-	  The screenshots below shown my WeatherApp in beta version:</p>
-	  <center>
-
-	   <div id="banner-fade1">
-        <!-- start Basic Jquery Slider -->
-        <ul class="bjqs">
-          <li><img src="images/app/s4_1.png" title="Automatically generated caption"></li>
-          <li><img src="images/app/s4_2.png" title="Automatically generated caption"></li>
-          <li><img src="images/app/s4_3.png" title="Automatically generated caption"></li>		 
-        </ul>
-      </div>
-	  </center>
-	  <p>&nbsp;</p>
-	  <p>If you want to test the app you have to join the <a href="https://plus.google.com/communities/117946761543584564970" target="_blank">G+ Community</a> and then download the app in beta version</p>
-
-		<h3 id="contribute">Contribute</h3>
-		<p>
-		The library source code is free so that everyone that wants to contribute to the library is welcome.If you want to contribute to the library you can use github and pull a new request so that I can merge your code. 
-		If you find bugs in the code you can open an issue on github or contact me. In case you use the library and you are satisfied with it I would like you could send some screenshots of the app you created. 
-		If someone wants to contribute freely to the library providing a nice logo I would be very happy. 
-	    </p>
-
-		<h3 id="license">License</h3>
-<pre>
-Copyright 2012-2014 Francesco Azzola (Surviving with Android)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-</pre>
-	</div>
-	<div class="span3">
-            <div class="content-nav affix" data-spy="affix" data-offset-top="80">
-            
-              <ul class="nav nav-tabs nav-stacked primary">
-                <li><a href="#overview">Overview</a></li>
-                <li><a href="#features">Main features</a></li>
-                <li><a href="#providers">Weather provider</a></li>
-				<li><a href="#starthere">Getting started</a></li>
-				<li><a href="#eclipse">Eclipse users</a></li>
-                <li><a href="#app">App</a></li>
-                <li><a href="#license">License</a></li>
-              </ul>
-              <ul class="nav nav-pills nav-stacked secondary">
-
-                <li><a href="javadoc/index.html">Javadoc</a></li>                
-				<li>Travis-ci:<a href="https://travis-ci.org/survivingwithandroid/WeatherLib"><img src="https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master" alt="Build status"/></a></li>		
-              </ul>			  
-            </div>
-          </div>
-    </div>
-
-	<div class="row" style="height:80px;">
-	    <ul class="pager">
-		<li><a href="./tutorial.html">Tutorial</a></li>		
-	 </ul>
-	 </div>
-
-
-	</div>	
-
-	<div class="container">
-	<footer>
-	<div class="row">
+				</ul><br><h3>Libray structure</h3>The library is built using a moduare structure so that each part can be changed and customized. The strucutre looks like the figure shown below:<br><br><div style="text-align: center;"><img style="width: 359px; height: 278px;" alt="WeatherLib structure" title="WeatherLib structure" src="images/weather_struct.png"><br><br><div style="text-align: justify;">As you can notice, the lib is made by three different layer:<br><ol><li>The client layer that exposes an uniform interface to the Android apps</li><li>The Weather provider that takes care to parse the proprietary protocol and normalize it showing a standard class model <br></li><li>The Transport layer that handles the HTTP connection details using specific libraries <br></li></ol>We will see in the next pages how we can use the library.<br></div>
+			</div><p></p>
+ </div>
+</div>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+<!-- Add next and back -->
+<div class="row" style="height: 80px;">
+<ul class="pager">
+  <li><a href="./android_weatherlib_./index.html">Home</a></li>
+  <li><a href="./android_weatherlib_start.html">Getting started</a></li>
+</ul>
+</div>
+<div>
+<div class="row">
+<div class="span12">&nbsp;</div>
+</div>
+</div>
+	<div class="container" style="width:100%; padding-left:10px; padding-right:10px;">
+	<footer style="width:100%">
+	<div class="row" style="background:#BBDEFB;">
 		<span class="12">
 			<center><h6>Project maintained by Francesco Azzola</h6></center>
 		</span>
 	</div>
-	<div class="row">
+	<div class="row" style="background:#BBDEFB;">
 
 		<div class="span3">
 			<h4>Info</h4>
@@ -377,51 +182,7 @@ limitations under the License.
 
     </div>	
 	</footer>
-	</div>
+	</div> </div>
 </section>
-
- 
-
-
-    <script>
-
-        jQuery(document).ready(function($) {
-
-
-
-        // Use smooth-scroll for internal links.
-        $('a').smoothScroll();
-
-          $('#banner-fade').bjqs({
-            height      : 640,
-            width       : 384,
-            responsive  : true,
-			usecaptions   : false,
-			showcontrols :  false,
-			showmarkers : false
-          });
-
-          $('#banner-fade1').bjqs({
-            height      : 640,
-            width       : 384,
-            responsive  : true,
-			usecaptions   : false,
-			showcontrols :  false,
-			showmarkers : false
-          });
-
-        });		
-     
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-51637300-1', 'survivingwithandroid.github.io');
-  ga('send', 'pageview');
-
-   
-</script>
-
-  </body>
+</body>
 </html>
