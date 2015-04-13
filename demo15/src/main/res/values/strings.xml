@@ -19,4 +19,6 @@
         <item>Demo Historic Weather (OPM)</item>
         <item>Demo Webcam (Wunder)</item>
     </string-array>
+
+    <string name="wunderground_key">your_key</string>
 </resources>
