@@ -1,27 +1,39 @@
 WeatherLib
 ==========
 
-Android weather lib for creating easily weather app. The lib implements several protocols to get weather information from the most important weather data provider.
+Android weather lib is an android weather aggregator.
+The lib helps you getting weather data from the most importat weather provider.
+It supports:
 
-([Weatherlib web site](http://survivingwithandroid.github.io/WeatherLib/))
+* Openweathermap
+* Yahoo! Weather
+* Weatherunderground
+* Weather.com
+* Forecast.io
+
+Weatherlib has a  new ([web site](http://survivingwithandroid.github.io/WeatherLib/))
 
 
 #Travis integration
 Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
 #Version
-1.5.3
+1.5.4
 
-If you experience problems try to download it again from maven central. From Terminal window in Android studio:
 ```
-gradlew --refresh-dependencies
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.4'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.4'
+	compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
+}
 ```
 
-#Manifest.xml
-In order to use the library you should add the following line into your *Manifest.xm*:
 ```
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+dependencies {					
+	compile 'com.survivingwithandroid:weatherlib:1.5.4'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.4'
+	compile 'com.squareup.okhttp:okhttp:2.0.+'
+}
 ```
 
 #Community
@@ -33,23 +45,6 @@ If you like there is a Community to talk about new features, suggest tips or rep
 *Author:* Francesco Azzola (JFrankie) ([survivingwithandroid@gmail.com](mailto:survivingwithandroid@gmail.com))
 
 [![](http://4.bp.blogspot.com/-Bfh2unbdc84/UcGqVJKdMwI/AAAAAAAAAOc/W4kGiTU-fYk/s1600/google_plus_58.png)](http://www.google.com/+FrancescoAzzola)  [![](http://3.bp.blogspot.com/-_JSQStno9N8/UcGWEW7V9AI/AAAAAAAAAOM/_qFVUjIaySg/s1600/linkedin.png)](http://it.linkedin.com/in/francescoazzola)
-
-
-#Screenshots: Some screenshots
-
-[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_weather.png)
-
-[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_forecast.png)
-
-[![](https://raw.githubusercontent.com/survivingwithandroid/WeatherLib/master/art/android_weatherapp_settings.png)
-
-[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_weatherapp_search_city.png)
-
-[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_temperatura.png)
-
-[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_pressure.png)
-
-[![](https://github.com/survivingwithandroid/WeatherLib/raw/master/art/android_maxmin_temp.png)
 
 #License
 ```
