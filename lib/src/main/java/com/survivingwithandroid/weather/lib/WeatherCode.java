@@ -33,6 +33,7 @@ import android.content.Context;
 * */
 public enum WeatherCode {
 
+
     TORNADO(0, R.string.weather_text_000),
     TROPICAL_STORM(1, R.string.weather_text_001),
     HURRICANE(2, R.string.weather_text_002),
