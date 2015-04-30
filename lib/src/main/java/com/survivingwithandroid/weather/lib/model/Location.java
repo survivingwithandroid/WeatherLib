@@ -16,6 +16,9 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -23,7 +26,7 @@ import java.io.Serializable;
 *
 * @author Francesco Azzola
 * */
-public class Location implements Serializable {
+public class Location implements Serializable, Parcelable {
 
 
     private float longitude;
@@ -35,6 +38,50 @@ public class Location implements Serializable {
     private String region;
     private Astronomy astronomy = new Astronomy();
     private long population;
+
+
+    public Location() {}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeFloat(longitude);
+        dest.writeFloat(latitude);
+        dest.writeLong(sunset);
+        dest.writeFloat(sunrise);
+        dest.writeString(country);
+        dest.writeString(city);
+        dest.writeString(region);
+        dest.writeParcelable(astronomy, flags);
+        dest.writeLong(population);
+    }
+
+    public static final Parcelable.Creator<Location> CREATOR
+            = new Parcelable.Creator<Location>() {
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
+
+    private Location(Parcel in) {
+        longitude = in.readFloat();
+        latitude = in.readFloat();
+        sunset = in.readLong();
+        sunrise = in.readLong();
+        country = in.readString();
+        city = in.readString();
+        region = in.readString();
+        astronomy = (Astronomy) in.readParcelable(Astronomy.class.getClassLoader());
+        population = in.readLong();
+    }
 
     public float getLongitude() {
         return longitude;
@@ -108,10 +155,43 @@ public class Location implements Serializable {
         this.population = population;
     }
 
-    public class Astronomy {
+    public static class Astronomy implements Parcelable {
         public String moonAge;
         public String percIllum;
         public String moonPhaseDescr;
         public String hemisphere;
+
+        public Astronomy() {}
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+           dest.writeString(moonAge);
+           dest.writeString(percIllum);
+           dest.writeString(moonPhaseDescr);
+           dest.writeString(hemisphere);
+        }
+
+        public static final Parcelable.Creator<Astronomy> CREATOR
+                = new Parcelable.Creator<Astronomy>() {
+            public Astronomy createFromParcel(Parcel in) {
+                return new Astronomy(in);
+            }
+
+            public Astronomy[] newArray(int size) {
+                return new Astronomy[size];
+            }
+        };
+
+        private Astronomy(Parcel in) {
+            moonAge = in.readString();
+            percIllum = in.readString();
+            moonPhaseDescr = in.readString();
+            hemisphere = in.readString();
+        }
     }
 }
