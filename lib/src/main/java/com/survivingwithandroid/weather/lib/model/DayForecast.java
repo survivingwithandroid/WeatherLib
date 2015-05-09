@@ -16,6 +16,9 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,7 +27,7 @@ import java.util.Date;
  *
  * @author Francesco Azzola
  */
-public class DayForecast extends WeatherForecastData {
+public class DayForecast extends WeatherForecastData implements Parcelable {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public ForecastTemp forecastTemp = new ForecastTemp();
@@ -32,16 +35,82 @@ public class DayForecast extends WeatherForecastData {
     /*
     * Forecast temperature
     * */
-    public class ForecastTemp {
+    public static class ForecastTemp implements  Parcelable{
         public float day;
         public float min;
         public float max;
         public float night;
         public float eve;
         public float morning;
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeFloat(day);
+            dest.writeFloat(min);
+            dest.writeFloat(max);
+            dest.writeFloat(night);
+            dest.writeFloat(eve);
+            dest.writeFloat(morning);
+        }
+
+        public static final Parcelable.Creator<ForecastTemp> CREATOR
+                = new Parcelable.Creator<ForecastTemp>() {
+            public ForecastTemp createFromParcel(Parcel in) {
+                return new ForecastTemp(in);
+            }
+
+            public ForecastTemp[] newArray(int size) {
+                return new ForecastTemp[size];
+            }
+        };
+
+        private ForecastTemp(Parcel in) {
+            day = in.readFloat();
+            min = in.readFloat();
+            max = in.readFloat();
+            night = in.readFloat();
+            eve = in.readFloat();
+            morning = in.readFloat();
+        }
+
+        public ForecastTemp() {}
     }
 
     public String getStringDate() {
         return sdf.format(new Date(timestamp));
     }
+
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(forecastTemp, flags);
+    }
+
+    public static final Parcelable.Creator<DayForecast> CREATOR
+            = new Parcelable.Creator<DayForecast>() {
+        public DayForecast createFromParcel(Parcel in) {
+            return new DayForecast(in);
+        }
+
+        public DayForecast[] newArray(int size) {
+            return new DayForecast[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    private DayForecast(Parcel in) {
+        forecastTemp = in.readParcelable(ForecastTemp.class.getClassLoader());
+    }
+
+    public DayForecast() {}
+
 }

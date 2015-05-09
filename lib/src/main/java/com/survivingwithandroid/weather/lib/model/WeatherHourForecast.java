@@ -16,6 +16,9 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +27,7 @@ import java.util.List;
  *
  * @author Francesco Azzola
  */
-public class WeatherHourForecast extends BaseWeather {
+public class WeatherHourForecast extends BaseWeather implements Parcelable {
 
     /**
      * Hour forecast information as retrieved by the weather provider. Traversing this list
@@ -59,4 +62,33 @@ public class WeatherHourForecast extends BaseWeather {
     public List<HourForecast> getHourForecast() {
         return this.hoursForecast;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(hoursForecast);
+
+    }
+
+    public static final Parcelable.Creator<WeatherHourForecast> CREATOR
+            = new Parcelable.Creator<WeatherHourForecast>() {
+        public WeatherHourForecast createFromParcel(Parcel in) {
+            return new WeatherHourForecast(in);
+        }
+
+        public WeatherHourForecast[] newArray(int size) {
+            return new WeatherHourForecast[size];
+        }
+    };
+
+    private WeatherHourForecast(Parcel in) {
+        in.readList(hoursForecast, hoursForecast.getClass().getClassLoader());
+    }
+
+    public WeatherHourForecast() {}
 }

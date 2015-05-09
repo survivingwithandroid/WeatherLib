@@ -16,12 +16,15 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
 * This is the basic class for weather forecast data. It holds some basic information
 *
 * @author Francesco Azzola
 * */
-public class WeatherForecastData {
+public class WeatherForecastData implements Parcelable {
 
 
     public Weather weather = new Weather();
@@ -32,4 +35,32 @@ public class WeatherForecastData {
     public long timestamp;
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(weather, flags);
+        dest.writeLong(timestamp);
+    }
+
+    public static final Parcelable.Creator<WeatherForecastData> CREATOR
+            = new Parcelable.Creator<WeatherForecastData>() {
+        public WeatherForecastData createFromParcel(Parcel in) {
+            return new WeatherForecastData(in);
+        }
+
+        public WeatherForecastData[] newArray(int size) {
+            return new WeatherForecastData[size];
+        }
+    };
+
+    private WeatherForecastData(Parcel in) {
+        weather = in.readParcelable(Weather.class.getClassLoader());
+        timestamp = in.readLong();
+    }
+
+    public WeatherForecastData() {}
 }

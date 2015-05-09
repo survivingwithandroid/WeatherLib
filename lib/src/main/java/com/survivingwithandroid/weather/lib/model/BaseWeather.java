@@ -17,6 +17,9 @@
 
 package com.survivingwithandroid.weather.lib.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
 * Base weather class that holds the unit system
 *
@@ -34,10 +37,25 @@ public abstract class BaseWeather {
         this.unit = unit;
     }
 
-    public static class WeatherUnit {
+    public static class WeatherUnit implements Parcelable {
         public String speedUnit;
         public String tempUnit;
         public String pressureUnit;
         public String distanceUnit;
+
+
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+       dest.writeString(speedUnit);
+        dest.writeString(tempUnit);
+        dest.writeString(pressureUnit);
+        dest.writeString(distanceUnit);
+    }
+  }
 }
