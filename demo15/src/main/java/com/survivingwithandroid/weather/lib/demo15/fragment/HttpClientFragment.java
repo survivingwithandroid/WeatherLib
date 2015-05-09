@@ -17,6 +17,7 @@ import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
 import com.survivingwithandroid.weather.lib.provider.forecastio.ForecastIOProviderType;
+import com.survivingwithandroid.weather.lib.provider.openweathermap.OpenweathermapProviderType;
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 
@@ -33,7 +34,7 @@ public class HttpClientFragment extends Fragment {
         config.ApiKey = getResources().getString(R.string.forecastio_key);
         try {
             client = builder.attach(getActivity())
-                    .provider(new ForecastIOProviderType())
+                    .provider(new OpenweathermapProviderType())
                     .httpClient(com.survivingwithandroid.weather.lib.client.volley.WeatherClientDefault.class)
                     .config(config)
                     .build();
@@ -60,7 +61,7 @@ public class HttpClientFragment extends Fragment {
             public void onWeatherRetrieved(final CurrentWeather weather) {
 
                 tempView.setText("Temp:" + weather.weather.temperature.getTemp());
-            }
+           }
 
             @Override
             public void onWeatherError(WeatherLibException wle) {
