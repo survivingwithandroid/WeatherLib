@@ -19,6 +19,7 @@ package com.survivingwithandroid.weather.lib;
 
 import android.content.Context;
 
+
 /**
 * Unified weather codes. These codes are independent from the weather provider used so that
 * a client that wants to use different weather providers at the same time doesn't have
@@ -62,7 +63,6 @@ public enum WeatherCode {
     COLD(25, R.string.weather_text_025),
     CLOUDY(26, R.string.weather_text_026),
     MOSTLY_CLOUDY_NIGHT(27, R.string.weather_text_027),
-    MOSTLY_CLOUDY_DAY(28, R.string.weather_text_028),
     PARTLY_CLOUDY_NIGHT(29, R.string.weather_text_029),
     PARTLY_CLOUDY_DAY(30, R.string.weather_text_030),
     CLEAR_NIGHT(31, R.string.weather_text_031),
@@ -70,7 +70,7 @@ public enum WeatherCode {
     FAIR_NIGHT(33, R.string.weather_text_033),
     FAIR_DAY(34, R.string.weather_text_034),
     MIXED_RAIN_AND_HAIL(35, R.string.weather_text_035),
-    HOT(36, R.string.weather_text_036),
+    //HOT(36, R.string.weather_text_036),
     ISOLATED_THUNDERSTORMS(37, R.string.weather_text_037),
     SCATTERED_THUNDERSTORMS(38, R.string.weather_text_038),
     SCATTERED_THUNDERSTORMS_1(39, R.string.weather_text_039),
@@ -81,7 +81,8 @@ public enum WeatherCode {
     THUNDERSHOWERS(45, R.string.weather_text_045),
     SNOW_SHOWERS(46, R.string.weather_text_046),
     ISOLATED_THUDERSHOWERS(47, R.string.weather_text_047),
-    NOT_AVAILABLE(1000, R.string.weather_text_1000);
+    NOT_AVAILABLE(1000, R.string.weather_text_1000),
+    MOSTLY_CLOUDY_DAY(28, R.string.weather_text_028);
 
     private int code;
     private int resId;

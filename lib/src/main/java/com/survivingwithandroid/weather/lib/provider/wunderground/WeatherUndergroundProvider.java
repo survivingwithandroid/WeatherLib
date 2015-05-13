@@ -19,6 +19,7 @@ package com.survivingwithandroid.weather.lib.provider.wunderground;
 
 import android.util.Log;
 
+import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -98,9 +99,14 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             //weather.currentCondition.setCondition(getString("main", JSONWeather));
             weather.currentCondition.setIcon(getString("icon", jObj));
 
-            if (codeProvider != null)
-                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getIcon()));
+            if (codeProvider != null) {
+                try {
+                    weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getIcon()));
 
+                } catch (Throwable t) {
+                    weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                }
+            }
             //JSONObject mainObj = getObject("main", jObj);
             String relUm = getString("relative_humidity", jObj);
             weather.currentCondition.setHumidity(Integer.parseInt(relUm.substring(0, relUm.length() - 1)));
@@ -208,8 +214,13 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             df.weather.currentCondition.setDescr(dayForecast.getString("conditions"));
             df.weather.currentCondition.setIcon(dayForecast.getString("icon"));
 
-            if (codeProvider != null)
-                df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(df.weather.currentCondition.getIcon()));
+            if (codeProvider != null) {
+                try {
+                    df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(df.weather.currentCondition.getIcon()));
+                } catch (Throwable t) {
+                    df.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                }
+            }
 
             if (WeatherUtility.isMetric(config.unitSystem)) {
                 df.forecastTemp.max = dayForecast.getJSONObject("high").getInt("celsius");
@@ -366,9 +377,14 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 hhWeather.weather.rain[0].setAmmount((float) jHour.getDouble("precip" + tag));
                 hhWeather.weather.currentCondition.setDescr(jHour.getString("conds"));
                 hhWeather.weather.currentCondition.setIcon(jHour.getString("icon"));
-                if (codeProvider != null)
-                    hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(hhWeather.weather.currentCondition.getIcon()));
+                if (codeProvider != null) {
+                    try {
+                        hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(hhWeather.weather.currentCondition.getIcon()));
 
+                    } catch (Throwable t) {
+                        hhWeather.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                    }
+                }
                 // fog, hail, tornado and so on still not supported
 
                 histWeather.addHistoricalHourWeather(hhWeather);

@@ -17,6 +17,7 @@ package com.survivingwithandroid.weather.lib.provider.yahooweather;
 
 import android.location.Location;
 
+import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -165,8 +166,15 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         weather.currentCondition.setIcon("" + weather.currentCondition.getWeatherId());
 
                         // Convert the code
-                        if (codeProvider != null)
-                            weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
+                        if (codeProvider != null) {
+                            try {
+                                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
+                            }
+                            catch(Throwable t) {
+                                weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                            }
+
+                        }
 
                         weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         weather.temperature.setTemp(Integer.parseInt(parser.getAttributeValue(null, "temp")));
@@ -311,8 +319,14 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         df.forecastTemp.min = Integer.parseInt(parser.getAttributeValue(null, "low")); // Bug fixing
                         df.weather.currentCondition.setWeatherId(Integer.parseInt(parser.getAttributeValue(null, "code")));
 
-                        if (codeProvider != null)
-                            df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
+                        if (codeProvider != null) {
+                            try {
+                                df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
+
+                            } catch (Throwable t) {
+                                df.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                            }
+                        }
 
                         df.weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         df.weather.currentCondition.setIcon("" + df.weather.currentCondition.getWeatherId());

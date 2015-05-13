@@ -19,6 +19,7 @@ package com.survivingwithandroid.weather.lib.provider.openweathermap;
 
 import android.util.Log;
 
+import com.survivingwithandroid.weather.lib.WeatherCode;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.ApiKeyRequiredException;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -107,9 +108,14 @@ public class OpenweathermapProvider implements IWeatherProvider {
             weather.currentCondition.setWeatherId(getInt("id", JSONWeather));
 
             // Convert internal code
-            if (codeProvider != null)
-                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
-
+            if (codeProvider != null) {
+                try {
+                    weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(weather.currentCondition.getWeatherId())));
+                }
+                catch(Throwable t) {
+                    weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                }
+            }
             weather.currentCondition.setDescr(getString("description", JSONWeather));
             weather.currentCondition.setCondition(getString("main", JSONWeather));
             weather.currentCondition.setIcon(getString("icon", JSONWeather));
@@ -249,9 +255,15 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 df.weather.currentCondition.setWeatherId(getInt("id", jWeatherObj));
 
                 // Convert internal code
-                if (codeProvider != null)
-                    df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
+                if (codeProvider != null) {
+                    try {
+                        df.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(df.weather.currentCondition.getWeatherId())));
 
+                    }
+                    catch(Throwable t) {
+                        df.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                    }
+                }
                 df.weather.currentCondition.setDescr(getString("description", jWeatherObj));
                 df.weather.currentCondition.setCondition(getString("main", jWeatherObj));
                 df.weather.currentCondition.setIcon(getString("icon", jWeatherObj));
@@ -327,9 +339,15 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 hourForecast.weather.currentCondition.setWeatherId(getInt("id", JSONWeather));
 
                 // Convert internal code
-                if (codeProvider != null)
-                    hourForecast.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hourForecast.weather.currentCondition.getWeatherId())));
+                if (codeProvider != null) {
+                    try {
+                        hourForecast.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hourForecast.weather.currentCondition.getWeatherId())));
+                    }
+                    catch(Throwable t) {
+                        hourForecast.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                    }
 
+                }
                 hourForecast.weather.currentCondition.setDescr(getString("description", JSONWeather));
                 hourForecast.weather.currentCondition.setCondition(getString("main", JSONWeather));
                 hourForecast.weather.currentCondition.setIcon(getString("icon", JSONWeather));
@@ -388,9 +406,13 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 hhWeather.weather.currentCondition.setWeatherId(getInt("id", wObj));
                 String tmp = String.valueOf(hhWeather.weather.currentCondition.getWeatherId())+"]";
                 // Convert internal code
-                if (codeProvider != null)
-                    hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hhWeather.weather.currentCondition.getWeatherId())));
-
+                if (codeProvider != null) {
+                    try {
+                        hhWeather.weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(String.valueOf(hhWeather.weather.currentCondition.getWeatherId())));
+                    } catch (Throwable t) {
+                        hhWeather.weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+                    }
+                }
                 JSONObject windObj = getObject("wind", jHour);
 
                 hhWeather.weather.wind.setSpeed((float) windObj.getDouble("speed"));

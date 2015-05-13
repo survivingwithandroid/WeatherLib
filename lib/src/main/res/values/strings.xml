@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Lib</string>
-
-    /* Weather code messages */
-
     <string name="weather_text_000">Tornado</string>
     <string name="weather_text_001">Tropical storm</string>
     <string name="weather_text_002">Hurricane</string>
