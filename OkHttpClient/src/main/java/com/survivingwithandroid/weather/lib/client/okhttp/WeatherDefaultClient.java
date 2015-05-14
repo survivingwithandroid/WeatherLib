@@ -613,7 +613,7 @@ public class WeatherDefaultClient extends WeatherClient {
     }
 
     private void notifyWeatherError(final WeatherLibException wle, final WeatherClientListener listener) {
-        Handler handler = new Handler(ctx.getMainLooper());
+        Handler handler = new Handler(ctx.getMainLooper()); // Hanlder
         handler.post(new Runnable() {
             @Override
             public void run() {
