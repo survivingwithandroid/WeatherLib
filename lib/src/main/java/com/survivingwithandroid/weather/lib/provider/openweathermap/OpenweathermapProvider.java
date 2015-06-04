@@ -123,8 +123,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
             JSONObject mainObj = getObject("main", jObj);
             weather.currentCondition.setHumidity(getInt("humidity", mainObj));
             weather.currentCondition.setPressure(getFloat("pressure", mainObj)); //#18
-            weather.currentCondition.setPressureGroundLevel(getFloat("grnd_level", mainObj));
-            weather.currentCondition.setPressureSeaLevel(getFloat("sea_level", mainObj));
+            weather.currentCondition.setPressureGroundLevel((float) mainObj.optDouble("grnd_level"));
+            weather.currentCondition.setPressureSeaLevel((float) mainObj.optDouble("sea_level"));
             weather.temperature.setMaxTemp(getFloat("temp_max", mainObj));
             weather.temperature.setMinTemp(getFloat("temp_min", mainObj));
             weather.temperature.setTemp(getFloat("temp", mainObj));
@@ -327,8 +327,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 hourForecast.weather.temperature.setMinTemp(getFloat("temp_min", jMain));
                 hourForecast.weather.temperature.setMaxTemp(getFloat("temp_max", jMain));
                 hourForecast.weather.currentCondition.setPressure(getFloat("pressure", jMain));
-                hourForecast.weather.currentCondition.setPressureSeaLevel(getFloat("sea_level", jMain));
-                hourForecast.weather.currentCondition.setPressureGroundLevel(getFloat("grnd_level", jMain));
+                hourForecast.weather.currentCondition.setPressureSeaLevel((float) jMain.optDouble("sea_level"));
+                hourForecast.weather.currentCondition.setPressureGroundLevel((float) jMain.optDouble("grnd_level"));
                 hourForecast.weather.currentCondition.setHumidity(getFloat("humidity", jMain));
 
                 // Now the weather codes
