@@ -18,20 +18,20 @@ Weatherlib has a  new ([web site](http://survivingwithandroid.github.io/WeatherL
 Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
 #Version
-1.5.4
+1.5.8
 
 ```
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.4'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.4'
+	compile 'com.survivingwithandroid:weatherlib:1.5.8'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.8'
 	compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
 }
 ```
 
 ```
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.4'
-	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.4'
+	compile 'com.survivingwithandroid:weatherlib:1.5.8'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.8'
 	compile 'com.squareup.okhttp:okhttp:2.0.+'
 }
 ```
