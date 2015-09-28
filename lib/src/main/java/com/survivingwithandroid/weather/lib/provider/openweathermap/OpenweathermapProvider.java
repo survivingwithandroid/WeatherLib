@@ -502,24 +502,24 @@ public class OpenweathermapProvider implements IWeatherProvider {
     }
 
     private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
-        JSONObject subObj = jObj.getJSONObject(tagName);
+        JSONObject subObj = jObj.optJSONObject(tagName);
         return subObj;
     }
 
     private static String getString(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getString(tagName);
+        return jObj.optString(tagName);
     }
 
     private static float getFloat(String tagName, JSONObject jObj) throws JSONException {
-        return (float) jObj.getDouble(tagName);
+        return (float) jObj.optDouble(tagName);
     }
 
     private static int getInt(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getInt(tagName);
+        return jObj.optInt(tagName);
     }
 
     private static long getLong(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getLong(tagName);
+        return jObj.optLong(tagName);
     }
 
     // New methods
