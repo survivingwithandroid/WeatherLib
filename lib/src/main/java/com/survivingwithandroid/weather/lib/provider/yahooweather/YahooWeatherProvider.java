@@ -43,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UnknownFormatConversionException;
 
 
@@ -193,7 +194,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         currentTag = "update";
                     } else if (tagName.equals("yweather:astronomy")) {
                         String val = parser.getAttributeValue(null, "sunrise");
-                        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+                        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
                         if (val != null) {
                             java.util.Date d = sdf.parse(val);
                             weather.location.setSunrise(d.getTime());
