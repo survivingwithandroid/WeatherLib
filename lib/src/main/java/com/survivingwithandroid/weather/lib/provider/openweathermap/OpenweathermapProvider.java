@@ -437,7 +437,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURL(String cityNamePattern) {
-        return SEARCH_URL + cityNamePattern; // + "&cnt=" + config.maxResult;
+        return SEARCH_URL + cityNamePattern + createAPPID(); // + "&cnt=" + config.maxResult;
     }
 
     /*
