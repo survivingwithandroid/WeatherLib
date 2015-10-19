@@ -437,7 +437,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURL(String cityNamePattern) {
-        return SEARCH_URL + cityNamePattern + createAPPID(); // + "&cnt=" + config.maxResult;
+        return SEARCH_URL + cityNamePattern + createAPPID();
     }
 
     /*
@@ -464,12 +464,12 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(android.location.Location location) throws ApiKeyRequiredException {
-        return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3";
+        return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3" + createAPPID();
     }
 
     @Override
     public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
-        return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3";
+        return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3" + createAPPID() ;
     }
 
 
@@ -495,8 +495,10 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
 
     private String createAPPID() {
+
         if (config.ApiKey == null || config.ApiKey.equals(""))
             return "";
+
 
         return "&APPID=" + config.ApiKey;
     }

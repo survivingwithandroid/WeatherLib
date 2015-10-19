@@ -138,7 +138,7 @@ public class ChartFragment extends Fragment {
 
             @Override
             public void onWeatherError(WeatherLibException e) {
-                Log.e("SwA", "#####à ERROR #####", e);
+                Log.e("SwA", "##### ERROR #####", e);
                 Toast.makeText(getActivity(), "Forecast: Error parsing the data", Toast.LENGTH_LONG).show();
             }
 
