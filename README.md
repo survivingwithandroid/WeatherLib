@@ -18,20 +18,20 @@ Weatherlib has a  new ([web site](http://survivingwithandroid.github.io/WeatherL
 Master [![Build Status](https://travis-ci.org/survivingwithandroid/WeatherLib.svg?branch=master)](https://travis-ci.org/survivingwithandroid/WeatherLib)
 
 #Version
-1.5.9
+1.6.0
 
 ```
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.9'
-	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.5.9'
+	compile 'com.survivingwithandroid:weatherlib:1.6.0'
+	compile 'com.survivingwithandroid:weatherlib_volleyclient:1.6.0'
 	compile 'com.mcxiaoke.volley:library:1.0.6@aar' (or whatever you like)
 }
 ```
 
 ```
 dependencies {					
-	compile 'com.survivingwithandroid:weatherlib:1.5.9'
-	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.5.9'
+	compile 'com.survivingwithandroid:weatherlib:1.6.0'
+	compile 'com.survivingwithandroid:weatherlib_okhttpclient:1.6.0'
 	compile 'com.squareup.okhttp:okhttp:2.0.+'
 }
 ```
@@ -42,7 +42,7 @@ If you like there is a Community to talk about new features, suggest tips or rep
 [![](http://4.bp.blogspot.com/-Bfh2unbdc84/UcGqVJKdMwI/AAAAAAAAAOc/W4kGiTU-fYk/s1600/google_plus_58.png)](https://plus.google.com/communities/117946761543584564970)
 
 #Credits 
-*Author:* Francesco Azzola (JFrankie) ([survivingwithandroid@gmail.com](mailto:survivingwithandroid@gmail.com))
+*Author:* Francesco Azzola  ([survivingwithandroid@gmail.com](mailto:survivingwithandroid@gmail.com))
 
 [![](http://4.bp.blogspot.com/-Bfh2unbdc84/UcGqVJKdMwI/AAAAAAAAAOc/W4kGiTU-fYk/s1600/google_plus_58.png)](http://www.google.com/+FrancescoAzzola)  [![](http://3.bp.blogspot.com/-_JSQStno9N8/UcGWEW7V9AI/AAAAAAAAAOM/_qFVUjIaySg/s1600/linkedin.png)](http://it.linkedin.com/in/francescoazzola)
 
