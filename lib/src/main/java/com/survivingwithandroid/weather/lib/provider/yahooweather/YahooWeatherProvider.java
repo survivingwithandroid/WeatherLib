@@ -44,8 +44,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UnknownFormatConversionException;
-
 
 public class YahooWeatherProvider implements IWeatherProvider {
 
@@ -76,12 +74,11 @@ public class YahooWeatherProvider implements IWeatherProvider {
             int event = parser.getEventType();
 
             City cty = null;
-            String tagName = null;
             String currentTag = null;
 
             // We start parsing the XML
             while (event != XmlPullParser.END_DOCUMENT) {
-                tagName = parser.getName();
+                final String tagName = parser.getName();
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("place")) {
@@ -91,7 +88,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                     }
                     currentTag = tagName;
                     // Log.d("Swa", "Tag ["+tagName+"]");
-                } else if (event == XmlPullParser.TEXT) {
+                } else if (event == XmlPullParser.TEXT && cty != null) {
                     // We found some text. let's see the tagName to know the tag related to the text
                     if ("woeid".equals(currentTag))
                         cty.setId(parser.getText());
@@ -101,7 +98,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         cty.setCountry(parser.getText());
 
                     // We don't want to analyze other tag at the moment
-                } else if (event == XmlPullParser.END_TAG) {
+                } else if (event == XmlPullParser.END_TAG && cty != null) {
                     if ("place".equals(tagName))
                         result.add(cty);
                 }
@@ -126,44 +123,42 @@ public class YahooWeatherProvider implements IWeatherProvider {
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         // Log.d("SwA", "Response ["+resp+"]");
         //Log.d("App", "Data [" + data + "]");
-        CurrentWeather cWeather = new CurrentWeather();
-        Weather weather = new Weather();
+        final Weather weather = new Weather();
 
         try {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(new StringReader(data));
 
-            String tagName = null;
             String currentTag = null;
 
             int event = parser.getEventType();
             boolean isFirstDayForecast = true;
             while (event != XmlPullParser.END_DOCUMENT) {
-                tagName = parser.getName();
+                final String tagName = parser.getName();
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("yweather:wind")) {
                         // Iss#4
-                        weather.wind.setChill(Integer.parseInt(parser.getAttributeValue(null, "chill")));
-                        weather.wind.setDeg(Integer.parseInt(parser.getAttributeValue(null, "direction")));
-                        weather.wind.setSpeed(WeatherUtility.string2Float(parser.getAttributeValue(null, "speed")));
+                        weather.wind.setChill(WeatherUtility.parseInt(parser.getAttributeValue(null, "chill")));
+                        weather.wind.setDeg(WeatherUtility.parseInt(parser.getAttributeValue(null, "direction")));
+                        weather.wind.setSpeed(WeatherUtility.parseFloat(parser.getAttributeValue(null, "speed")));
                     } else if (tagName.equals("yweather:atmosphere")) {
                         // Iss#4
-                        weather.currentCondition.setHumidity(Integer.parseInt(parser.getAttributeValue(null, "humidity")));
-                        weather.currentCondition.setVisibility(WeatherUtility.string2Float(parser.getAttributeValue(null, "visibility")));
-                        weather.currentCondition.setPressure(WeatherUtility.string2Float(parser.getAttributeValue(null, "pressure")));
-                        weather.currentCondition.setPressureTrend(Integer.parseInt(parser.getAttributeValue(null, "rising")));
+                        weather.currentCondition.setHumidity(WeatherUtility.parseInt(parser.getAttributeValue(null, "humidity")));
+                        weather.currentCondition.setVisibility(WeatherUtility.parseFloat(parser.getAttributeValue(null, "visibility")));
+                        weather.currentCondition.setPressure(WeatherUtility.parseFloat(parser.getAttributeValue(null, "pressure")));
+                        weather.currentCondition.setPressureTrend(WeatherUtility.parseInt(parser.getAttributeValue(null, "rising")));
                     } else if (tagName.equals("yweather:forecast")) {
                         //  Log.d("SwA", "Tag [Fore]");
                         if (isFirstDayForecast) {
-                            //weather.forecast.code = Integer.parseInt(parser.getAttributeValue(null, "code"));
-                            weather.temperature.setMinTemp(Integer.parseInt(parser.getAttributeValue(null, "low")));
-                            weather.temperature.setMaxTemp(Integer.parseInt(parser.getAttributeValue(null, "high")));
+                            //weather.forecast.code = WeatherUtility.parseInt(parser.getAttributeValue(null, "code"));
+                            weather.temperature.setMinTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "low")));
+                            weather.temperature.setMaxTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "high")));
                             isFirstDayForecast = false;
                         }
                     } else if (tagName.equals("yweather:condition")) {
                         //  Log.d("SwA", "Tag [Condition]");
-                        weather.currentCondition.setWeatherId(Integer.parseInt(parser.getAttributeValue(null, "code")));
+                        weather.currentCondition.setWeatherId(WeatherUtility.parseInt(parser.getAttributeValue(null, "code")));
                         weather.currentCondition.setIcon("" + weather.currentCondition.getWeatherId());
 
                         // Convert the code
@@ -174,18 +169,18 @@ public class YahooWeatherProvider implements IWeatherProvider {
                             catch(Throwable t) {
                                 weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
                             }
-
                         }
 
                         weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
-                        weather.temperature.setTemp(Integer.parseInt(parser.getAttributeValue(null, "temp")));
+                        weather.temperature.setTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "temp")));
                         //result.condition.date = parser.getAttributeValue(null, "date");
                     } else if (tagName.equals("yweather:location")) {
                         weather.location.setCity(parser.getAttributeValue(null, "city"));
                         weather.location.setRegion(parser.getAttributeValue(null, "region"));
                         weather.location.setCountry(parser.getAttributeValue(null, "country"));
-                    } else if (tagName.equals("image"))
+                    } else if (tagName.equals("image")) {
                         currentTag = "image";
+                    }
                     else if (tagName.equals("url")) {
                         if (currentTag == null) {
                             // result.imageUrl = parser.getAttributeValue(null, "src");
@@ -227,6 +222,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
             throw new WeatherLibException(t);
         }
 
+        final CurrentWeather cWeather = new CurrentWeather();
         cWeather.setUnit(units);
         cWeather.weather = weather;
         return cWeather;
@@ -305,20 +301,16 @@ public class YahooWeatherProvider implements IWeatherProvider {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(new StringReader(data));
 
-            String tagName = null;
-            String currentTag = null;
-
             int event = parser.getEventType();
-            boolean isFirstDayForecast = true;
             while (event != XmlPullParser.END_DOCUMENT) {
-                tagName = parser.getName();
+                final String tagName = parser.getName();
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("yweather:forecast")) {
                         DayForecast df = new DayForecast();
-                        df.forecastTemp.max = Integer.parseInt(parser.getAttributeValue(null, "high"));
-                        df.forecastTemp.min = Integer.parseInt(parser.getAttributeValue(null, "low")); // Bug fixing
-                        df.weather.currentCondition.setWeatherId(Integer.parseInt(parser.getAttributeValue(null, "code")));
+                        df.forecastTemp.max = WeatherUtility.parseInt(parser.getAttributeValue(null, "high"));
+                        df.forecastTemp.min = WeatherUtility.parseInt(parser.getAttributeValue(null, "low")); // Bug fixing
+                        df.weather.currentCondition.setWeatherId(WeatherUtility.parseInt(parser.getAttributeValue(null, "code")));
 
                         if (codeProvider != null) {
                             try {
@@ -342,9 +334,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                     }
 
                 } else if (event == XmlPullParser.END_TAG) {
-                    if ("image".equals(currentTag)) {
-                        currentTag = null;
-                    }
+                    //
                 }
                 event = parser.next();
             }

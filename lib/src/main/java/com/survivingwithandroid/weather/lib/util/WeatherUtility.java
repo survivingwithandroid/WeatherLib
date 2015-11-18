@@ -53,5 +53,29 @@ public class WeatherUtility {
         return Float.parseFloat(value);
     }
 
+    public static int parseInt(final String value){
+        return parseInt(value, 0);
+    }
 
+    public static int parseInt(final String value, final int defaultValue){
+        try{
+            return Integer.parseInt(value);
+        }
+        catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
+
+    public static float parseFloat(final String value){
+        return parseFloat(value, -1.0f);
+    }
+
+    public static float parseFloat(final String value, final float defaultValue){
+        try {
+            return Float.parseFloat(value);
+        }
+        catch(Exception e){
+            return defaultValue;
+        }
+    }
 }
