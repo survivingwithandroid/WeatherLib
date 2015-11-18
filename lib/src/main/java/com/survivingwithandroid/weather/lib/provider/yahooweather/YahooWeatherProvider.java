@@ -84,10 +84,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
                     if (tagName.equals("place")) {
                         // place Tag Found so we create a new CityResult
                         cty = new City.CityBuilder().build();
-                        //  Log.d("Swa", "New City found");
                     }
                     currentTag = tagName;
-                    // Log.d("Swa", "Tag ["+tagName+"]");
+
                 } else if (event == XmlPullParser.TEXT && cty != null) {
                     // We found some text. let's see the tagName to know the tag related to the text
                     if ("woeid".equals(currentTag))
@@ -106,8 +105,6 @@ public class YahooWeatherProvider implements IWeatherProvider {
                 event = parser.next();
             }
         } catch (Throwable t) {
-            //t.printStackTrace();
-            // Log.e("Error in getCityList", t.getMessage());
             throw new WeatherLibException(t);
         }
 
@@ -121,15 +118,11 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
     @Override
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
-        // Log.d("SwA", "Response ["+resp+"]");
-        //Log.d("App", "Data [" + data + "]");
         final Weather weather = new Weather();
 
         try {
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
             parser.setInput(new StringReader(data));
-
-            String currentTag = null;
 
             int event = parser.getEventType();
             boolean isFirstDayForecast = true;
@@ -138,26 +131,22 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("yweather:wind")) {
-                        // Iss#4
                         weather.wind.setChill(WeatherUtility.parseInt(parser.getAttributeValue(null, "chill")));
                         weather.wind.setDeg(WeatherUtility.parseInt(parser.getAttributeValue(null, "direction")));
                         weather.wind.setSpeed(WeatherUtility.parseFloat(parser.getAttributeValue(null, "speed")));
+
                     } else if (tagName.equals("yweather:atmosphere")) {
-                        // Iss#4
                         weather.currentCondition.setHumidity(WeatherUtility.parseInt(parser.getAttributeValue(null, "humidity")));
                         weather.currentCondition.setVisibility(WeatherUtility.parseFloat(parser.getAttributeValue(null, "visibility")));
                         weather.currentCondition.setPressure(WeatherUtility.parseFloat(parser.getAttributeValue(null, "pressure")));
                         weather.currentCondition.setPressureTrend(WeatherUtility.parseInt(parser.getAttributeValue(null, "rising")));
-                    } else if (tagName.equals("yweather:forecast")) {
-                        //  Log.d("SwA", "Tag [Fore]");
-                        if (isFirstDayForecast) {
-                            //weather.forecast.code = WeatherUtility.parseInt(parser.getAttributeValue(null, "code"));
-                            weather.temperature.setMinTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "low")));
-                            weather.temperature.setMaxTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "high")));
-                            isFirstDayForecast = false;
-                        }
+
+                    } else if (tagName.equals("yweather:forecast") && isFirstDayForecast) {
+                        weather.temperature.setMinTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "low")));
+                        weather.temperature.setMaxTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "high")));
+                        isFirstDayForecast = false;
+
                     } else if (tagName.equals("yweather:condition")) {
-                        //  Log.d("SwA", "Tag [Condition]");
                         weather.currentCondition.setWeatherId(WeatherUtility.parseInt(parser.getAttributeValue(null, "code")));
                         weather.currentCondition.setIcon("" + weather.currentCondition.getWeatherId());
 
@@ -173,20 +162,12 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
                         weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         weather.temperature.setTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "temp")));
-                        //result.condition.date = parser.getAttributeValue(null, "date");
+
                     } else if (tagName.equals("yweather:location")) {
                         weather.location.setCity(parser.getAttributeValue(null, "city"));
                         weather.location.setRegion(parser.getAttributeValue(null, "region"));
                         weather.location.setCountry(parser.getAttributeValue(null, "country"));
-                    } else if (tagName.equals("image")) {
-                        currentTag = "image";
-                    }
-                    else if (tagName.equals("url")) {
-                        if (currentTag == null) {
-                            // result.imageUrl = parser.getAttributeValue(null, "src");
-                        }
-                    } else if (tagName.equals("lastBuildDate")) {
-                        currentTag = "update";
+
                     } else if (tagName.equals("yweather:astronomy")) {
                         String val = parser.getAttributeValue(null, "sunrise");
                         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
@@ -200,23 +181,10 @@ public class YahooWeatherProvider implements IWeatherProvider {
                             java.util.Date d = sdf.parse(val);
                             weather.location.setSunset(d.getTime());
                         }
-
-                    }
-
-                } else if (event == XmlPullParser.END_TAG) {
-                    if ("image".equals(currentTag)) {
-                        currentTag = null;
                     }
                 }
-                /*
-                else if (event == XmlPullParser.TEXT) {
-                    if ("update".equals(currentTag))
-                        //result.lastUpdate = parser.getText();
-                }
-                */
                 event = parser.next();
             }
-
         } catch (Throwable t) {
             t.printStackTrace();
             throw new WeatherLibException(t);
@@ -231,8 +199,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
     @Override
     public String getQueryCityURL(String cityNamePattern) throws ApiKeyRequiredException {
 
-        if (config.ApiKey == null)
+        if (config.ApiKey == null) {
             throw new ApiKeyRequiredException();
+        }
 
         // We remove spaces in cityName
         cityNamePattern = cityNamePattern.replaceAll(" ", "%20");
@@ -324,17 +293,14 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         df.weather.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
                         df.weather.currentCondition.setIcon("" + df.weather.currentCondition.getWeatherId());
                         forecast.addForecast(df);
+
                     } else if (tagName.equals("yweather:units")) {
-                        //   Log.d("SwA", "Tag [units]");
                         units.tempUnit = "°" + parser.getAttributeValue(null, "temperature");
                         units.pressureUnit = parser.getAttributeValue(null, "pressure");
                         units.distanceUnit = parser.getAttributeValue(null, "distance");
                         units.speedUnit = parser.getAttributeValue(null, "speed");
                         forecast.setUnit(units);
                     }
-
-                } else if (event == XmlPullParser.END_TAG) {
-                    //
                 }
                 event = parser.next();
             }
