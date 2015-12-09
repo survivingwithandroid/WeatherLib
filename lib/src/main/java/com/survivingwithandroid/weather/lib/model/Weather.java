@@ -329,6 +329,7 @@ public class Weather {
     public class Snow {
         private String time;
         private float ammount;
+        private float chance;
 
         /*
         * Hour interval
@@ -355,6 +356,17 @@ public class Weather {
             this.ammount = ammount;
         }
 
+        /**
+         * Chance of snow
+         * @return float
+         * */
+        public float getChance() {
+            return chance;
+        }
+
+        public void setChance(float chance) {
+            this.chance = chance;
+        }
 
     }
 
