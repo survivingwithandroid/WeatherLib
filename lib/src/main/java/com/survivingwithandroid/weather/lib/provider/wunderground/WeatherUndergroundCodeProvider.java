@@ -60,7 +60,7 @@ public class WeatherUndergroundCodeProvider implements IWeatherCodeProvider {
             return WeatherCode.PARTLY_CLOUD;
         else if (weatherCode.equalsIgnoreCase("partlysunny"))
             return WeatherCode.PARTLY_CLOUDY_DAY;
-        else if (weatherCode.equals("sleet"))
+        else if (weatherCode.equalsIgnoreCase("sleet"))
             return WeatherCode.SLEET;
         else if (weatherCode.equalsIgnoreCase("rain"))
             return WeatherCode.SHOWERS;
