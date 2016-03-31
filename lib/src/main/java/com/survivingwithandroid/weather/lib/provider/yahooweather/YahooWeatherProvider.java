@@ -50,7 +50,7 @@ import java.util.UnknownFormatConversionException;
 public class YahooWeatherProvider implements IWeatherProvider {
 
     private static String YAHOO_GEO_URL = "http://where.yahooapis.com/v1";
-    private static String YAHOO_WEATHER_URL = "http://weather.yahooapis.com/forecastrss";
+    private static String YAHOO_WEATHER_URL = "http://xml.weather.yahoo.com/forecastrss";
     private static final String YAHOO_IMG_URL = "http://l.yimg.com/a/i/us/we/52/";
 
     private WeatherConfig config;
