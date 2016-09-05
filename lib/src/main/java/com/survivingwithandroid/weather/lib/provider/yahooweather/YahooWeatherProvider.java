@@ -51,7 +51,6 @@ import java.util.Locale;
 
 public class YahooWeatherProvider implements IWeatherProvider {
 
-    private static final String YAHOO_GEO_URL = "http://where.yahooapis.com/v1";
     private static final String YAHOO_WEATHER_URL = "https://query.yahooapis.com/v1/public/yql";
     private static final String YAHOO_IMG_URL = "http://l.yimg.com/a/i/us/we/52/";
 
@@ -127,13 +126,24 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURL(String cityNamePattern) throws ApiKeyRequiredException {
-        if (config.ApiKey == null) {
-            throw new ApiKeyRequiredException();
+        // Wildcard to enable completion
+        return getQueryCityURLFromString(cityNamePattern + "*");
+    }
+
+    private String getQueryCityURLFromString(String text){
+        // YQL query https://developer.yahoo.com/weather/
+        String query = "SELECT * FROM geo.places WHERE text=\"{0}\" AND placeTypeName.code = 7";
+
+        // Replace placeholders
+        query = MessageFormat.format(query, text);
+
+        try {
+            query = URLEncoder.encode(query, "UTF-8");
+        }catch (UnsupportedEncodingException e){
+            throw new RuntimeException("Url encoding failed", e);
         }
 
-        // We remove spaces in cityName
-        cityNamePattern = cityNamePattern.replaceAll(" ", "%20");
-        return YAHOO_GEO_URL + "/places.q('" + cityNamePattern + "%2A');count=" + config.maxResult + "?appid=" + config.ApiKey;
+        return YAHOO_WEATHER_URL + "?q=" + query + "&format=xml";
     }
 
     /*
@@ -163,18 +173,12 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(Location location) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        return YAHOO_GEO_URL + "/places.q('" + location.getLatitude() + "," + location.getLongitude() + "')?appid=" + config.ApiKey;
+        return getQueryCityURLByCoord(location.getLatitude(), location.getLongitude());
     }
 
     @Override
     public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        return YAHOO_GEO_URL + "/places.q('" + lat + "," + lon + "')?appid=" + config.ApiKey;
+        return getQueryCityURLFromString(lon + ", " + lat);
     }
 
     @Override
