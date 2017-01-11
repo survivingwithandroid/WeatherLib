@@ -114,7 +114,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             String trend = getString("pressure_trend", jObj);
 
             int trendVal = -1;
-            if ("-".equals(trend))
+            if ("-".equals(trend) || "+".equals(trend))
                 trendVal = 0;
             else
                 trendVal = Integer.parseInt(trend);
