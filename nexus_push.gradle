@@ -1,108 +1,72 @@
-apply plugin: 'maven'
-//apply plugin: 'signing'
+apply plugin: 'net.linguica.maven-settings'
+apply plugin: 'maven-publish'
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = POM_ARTIFACT_ID
 
-def sonatypeRepositoryUrl
-if (isReleaseBuild()) {
-    println 'RELEASE BUILD'
-    sonatypeRepositoryUrl = hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
-            : "http://nexus.arcsmed.at/content/repositories/android/"
-/*
-} else {
-    println 'SNAPSHOT BUILD'
-    sonatypeRepositoryUrl = hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
-            : "https://oss.sonatype.org/content/repositories/snapshots/"
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', POM_NAME)
+                root.appendNode('description', POM_DESCRIPTION)
+                root.appendNode('url', POM_URL)
 
-*/
-}
+                def scm = root.appendNode('scm')
+                scm.appendNode('url', POM_SCM_URL)
+                scm.appendNode('connection', POM_SCM_CONNECTION)
+                scm.appendNode('developerConnection', POM_SCM_DEV_CONNECTION)
 
-def getRepositoryUsername() {
-    return hasProperty('nexusUsername') ? nexusUsername : ""
-}
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', POM_LICENCE_NAME)
+                license.appendNode('url', POM_LICENCE_URL)
+                license.appendNode('distribution', POM_LICENCE_DIST)
 
-def getRepositoryPassword() {
-    return hasProperty('nexusPassword') ? nexusPassword : ""
-}
+                def developers = root.appendNode('developers')
+                def developer = developers.appendNode('developer')
+                developer.appendNode('id', POM_DEVELOPER_ID)
+                developer.appendNode('name', POM_DEVELOPER_NAME)
 
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                pom.artifactId = POM_ARTIFACT_ID
-
-                repository(url: sonatypeRepositoryUrl) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-                }
-
-                pom.project {
-                    name POM_NAME
-                    packaging POM_PACKAGING
-                    description POM_DESCRIPTION
-                    url POM_URL
-
-                    scm {
-                        url POM_SCM_URL
-                        connection POM_SCM_CONNECTION
-                        developerConnection POM_SCM_DEV_CONNECTION
-                    }
-
-                    licenses {
-                        license {
-                            name POM_LICENCE_NAME
-                            url POM_LICENCE_URL
-                            distribution POM_LICENCE_DIST
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
-                        }
-                        developer {
-                            id POM_DEVELOPER2_ID
-                            name POM_DEVELOPER2_NAME
-                        }
-                    }
-                }
+                developer = developers.appendNode('developer')
+                developer.appendNode('id', POM_DEVELOPER2_ID)
+                developer.appendNode('name', POM_DEVELOPER2_NAME)
             }
+
+            def files = new FileNameFinder().getFileNames("$buildDir/outputs/aar/", "*-release.aar");
+
+            artifact androidSourcesJar
+            artifact androidJavadocsJar
+            artifact files[0]
         }
     }
 
-	/*
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
-    }
-	*/
-
-    task androidJavadocs(type: Javadoc) {
-        //source = android.sourceSets.main.allJava
-        options {
-            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+    repositories {
+        maven {
+            name "at.ac.ait.hbs.android"
+            url "http://nexus.arcsmed.at/content/repositories/android/"
         }
-        source = android.sourceSets.main.java.sourceFiles
-        //classpath += project.files(android.plugin.getRuntimeJarList().join(File.pathSeparator))
-        classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
     }
+}
 
-    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-        classifier = 'javadoc'
-        //basename = artifact_id
-        from androidJavadocs.destinationDir
+task androidJavadocs(type: Javadoc) {
+    //source = android.sourceSets.main.allJava
+    options {
+        linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
     }
+    source = android.sourceSets.main.java.sourceFiles
+    //classpath += project.files(android.plugin.getRuntimeJarList().join(File.pathSeparator))
+    classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
+}
 
-    task androidSourcesJar(type: Jar) {
-        classifier = 'sources'
-        //basename = artifact_id
-        //from android.sourceSets.main.allSource
-        from android.sourceSets.main.java.sourceFiles
-    }
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    //basename = artifact_id
+    from androidJavadocs.destinationDir
+}
 
-    artifacts {
-        archives androidSourcesJar
-        archives androidJavadocsJar
-    }
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    //basename = artifact_id
+    //from android.sourceSets.main.allSource
+    from android.sourceSets.main.java.sourceFiles
 }
