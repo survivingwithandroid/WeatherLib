@@ -4,12 +4,12 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url "http://nexus.arcsmed.at/content/repositories/public-snapshots/"
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2' // Do not upgrade because it will break the maven-settings plugin (or check if the plugin was updated)
-        classpath 'net.linguica.gradle:maven-settings-plugin:0.5'
+        classpath 'com.android.tools.build:gradle:2.2.3' // Do not upgrade because it will break the maven-settings plugin (or check if the plugin was updated)
+        classpath 'net.linguica.gradle:maven-settings-plugin:0.7.0-SNAPSHOT'
     }
 }
 
