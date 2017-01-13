@@ -8,8 +8,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3' // Do not upgrade because it will break the maven-settings plugin (or check if the plugin was updated)
-        classpath 'net.linguica.gradle:maven-settings-plugin:0.7.0-SNAPSHOT'
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'net.linguica.gradle:maven-settings-plugin:0.7.0-SNAPSHOT' // Use official one when available
     }
 }
 
