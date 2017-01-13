@@ -32,7 +32,19 @@ publishing {
                 developer.appendNode('name', POM_DEVELOPER2_NAME)
             }
 
-            def files = new FileNameFinder().getFileNames("$buildDir/outputs/aar/", "*-release.aar");
+            def folder = new File("$buildDir/outputs/aar/")
+
+            if(!folder.exists()){
+                println "Output folder not found, skipping publish"
+                return;
+            }
+
+            def files = new FileNameFinder().getFileNames(folder.absolutePath, "*-release.aar");
+
+            if(files.size() == 0){
+                println "No AAR file found, skipping publish"
+                return;
+            }
 
             artifact androidSourcesJar
             artifact androidJavadocsJar
