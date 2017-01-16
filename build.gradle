@@ -3,13 +3,9 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url "http://nexus.arcsmed.at/content/repositories/public-snapshots/"
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'net.linguica.gradle:maven-settings-plugin:0.7.0-SNAPSHOT' // Use official one when available
     }
 }
 
@@ -38,6 +34,5 @@ ext {
     compileSdkVersion = 19
     buildToolsVersion = "25.0.2"
 }
-
 
 apply plugin: 'android-reporting'
