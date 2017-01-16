@@ -61,17 +61,13 @@ import java.util.List;
 
 public class WeatherUndergroundProvider implements IWeatherProvider {
 
-
     private static String BASE_URL_ID = "http://api.wunderground.com/api";
     private static String IMG_URL = "http://icons.wxug.com/i/c/k/";
     private static String SEARCH_URL = "http://autocomplete.wunderground.com/aq?query=";
-    private static String BASE_FORECAST_URL_ID = "http://api.wunderground.com/api";
-
 
     private WeatherConfig config;
     private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
     private IWeatherCodeProvider codeProvider;
-    private WeatherForecast forecast = new WeatherForecast();
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         //Log.d("SwA", "JSON CurrentWeather [" + data + "]");
@@ -148,8 +144,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 weather.currentCondition.setHeatIndex(getString("heat_index_f", jObj));
             }
 
+            // Forecast is parsed for today's min/max temp
             parseForecast(rootObj, weather);
-
 
             // Astronomy
             JSONObject moonObj = getObject("moon_phase", rootObj);
@@ -191,19 +187,20 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     public WeatherForecast getForecastWeather(String data) throws WeatherLibException {
         try {
             JSONObject rootObj = new JSONObject(data);
-            parseForecast(rootObj, null);
+            return parseForecast(rootObj, null);
         } catch (JSONException json) {
             json.printStackTrace();
             throw new WeatherLibException(json);
         }
-        return forecast;
     }
 
-    private void parseForecast(JSONObject root, Weather weather) throws JSONException {
+    private WeatherForecast parseForecast(JSONObject root, Weather weather) throws JSONException {
         // Start parsing forecast
-        JSONObject forecast1 = getObject("forecast", root);
-        JSONObject simpleForecast = getObject("simpleforecast", forecast1);
-        JSONArray jArr = simpleForecast.getJSONArray("forecastday");
+        final JSONObject forecast1 = getObject("forecast", root);
+        final JSONObject simpleForecast = getObject("simpleforecast", forecast1);
+        final JSONArray jArr = simpleForecast.getJSONArray("forecastday");
+
+        WeatherForecast forecast = new WeatherForecast();
 
         for (int i = 0; i < jArr.length(); i++) {
             JSONObject dayForecast = jArr.getJSONObject(i);
@@ -213,6 +210,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
             df.weather.currentCondition.setDescr(dayForecast.getString("conditions"));
             df.weather.currentCondition.setIcon(dayForecast.getString("icon"));
+            df.weather.currentCondition.setHumidity(dayForecast.getInt("avehumidity"));
 
             if (codeProvider != null) {
                 try {
@@ -250,6 +248,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         }
 
         forecast.setUnit(units);
+        return forecast;
     }
 
 
@@ -531,74 +530,47 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         return jObj.getInt(tagName);
     }
 
-    private String addLanguage(String url) {
-        if (config.lang == null)
-            return url;
+    private String buildURL(final WeatherRequest request, final String type) throws ApiKeyRequiredException{
+        if (config.ApiKey == null) {
+            throw new ApiKeyRequiredException();
+        }
 
-        String nUrl = url + "/lang:" + config.lang.toUpperCase() + "/";
-        return nUrl;
+        String location = request.getCityId();
+        if (location == null) {
+            location = request.getLat() + "," + request.getLon();
+        }
+
+        String language = "EN";
+        if (config.lang != null) {
+            language = config.lang.toUpperCase();
+        }
+
+        final String url = String.format("%s/%s/%s/lang:%s/q/%s.json", BASE_URL_ID, config.ApiKey, type, language, location);
+
+        return url;
     }
-
 
     // New methods
 
     @Override
     public String getQueryCurrentWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        String url = BASE_URL_ID + "/" + config.ApiKey + "/forecast/conditions/astronomy/";
-        url = addLanguage(url);
-        if (request.getCityId() != null)
-            url = url + request.getCityId() + ".json";
-        else
-            url = url + request.getLat() + "," + request.getLon() + ".json";
-        return url;
+        return buildURL(request, "conditions/forecast/astronomy");
     }
 
     @Override
     public String getQueryForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/forecast/";
-        url = addLanguage(url);
-        if (request.getCityId() != null)
-            url = url + request.getCityId() + ".json";
-        else
-            url = url + request.getLat() + "," + request.getLon() + ".json";
-
-        return url;
+        return buildURL(request, "forecast");
     }
 
     @Override
     public String getQueryHourForecastWeatherURL(WeatherRequest request) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        String url = BASE_FORECAST_URL_ID + "/" + config.ApiKey + "/hourly/";
-        url = addLanguage(url);
-        if (request.getCityId() != null)
-            url = url + request.getCityId() + ".json";
-        else
-            url = url + request.getLat() + "," + request.getLon() + ".json";
-
-        return url;
+        return buildURL(request, "hourly");
     }
 
     @Override
     public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String url =  BASE_URL_ID + "/" + config.ApiKey + "/history_" + sdf.format(startDate);
-        url = addLanguage(url);
-        if (request.getCityId() != null)
-            url = url + request.getCityId() + ".json";
-        else
-            url = url + request.getLat() + "," + request.getLon() + ".json";
-
-        return url;
+        return buildURL(request, "history_" + sdf.format(startDate));
     }
 }

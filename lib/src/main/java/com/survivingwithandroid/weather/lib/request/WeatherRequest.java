@@ -32,7 +32,7 @@ public class WeatherRequest {
         this.cityId = cityId;
     }
 
-    public WeatherRequest(double lon, double lat) {
+    public WeatherRequest(double lat, double lon) {
         this.lon = lon;
         this.lat = lat;
     }
