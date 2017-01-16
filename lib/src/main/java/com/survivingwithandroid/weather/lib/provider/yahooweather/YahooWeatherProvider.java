@@ -177,8 +177,8 @@ public class YahooWeatherProvider implements IWeatherProvider {
     }
 
     @Override
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
-        return getQueryCityURLFromString(lon + ", " + lat);
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException {
+        return getQueryCityURLFromString(lat + ", " + lon);
     }
 
     @Override

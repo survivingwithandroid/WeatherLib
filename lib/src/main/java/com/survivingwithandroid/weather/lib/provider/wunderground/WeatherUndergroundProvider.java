@@ -254,24 +254,29 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
 
     public List<City> getCityResultList(String data) throws WeatherLibException {
-        List<City> cityList = new ArrayList<City>();
+        final List<City> cityList = new ArrayList<City>();
         // Log.d("SwA", "Data ["+data+"]");
         try {
 
-            JSONObject jObj = new JSONObject(data);
-            JSONArray jArr = jObj.getJSONArray("RESULTS");
+            final JSONObject jObj = new JSONObject(data);
+            final JSONArray jArr = jObj.getJSONArray("RESULTS");
 
 
             for (int i = 0; i < jArr.length(); i++) {
-                JSONObject obj = jArr.getJSONObject(i);
+                final JSONObject obj = jArr.getJSONObject(i);
 
-                String name = obj.getString("name");
-                String id = obj.getString("l");
-                String country = obj.getString("c");
+                final String name = obj.getString("name");
+                final String id = obj.getString("l");
+                final String country = obj.getString("c");
+                final double latitude = obj.getDouble("lat");
+                final double longitude = obj.getDouble("lon");
                 //Log.d("SwA", "ID [" + id + "]");
-                City.CityBuilder builder = new City.CityBuilder().name(name).id(id).country(country);
-               // City c = new City(id, name, null, country);
-                City c = builder.build();
+                final City c = new City.CityBuilder()
+                        .name(name)
+                        .id(id)
+                        .country(country)
+                        .geoCoord(latitude, longitude)
+                        .build();
 
                 cityList.add(c);
             }
@@ -468,14 +473,11 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(android.location.Location location) throws ApiKeyRequiredException {
-        if (config.ApiKey == null)
-            throw new ApiKeyRequiredException();
-
-        return BASE_URL_ID + "/" + config.ApiKey + "/geolookup/q/" + location.getLatitude() + "," + location.getLongitude() + ".json";
+        return getQueryCityURLByCoord(location.getLatitude(), location.getLongitude());
     }
 
     @Override
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException {
         if (config.ApiKey == null)
             throw new ApiKeyRequiredException();
 

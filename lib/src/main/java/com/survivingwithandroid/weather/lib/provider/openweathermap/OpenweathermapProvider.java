@@ -464,11 +464,11 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(android.location.Location location) throws ApiKeyRequiredException {
-        return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3" + createAPPID();
+        return getQueryCityURLByCoord(location.getLatitude(), location.getLongitude());
     }
 
     @Override
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException {
         return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3" + createAPPID() ;
     }
 

@@ -140,7 +140,7 @@ public class WeatherDefaultClient extends WeatherClient {
      */
     @Override
     public void searchCity(double lat, double lon, CityEventListener listener) throws ApiKeyRequiredException {
-        String url = provider.getQueryCityURLByCoord(lon, lat);
+        String url = provider.getQueryCityURLByCoord(lat, lon);
         _doSearchCity(url, listener);
     }
 

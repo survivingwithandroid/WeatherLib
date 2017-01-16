@@ -170,7 +170,7 @@ public class City {
             return this;
         }
 
-        public CityBuilder geoCoord(double lon, double lat) {
+        public CityBuilder geoCoord(double lat, double lon) {
             this.lat = lat;
             this.lon = lon;
             return this;

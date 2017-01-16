@@ -59,7 +59,7 @@ public interface IWeatherProvider {
 
     public String getQueryCityURLByLocation(Location location) throws ApiKeyRequiredException;
 
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException;
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException;
 
 
     public void setConfig(WeatherConfig config);

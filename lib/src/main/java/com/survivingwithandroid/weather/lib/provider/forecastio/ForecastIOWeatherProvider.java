@@ -124,7 +124,7 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
     }
 
     @Override
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException {
         return null;
     }
 
