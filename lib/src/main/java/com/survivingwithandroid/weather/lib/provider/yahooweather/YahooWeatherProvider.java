@@ -215,27 +215,27 @@ public class YahooWeatherProvider implements IWeatherProvider {
 
                 if (event == XmlPullParser.START_TAG) {
                     if (tagName.equals("yweather:wind")) {
-                        current.wind.setChill(WeatherUtility.parseInt(parser.getAttributeValue(null, "chill")));
-                        current.wind.setDeg(WeatherUtility.parseInt(parser.getAttributeValue(null, "direction")));
-                        current.wind.setSpeed(WeatherUtility.parseFloat(parser.getAttributeValue(null, "speed")));
+                        current.wind.setChill(parseFloat(parser.getAttributeValue(null, "chill")));
+                        current.wind.setDeg(parseFloat(parser.getAttributeValue(null, "direction")));
+                        current.wind.setSpeed(parseFloat(parser.getAttributeValue(null, "speed")));
 
                     } else if (tagName.equals("yweather:atmosphere")) {
-                        current.currentCondition.setHumidity(WeatherUtility.parseInt(parser.getAttributeValue(null, "humidity")));
-                        current.currentCondition.setVisibility(WeatherUtility.parseFloat(parser.getAttributeValue(null, "visibility")));
-                        current.currentCondition.setPressure(WeatherUtility.parseFloat(parser.getAttributeValue(null, "pressure")));
-                        current.currentCondition.setPressureTrend(WeatherUtility.parseInt(parser.getAttributeValue(null, "rising")));
+                        current.currentCondition.setHumidity(parseFloat(parser.getAttributeValue(null, "humidity")));
+                        current.currentCondition.setVisibility(parseFloat(parser.getAttributeValue(null, "visibility")));
+                        current.currentCondition.setPressure(parseFloat(parser.getAttributeValue(null, "pressure")));
+                        current.currentCondition.setPressureTrend(parseInt(parser.getAttributeValue(null, "rising")));
 
                     } else if (tagName.equals("yweather:forecast")) {
                         if(isFirstDayForecast) {
-                            current.temperature.setMinTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "low")));
-                            current.temperature.setMaxTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "high")));
+                            current.temperature.setMinTemp(parseFloat(parser.getAttributeValue(null, "low")));
+                            current.temperature.setMaxTemp(parseFloat(parser.getAttributeValue(null, "high")));
                             isFirstDayForecast = false;
                         }
 
                         DayForecast df = new DayForecast();
-                        df.forecastTemp.max = WeatherUtility.parseInt(parser.getAttributeValue(null, "high"));
-                        df.forecastTemp.min = WeatherUtility.parseInt(parser.getAttributeValue(null, "low")); // Bug fixing
-                        df.weather.currentCondition.setWeatherId(WeatherUtility.parseInt(parser.getAttributeValue(null, "code")));
+                        df.forecastTemp.max = parseFloat(parser.getAttributeValue(null, "high"));
+                        df.forecastTemp.min = parseFloat(parser.getAttributeValue(null, "low")); // Bug fixing
+                        df.weather.currentCondition.setWeatherId(parseInt(parser.getAttributeValue(null, "code")));
                         df.weather.location = current.location;
                         if (codeProvider != null) {
                             try {
@@ -251,7 +251,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         forecast.addForecast(df);
 
                     } else if (tagName.equals("yweather:condition")) {
-                        current.currentCondition.setWeatherId(WeatherUtility.parseInt(parser.getAttributeValue(null, "code")));
+                        current.currentCondition.setWeatherId(parseInt(parser.getAttributeValue(null, "code")));
                         current.currentCondition.setIcon("" + current.currentCondition.getWeatherId());
 
                         // Convert the code
@@ -265,7 +265,7 @@ public class YahooWeatherProvider implements IWeatherProvider {
                         }
 
                         current.currentCondition.setCondition(parser.getAttributeValue(null, "text"));
-                        current.temperature.setTemp(WeatherUtility.parseInt(parser.getAttributeValue(null, "temp")));
+                        current.temperature.setTemp(parseFloat(parser.getAttributeValue(null, "temp")));
 
                     } else if (tagName.equals("yweather:location")) {
                         current.location.setCity(parser.getAttributeValue(null, "city"));
@@ -297,9 +297,9 @@ public class YahooWeatherProvider implements IWeatherProvider {
                 }
                 else if (event == XmlPullParser.END_TAG) {
                     if (tagName.equals("geo:lat")){
-                        current.location.setLatitude(WeatherUtility.parseFloat(text));
+                        current.location.setLatitude(parseFloat(text));
                     } else if (tagName.equals("geo:long")){
-                        current.location.setLongitude(WeatherUtility.parseFloat(text));
+                        current.location.setLongitude(parseFloat(text));
                     }
                 }
 
@@ -386,5 +386,33 @@ public class YahooWeatherProvider implements IWeatherProvider {
     @Override
     public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
         throw new UnsupportedOperationException();
+    }
+
+    // Place these temporary here since Yahoo is the only provider using it
+
+    private static Integer parseInt(final String value){
+        return parseInt(value, null);
+    }
+
+    private static Integer parseInt(final String value, final Integer defaultValue){
+        try{
+            return Integer.parseInt(value);
+        }
+        catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
+
+    private static Double parseFloat(final String value){
+        return parseFloat(value, null);
+    }
+
+    private static Double parseFloat(final String value, final Double defaultValue){
+        try {
+            return Double.parseDouble(value);
+        }
+        catch(Exception e){
+            return defaultValue;
+        }
     }
 }

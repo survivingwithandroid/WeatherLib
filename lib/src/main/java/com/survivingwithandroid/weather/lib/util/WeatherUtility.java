@@ -17,8 +17,12 @@
 
 package com.survivingwithandroid.weather.lib.util;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.model.BaseWeather;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WeatherUtility {
 
@@ -45,37 +49,49 @@ public class WeatherUtility {
         return currentUnit.equals(WeatherConfig.UNIT_SYSTEM.M);
     }
 
+    private static JSONObject getLast(final JSONObject json, final String... names) throws JSONException {
+        final int lastIndex = names.length - 1;
+        JSONObject last = json;
 
-    public static float string2Float(String value) {
-        if (value == null || "".equals(value))
-            return -1;
-
-        return Float.parseFloat(value);
-    }
-
-    public static int parseInt(final String value){
-        return parseInt(value, 0);
-    }
-
-    public static int parseInt(final String value, final int defaultValue){
-        try{
-            return Integer.parseInt(value);
+        for (int i = 0; i < lastIndex; i++) {
+            last = last.getJSONObject(names[i]);
         }
-        catch (NumberFormatException e){
-            return defaultValue;
-        }
+
+        return last;
     }
 
-    public static float parseFloat(final String value){
-        return parseFloat(value, -1.0f);
-    }
-
-    public static float parseFloat(final String value, final float defaultValue){
+    public static String getString(final JSONObject json, final String... names) {
         try {
-            return Float.parseFloat(value);
+            return getLast(json, names).getString(names[names.length - 1]);
+        } catch (JSONException e) {
+            return DefaultValues.ERROR_STRING;
         }
-        catch(Exception e){
-            return defaultValue;
+    }
+
+    public static Integer getInteger(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getInt(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_INTEGER;
+        }
+    }
+
+    public static Long getLong(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getLong(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_LONG;
+        }
+    }
+
+    public static Double getDouble(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getDouble(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_DOUBLE;
         }
     }
 }

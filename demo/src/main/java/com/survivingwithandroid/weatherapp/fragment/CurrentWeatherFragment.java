@@ -146,14 +146,14 @@ public class CurrentWeatherFragment extends WeatherFragment {
                 condDescr.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
                 LogUtils.LOGD("SwA", "Temp [" + temp + "]");
                 LogUtils.LOGD("SwA", "Val [" + weather.temperature.getTemp() + "]");
-                temp.setText("" + ((int) weather.temperature.getTemp()));
+                temp.setText(weather.temperature.getTemp().intValue());
                 unitTemp.setText(cWeather.getUnit().tempUnit);
-                colorTextLine.setBackgroundResource(WeatherUtil.getResource(weather.temperature.getTemp(), config));
+                colorTextLine.setBackgroundResource(WeatherUtil.getResource(weather.temperature.getTemp().floatValue(), config));
                 hum.setText(weather.currentCondition.getHumidity() + "%");
                 tempMin.setText(weather.temperature.getMinTemp() + cWeather.getUnit().tempUnit);
                 tempMax.setText(weather.temperature.getMaxTemp() + cWeather.getUnit().tempUnit);
                 windSpeed.setText(weather.wind.getSpeed() + cWeather.getUnit().speedUnit);
-                windDeg.setText((int) weather.wind.getDeg() + "° (" + WindDirection.getDir((int) weather.wind.getDeg()) + ")");
+                windDeg.setText(weather.wind.getDeg().intValue() + "° (" + WindDirection.getDir(weather.wind.getDeg().intValue()) + ")");
                 press.setText(weather.currentCondition.getPressure() + cWeather.getUnit().pressureUnit);
 
                 sunrise.setText(WeatherUtil.convertDate(weather.location.getSunrise()));

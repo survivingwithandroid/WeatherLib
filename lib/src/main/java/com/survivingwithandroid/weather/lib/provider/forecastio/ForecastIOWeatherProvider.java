@@ -176,8 +176,8 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
             // Parse city
             com.survivingwithandroid.weather.lib.model.Location loc = new com.survivingwithandroid.weather.lib.model.Location();
-            loc.setLatitude((float)  rootObj.getDouble("latitude"));
-            loc.setLongitude((float) rootObj.getDouble("longitude"));
+            loc.setLatitude(rootObj.getDouble("latitude"));
+            loc.setLongitude(rootObj.getDouble("longitude"));
 
             weather.location = loc;
 
@@ -245,22 +245,22 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
 
 
-        weather.rain[0].setAmmount((float) jsonWeather.optDouble("precipIntensity"));
+        weather.rain[0].setAmmount(jsonWeather.optDouble("precipIntensity"));
 
-        weather.rain[0].setChance((float) jsonWeather.optDouble("precipProbability") * 100);
+        weather.rain[0].setChance(jsonWeather.optDouble("precipProbability") * 100);
 
-        weather.temperature.setTemp((float) jsonWeather.optDouble("temperature"));
-        weather.temperature.setMinTemp((float) jsonWeather.optDouble("temperatureMin"));
-        weather.temperature.setMaxTemp((float) jsonWeather.optDouble("temperatureMax"));
-        weather.currentCondition.setDewPoint((float) jsonWeather.optDouble("dewPoint"));
+        weather.temperature.setTemp(jsonWeather.optDouble("temperature"));
+        weather.temperature.setMinTemp(jsonWeather.optDouble("temperatureMin"));
+        weather.temperature.setMaxTemp(jsonWeather.optDouble("temperatureMax"));
+        weather.currentCondition.setDewPoint(jsonWeather.optDouble("dewPoint"));
 
-        weather.wind.setSpeed((float) jsonWeather.optDouble("windSpeed"));
-        weather.wind.setDeg((float) jsonWeather.optDouble("windBearing"));
+        weather.wind.setSpeed(jsonWeather.optDouble("windSpeed"));
+        weather.wind.setDeg(jsonWeather.optDouble("windBearing"));
 
         weather.clouds.setPerc((int) jsonWeather.optDouble("cloudCover") * 100); // We transform it in percentage
-        weather.currentCondition.setHumidity((float) jsonWeather.optDouble("humidity") * 100);
-        weather.currentCondition.setVisibility((float) jsonWeather.optDouble("visibility"));
-        weather.currentCondition.setPressure((float) jsonWeather.optDouble("pressure"));
+        weather.currentCondition.setHumidity(jsonWeather.optDouble("humidity") * 100);
+        weather.currentCondition.setVisibility(jsonWeather.optDouble("visibility"));
+        weather.currentCondition.setPressure(jsonWeather.optDouble("pressure"));
 
         return weather;
     }

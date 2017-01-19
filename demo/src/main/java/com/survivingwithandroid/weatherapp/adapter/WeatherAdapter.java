@@ -97,8 +97,8 @@ public class WeatherAdapter extends ArrayAdapter<DayForecast>{
         dayCloud.setText("" + forecast.weather.clouds.getPerc() + "%");
         dayDescr.setText(forecast.weather.currentCondition.getDescr());
         try {
-            float rainVal = forecast.weather.rain[0].getAmmount();
-            dayRain.setText("Rain:" + String.valueOf((int) rainVal));
+            final Double rainVal = forecast.weather.rain[0].getAmmount();
+            dayRain.setText("Rain:" + rainVal.intValue());
         }
         catch(Throwable t) {}
         return convertView;
