@@ -49,7 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
+import java.util.Locale;
 
 
 /**
@@ -65,22 +65,24 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     private static String SEARCH_URL = "http://autocomplete.wunderground.com/aq?query=";
 
     private WeatherConfig config;
-    private BaseWeather.WeatherUnit units = new BaseWeather.WeatherUnit();
+    private BaseWeather.WeatherUnit units;
+    private Units unitStrings;
     private IWeatherCodeProvider codeProvider;
 
     public CurrentWeather getCurrentCondition(String data) throws WeatherLibException {
         try {
-            final CurrentWeather cWeather = new CurrentWeather();
-            final Weather weather = new Weather();
+            final CurrentWeather currentWeather = new CurrentWeather();
+            currentWeather.setUnit(units);
 
-            // We create out JSONObject from the data
+            final Weather weather = new Weather();
+            currentWeather.weather = weather;
+
             final JSONObject rootObj = new JSONObject(data);
             final JSONObject jObj = rootObj.getJSONObject("current_observation");
-
-            // We start extracting the info
-            final Location loc = new Location();
             final JSONObject dObj = jObj.getJSONObject("display_location");
 
+            // Location
+            final Location loc = new Location();
             loc.setLatitude(WeatherUtility.getDouble(dObj, "latitude"));
             loc.setLongitude(WeatherUtility.getDouble(dObj, "longitude"));
             loc.setCountry(WeatherUtility.getString(dObj, "state_name"));
@@ -90,7 +92,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             weather.currentCondition.setDescr(WeatherUtility.getString(jObj, "weather"));
             weather.currentCondition.setIcon(WeatherUtility.getString(jObj, "icon"));
 
-            // Convert internal code
+            // WeatherCode: Convert to internal code
             if (codeProvider != null) {
                 try {
                     weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getIcon()));
@@ -100,8 +102,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 }
             }
 
+            // Humidity
             final String relUm = WeatherUtility.getString(jObj, "relative_humidity");
-
             if(relUm != null) {
                 try {
                     weather.currentCondition.setHumidity(Double.parseDouble(relUm.substring(0, relUm.length() - 1)));
@@ -110,33 +112,21 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 }
             }
 
-            weather.wind.setDeg(WeatherUtility.getDouble(jObj, "wind_degrees"));
-
             // At this point the pressure trend was set, but it was 0 all the time
             // This is because wunderground can return 3 values: + - and 0, so mapping it to int makes no sense
 
             weather.currentCondition.setUV(WeatherUtility.getDouble(jObj, "UV"));
             weather.currentCondition.setSolarRadiation(WeatherUtility.getString(jObj, "solarradiation"));
+            weather.currentCondition.setPressure(WeatherUtility.getDouble(jObj, "pressure_" + unitStrings.pressure));
+            weather.temperature.setTemp(WeatherUtility.getDouble(jObj, "temp_" + unitStrings.temperatureShort));
+            weather.wind.setGust(WeatherUtility.getDouble(jObj, "wind_gust_" + unitStrings.speed));
+            weather.wind.setSpeed(WeatherUtility.getDouble(jObj, "wind_" + unitStrings.speed));
+            weather.wind.setDeg(WeatherUtility.getDouble(jObj, "wind_degrees"));
+            weather.currentCondition.setVisibility(WeatherUtility.getDouble(jObj, "visibility_" + unitStrings.distance));
+            weather.currentCondition.setFeelsLike(WeatherUtility.getDouble(jObj, "feelslike_" + unitStrings.temperatureShort));
+            weather.currentCondition.setDewPoint(WeatherUtility.getDouble(jObj, "dewpoint_" + unitStrings.temperatureShort));
+            weather.currentCondition.setHeatIndex(WeatherUtility.getString(jObj, "heat_index_" + unitStrings.temperatureShort));
 
-            if (WeatherUtility.isMetric(config.unitSystem)) {
-                weather.currentCondition.setPressure(WeatherUtility.getDouble(jObj, "pressure_mb"));
-                weather.temperature.setTemp(WeatherUtility.getDouble(jObj, "temp_c"));
-                weather.wind.setGust(WeatherUtility.getDouble(jObj, "wind_gust_kph"));
-                weather.wind.setSpeed(WeatherUtility.getDouble(jObj, "wind_kph"));
-                weather.currentCondition.setVisibility(WeatherUtility.getDouble(jObj, "visibility_km"));
-                weather.currentCondition.setFeelsLike(WeatherUtility.getDouble(jObj, "feelslike_c"));
-                weather.currentCondition.setDewPoint(WeatherUtility.getDouble(jObj, "dewpoint_c"));
-                weather.currentCondition.setHeatIndex(WeatherUtility.getString(jObj, "heat_index_c"));
-            } else {
-                weather.currentCondition.setPressure(WeatherUtility.getDouble(jObj, "pressure_in"));
-                weather.temperature.setTemp(WeatherUtility.getDouble(jObj, "temp_f"));
-                weather.wind.setGust(WeatherUtility.getDouble(jObj, "wind_gust_mph"));
-                weather.wind.setSpeed(WeatherUtility.getDouble(jObj, "wind_mph"));
-                weather.currentCondition.setVisibility(WeatherUtility.getDouble(jObj, "visibility_mi"));
-                weather.currentCondition.setFeelsLike(WeatherUtility.getDouble(jObj, "feelslike_f"));
-                weather.currentCondition.setDewPoint(WeatherUtility.getDouble(jObj, "dewpoint_f"));
-                weather.currentCondition.setHeatIndex(WeatherUtility.getString(jObj, "heat_index_f"));
-            }
 
             // Forecast is parsed for today's min/max temp
             parseForecast(rootObj, weather);
@@ -149,7 +139,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 weather.location.getAstronomy().moonPhaseDescr = WeatherUtility.getString(moonObj, "phaseofMoon");
                 weather.location.getAstronomy().hemisphere = WeatherUtility.getString(moonObj, "hemisphere");
 
-                final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
                 if(moonObj.has("sunrise")) {
                     final JSONObject riseObj = moonObj.getJSONObject("sunrise");
@@ -172,10 +162,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 }
             }
 
-            cWeather.setUnit(units);
-            cWeather.weather = weather;
-
-            return cWeather;
+            return currentWeather;
         } catch (JSONException json) {
             throw new WeatherLibException(json);
         }
@@ -197,6 +184,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
         final JSONArray jArr = simpleForecast.getJSONArray("forecastday");
 
         final WeatherForecast forecast = new WeatherForecast();
+        forecast.setUnit(units);
 
         for (int i = 0; i < jArr.length(); i++) {
             final DayForecast df = new DayForecast();
@@ -220,25 +208,15 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 }
             }
 
-            if (WeatherUtility.isMetric(config.unitSystem)) {
-                df.forecastTemp.max = WeatherUtility.getDouble(dayForecast, "high", "celsius");
-                df.forecastTemp.min = WeatherUtility.getDouble(dayForecast, "low", "celsius");
-                df.weather.wind.setSpeed(WeatherUtility.getDouble(dayForecast, "avewind", "kph"));
-                df.weather.snow.setTime("Day");
-                df.weather.snow.setAmmount(WeatherUtility.getDouble(dayForecast, "snow_allday", "cm"));
-                df.weather.rain[0].setTime("Day");
-                df.weather.rain[0].setAmmount(WeatherUtility.getDouble(dayForecast, "qpf_allday", "mm"));
-            } else {
-                df.forecastTemp.max = WeatherUtility.getDouble(dayForecast, "high", "fahrenheit");
-                df.forecastTemp.min = WeatherUtility.getDouble(dayForecast, "low", "fahrenheit");
-                df.weather.wind.setSpeed(WeatherUtility.getDouble(dayForecast, "avewind", "mph"));
-                df.weather.snow.setTime("Day");
-                df.weather.snow.setAmmount(WeatherUtility.getDouble(dayForecast, "snow_allday", "in"));
-                df.weather.rain[0].setTime("Day");
-                df.weather.rain[0].setAmmount(WeatherUtility.getDouble(dayForecast, "qpf_allday", "in"));
-            }
-
+            df.forecastTemp.max = WeatherUtility.getDouble(dayForecast, "high", unitStrings.temperature);
+            df.forecastTemp.min = WeatherUtility.getDouble(dayForecast, "low", unitStrings.temperature);
+            df.weather.wind.setSpeed(WeatherUtility.getDouble(dayForecast, "avewind", unitStrings.speed));
             df.weather.wind.setDeg(WeatherUtility.getDouble(dayForecast, "avewind", "degrees"));
+            df.weather.snow.setTime("Day");
+            df.weather.snow.setAmmount(WeatherUtility.getDouble(dayForecast, "snow_allday", unitStrings.snowHeight));
+            df.weather.rain[0].setTime("Day");
+            df.weather.rain[0].setAmmount(WeatherUtility.getDouble(dayForecast, "qpf_allday", unitStrings.waterHeight));
+
             if (i == 0 && weather != null) {
                 weather.temperature.setMinTemp(df.forecastTemp.min);
                 weather.temperature.setMaxTemp(df.forecastTemp.max);
@@ -247,10 +225,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
             forecast.addForecast(df);
         }
 
-        forecast.setUnit(units);
         return forecast;
     }
-
 
     public List<City> getCityResultList(String data) throws WeatherLibException {
         try {
@@ -282,6 +258,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     public WeatherHourForecast getHourForecastWeather(String data) throws WeatherLibException {
         try {
             final WeatherHourForecast forecast = new WeatherHourForecast();
+            forecast.setUnit(units);
 
             final JSONObject jObj = new JSONObject(data);
             final JSONArray jHoursArray = jObj.getJSONArray("hourly_forecast");
@@ -319,6 +296,7 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     public HistoricalWeather getHistoricalWeather(String data) throws WeatherLibException {
         try {
             final HistoricalWeather histWeather = new HistoricalWeather();
+            histWeather.setUnit(units);
 
             final JSONObject jObj = new JSONObject(data);
             final JSONObject histObj = jObj.getJSONObject("history");
@@ -373,8 +351,6 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
                 histWeather.addHistoricalHourWeather(hhWeather);
             }
 
-            histWeather.setUnit(units);
-
             return histWeather;
         } catch (JSONException json) {
             throw new WeatherLibException(json);
@@ -385,6 +361,8 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
     public void setConfig(WeatherConfig config) {
         this.config = config;
         units = WeatherUtility.createWeatherUnit(config.unitSystem);
+
+        unitStrings = WeatherUtility.isMetric(config.unitSystem) ? new MetricUnits() : new ImperialUnits();
     }
 
     @Override
@@ -471,8 +449,40 @@ public class WeatherUndergroundProvider implements IWeatherProvider {
 
     @Override
     public String getQueryHistoricalWeatherURL(WeatherRequest request, Date startDate, Date endDate) throws ApiKeyRequiredException {
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
 
         return buildURL(request, "history_" + sdf.format(startDate));
+    }
+
+    private class MetricUnits extends Units{
+        public MetricUnits(){
+            super("celsius", "c", "km", "kph", "cm", "mm", "mb");
+        }
+    }
+
+    private class ImperialUnits extends Units{
+        public ImperialUnits(){
+            super("fahrenheit", "f", "mi", "mph", "in", "in", "in");
+        }
+    }
+
+    private class Units{
+        public final String temperature;
+        public final String temperatureShort;
+        public final String distance;
+        public final String speed;
+        public final String snowHeight;
+        public final String waterHeight;
+        public final String pressure;
+
+        public Units(String temperature, String temperatureShort, String distance, String speed, String snowHeight, String waterHeight, String pressure){
+            this.temperature = temperature;
+            this.temperatureShort = temperatureShort;
+            this.distance = distance;
+            this.speed = speed;
+            this.snowHeight = snowHeight;
+            this.waterHeight = waterHeight;
+            this.pressure = pressure;
+        }
     }
 }
