@@ -23,9 +23,16 @@ afterEvaluate { project ->
 					repository(url: localMavenRepo)
 				}
 				else {
-					repository(url: "http://nexus.arcsmed.at/content/repositories/android/") {
-						authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-					}
+                    if(VERSION_NAME.endsWith('-SNAPSHOT')) {
+                        repository(url: "http://nexus.arcsmed.at/content/repositories/android-snapshots/") {
+                            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                        }
+                    }
+                    else {
+                        repository(url: "http://nexus.arcsmed.at/content/repositories/android/") {
+                            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                        }
+                    }
 				}
 				
                 pom.project {
