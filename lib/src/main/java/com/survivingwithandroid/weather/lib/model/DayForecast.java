@@ -16,6 +16,8 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,12 +35,12 @@ public class DayForecast extends WeatherForecastData {
     * Forecast temperature
     * */
     public class ForecastTemp {
-        public float day;
-        public float min;
-        public float max;
-        public float night;
-        public float eve;
-        public float morning;
+        public Double day = DefaultValues.DEFAULT_DOUBLE;
+        public Double min = DefaultValues.DEFAULT_DOUBLE;
+        public Double max = DefaultValues.DEFAULT_DOUBLE;
+        public Double night = DefaultValues.DEFAULT_DOUBLE;
+        public Double eve = DefaultValues.DEFAULT_DOUBLE;
+        public Double morning = DefaultValues.DEFAULT_DOUBLE;
     }
 
     public String getStringDate() {

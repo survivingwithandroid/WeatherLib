@@ -16,6 +16,8 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
+
 /**
 * This is the basic class for weather forecast data. It holds some basic information
 *
@@ -29,7 +31,7 @@ public class WeatherForecastData {
     /*
     * Forecast timestamp. Using this parameter you know at what day/hour the forecast information is refering to.
     * */
-    public long timestamp;
+    public Long timestamp = DefaultValues.DEFAULT_LONG;
 
 
 }

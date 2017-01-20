@@ -16,6 +16,8 @@
  */
 package com.survivingwithandroid.weather.lib.model;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
+
 import java.io.Serializable;
 
 /**
@@ -26,45 +28,45 @@ import java.io.Serializable;
 public class Location implements Serializable {
 
 
-    private float longitude;
-    private float latitude;
-    private long sunset;
-    private long sunrise;
-    private String country;
-    private String city;
-    private String region;
+    private Double longitude = DefaultValues.DEFAULT_DOUBLE;
+    private Double latitude = DefaultValues.DEFAULT_DOUBLE;
+    private Long sunset = DefaultValues.DEFAULT_LONG;
+    private Long sunrise = DefaultValues.DEFAULT_LONG;
+    private String country = DefaultValues.DEFAULT_STRING;
+    private String city = DefaultValues.DEFAULT_STRING;
+    private String region = DefaultValues.DEFAULT_STRING;
     private Astronomy astronomy = new Astronomy();
-    private long population;
+    private Long population = DefaultValues.DEFAULT_LONG;
 
-    public float getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public float getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public long getSunset() {
+    public Long getSunset() {
         return sunset;
     }
 
-    public void setSunset(long sunset) {
+    public void setSunset(Long sunset) {
         this.sunset = sunset;
     }
 
-    public long getSunrise() {
+    public Long getSunrise() {
         return sunrise;
     }
 
-    public void setSunrise(long sunrise) {
+    public void setSunrise(Long sunrise) {
         this.sunrise = sunrise;
     }
 
@@ -100,11 +102,11 @@ public class Location implements Serializable {
         this.astronomy = astronomy;
     }
 
-    public long getPopulation() {
+    public Long getPopulation() {
         return population;
     }
 
-    public void setPopulation(long population) {
+    public void setPopulation(Long population) {
         this.population = population;
     }
 

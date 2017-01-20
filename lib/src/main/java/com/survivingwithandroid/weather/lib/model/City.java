@@ -107,6 +107,14 @@ public class City {
         this.region = region;
     }
 
+    public double getLatitude(){
+        return lat;
+    }
+
+    public double getLongitude(){
+        return lon;
+    }
+
     public String toString(){
         return this.name + ", " + this.country;
     }
@@ -162,7 +170,7 @@ public class City {
             return this;
         }
 
-        public CityBuilder geoCoord(double lon, double lat) {
+        public CityBuilder geoCoord(double lat, double lon) {
             this.lat = lat;
             this.lon = lon;
             return this;

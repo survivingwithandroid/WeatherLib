@@ -1,4 +1,4 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -54,4 +54,5 @@ task makeJar(type: Copy) {
 }
 
 makeJar.dependsOn(clearJar, build)
-apply from: '../maven_push.gradle'
+//apply from: '../maven_push.gradle'
+apply from: '../nexus_push.gradle'

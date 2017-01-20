@@ -16,13 +16,15 @@
  */
 package com.survivingwithandroid.weather.lib.request;
 
+import android.location.Location;
+
 /**
  * This class encapsulates the request parameters that must be passed to the weather client to get the weather condition.
  * The request can be made using cityId (a unique identifier) or using latitude and longitude
  *
  * @author Francesco Azzola
  * @since 1.5.1
- * */
+ */
 public class WeatherRequest {
     private String cityId;
     private double lon;
@@ -32,9 +34,14 @@ public class WeatherRequest {
         this.cityId = cityId;
     }
 
-    public WeatherRequest(double lon, double lat) {
-        this.lon = lon;
+    public WeatherRequest(Location location) {
+        this.lat = location.getLatitude();
+        this.lon = location.getLongitude();
+    }
+
+    public WeatherRequest(double lat, double lon) {
         this.lat = lat;
+        this.lon = lon;
     }
 
     public String getCityId() {

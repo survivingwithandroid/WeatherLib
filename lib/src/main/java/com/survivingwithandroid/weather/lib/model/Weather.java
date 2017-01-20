@@ -1,5 +1,6 @@
 package com.survivingwithandroid.weather.lib.model;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
 import com.survivingwithandroid.weather.lib.WeatherCode;
 
 /**
@@ -30,28 +31,28 @@ public class Weather {
     * The values are represented using the {@link Weather.WeatherUnit}
     * */
     public class Condition {
-        private int weatherId;
-        private String condition;
-        private String descr;
-        private String icon;
-        private float pressure;
-        private float humidity;
-        private float visibility;
-        private int pressureTrend;
-        private float feelsLike;
-        private float UV;
-        private float dewPoint;
-        private String heatIndex;
-        private String solarRadiation;
-        private float pressureSeaLevel;
-        private float pressureGroundLevel;
+        private Integer weatherId;
+        private String condition = DefaultValues.DEFAULT_STRING;
+        private String descr = DefaultValues.DEFAULT_STRING;
+        private String icon = DefaultValues.DEFAULT_STRING;
+        private Double pressure = DefaultValues.DEFAULT_DOUBLE;
+        private Double humidity = DefaultValues.DEFAULT_DOUBLE;
+        private Double visibility = DefaultValues.DEFAULT_DOUBLE;
+        private Integer pressureTrend = DefaultValues.DEFAULT_INTEGER;
+        private Double feelsLike = DefaultValues.DEFAULT_DOUBLE;
+        private Double UV = DefaultValues.DEFAULT_DOUBLE;
+        private Double dewPoint = DefaultValues.DEFAULT_DOUBLE;
+        private String heatIndex = DefaultValues.DEFAULT_STRING;
+        private String solarRadiation = DefaultValues.DEFAULT_STRING;
+        private Double pressureSeaLevel = DefaultValues.DEFAULT_DOUBLE;
+        private Double pressureGroundLevel = DefaultValues.DEFAULT_DOUBLE;
         private WeatherCode weatherCode;
 
-        public int getWeatherId() {
+        public Integer getWeatherId() {
             return weatherId;
         }
 
-        public void setWeatherId(int weatherId) {
+        public void setWeatherId(Integer weatherId) {
             this.weatherId = weatherId;
         }
 
@@ -79,43 +80,43 @@ public class Weather {
             this.icon = icon;
         }
 
-        public float getPressure() {
+        public Double getPressure() {
             return pressure;
         }
 
-        public void setPressure(float pressure) {
+        public void setPressure(Double pressure) {
             this.pressure = pressure;
         }
 
-        public float getHumidity() {
+        public Double getHumidity() {
             return humidity;
         }
 
-        public void setHumidity(float humidity) {
+        public void setHumidity(Double humidity) {
             this.humidity = humidity;
         }
 
-        public float getFeelsLike() {
+        public Double getFeelsLike() {
             return feelsLike;
         }
 
-        public void setFeelsLike(float feelsLike) {
+        public void setFeelsLike(Double feelsLike) {
             this.feelsLike = feelsLike;
         }
 
-        public float getUV() {
+        public Double getUV() {
             return UV;
         }
 
-        public void setUV(float UV) {
+        public void setUV(Double UV) {
             this.UV = UV;
         }
 
-        public float getDewPoint() {
+        public Double getDewPoint() {
             return dewPoint;
         }
 
-        public void setDewPoint(float dewPoint) {
+        public void setDewPoint(Double dewPoint) {
             this.dewPoint = dewPoint;
         }
 
@@ -135,19 +136,19 @@ public class Weather {
             this.solarRadiation = solarRadiation;
         }
 
-        public float getVisibility() {
+        public Double getVisibility() {
             return visibility;
         }
 
-        public void setVisibility(float visibility) {
+        public void setVisibility(Double visibility) {
             this.visibility = visibility;
         }
 
-        public int getPressureTrend() {
+        public Integer getPressureTrend() {
             return pressureTrend;
         }
 
-        public void setPressureTrend(int pressureTrend) {
+        public void setPressureTrend(Integer pressureTrend) {
             this.pressureTrend = pressureTrend;
         }
 
@@ -159,19 +160,19 @@ public class Weather {
             this.weatherCode = weatherCode;
         }
 
-        public float getPressureSeaLevel() {
+        public Double getPressureSeaLevel() {
             return pressureSeaLevel;
         }
 
-        public void setPressureSeaLevel(float pressureSeaLevel) {
+        public void setPressureSeaLevel(Double pressureSeaLevel) {
             this.pressureSeaLevel = pressureSeaLevel;
         }
 
-        public float getPressureGroundLevel() {
+        public Double getPressureGroundLevel() {
             return pressureGroundLevel;
         }
 
-        public void setPressureGroundLevel(float pressureGroundLevel) {
+        public void setPressureGroundLevel(Double pressureGroundLevel) {
             this.pressureGroundLevel = pressureGroundLevel;
         }
     }
@@ -181,43 +182,43 @@ public class Weather {
     * */
     public class Temperature {
 
-        private float temp;
-        private float minTemp;
-        private float maxTemp;
+        private Double temp;
+        private Double minTemp;
+        private Double maxTemp;
 
         /*
         * Current temperature
-        * @return float
+        * @return Double
         * */
-        public float getTemp() {
+        public Double getTemp() {
             return temp;
         }
 
-        public void setTemp(float temp) {
+        public void setTemp(Double temp) {
             this.temp = temp;
         }
 
         /*
         * Min temperature todat
-        * @return int
+        * @return Integer
         * */
-        public float getMinTemp() {
+        public Double getMinTemp() {
             return minTemp;
         }
 
-        public void setMinTemp(float minTemp) {
+        public void setMinTemp(Double minTemp) {
             this.minTemp = minTemp;
         }
 
         /*
         * Max temperature today
-        * @return int
+        * @return Integer
         * */
-        public float getMaxTemp() {
+        public Double getMaxTemp() {
             return maxTemp;
         }
 
-        public void setMaxTemp(float maxTemp) {
+        public void setMaxTemp(Double maxTemp) {
             this.maxTemp = maxTemp;
         }
 
@@ -227,52 +228,52 @@ public class Weather {
     * Current Wind conditions
     * */
     public class Wind {
-        private float speed;
-        private float deg;
-        private float chill;
-        private float gust;
+        private Double speed;
+        private Double deg;
+        private Double chill;
+        private Double gust;
 
         /*
         * Current wind speed
-        * @retrun float
+        * @retrun Double
         * */
-        public float getSpeed() {
+        public Double getSpeed() {
             return speed;
         }
 
-        public void setSpeed(float speed) {
+        public void setSpeed(Double speed) {
             this.speed = speed;
         }
 
         /*
         * Current wind direction
-        * @retrun float
+        * @retrun Double
         * */
-        public float getDeg() {
+        public Double getDeg() {
             return deg;
         }
 
-        public void setDeg(float deg) {
+        public void setDeg(Double deg) {
             this.deg = deg;
         }
 
         /*
         * Current wind chill
-        * @retrun float
+        * @retrun Double
         * */
-        public float getChill() {
+        public Double getChill() {
             return chill;
         }
 
-        public void setChill(float chill) {
+        public void setChill(Double chill) {
             this.chill = chill;
         }
 
-        public float getGust() {
+        public Double getGust() {
             return gust;
         }
 
-        public void setGust(float gust) {
+        public void setGust(Double gust) {
             this.gust = gust;
         }
     }
@@ -282,8 +283,8 @@ public class Weather {
     * */
     public class Rain {
         private String time;
-        private float ammount;
-        private float chance;
+        private Double ammount;
+        private Double chance;
 
         /**
         * Hour interval
@@ -300,25 +301,25 @@ public class Weather {
 
         /**
         * Ammount of rain expected
-        * @return float
+        * @return Double
         * */
-        public float getAmmount() {
+        public Double getAmmount() {
             return ammount;
         }
 
-        public void setAmmount(float ammount) {
+        public void setAmmount(Double ammount) {
             this.ammount = ammount;
         }
 
         /**
          * Chance of rain
-         * @return float
+         * @return Double
          * */
-        public float getChance() {
+        public Double getChance() {
             return chance;
         }
 
-        public void setChance(float chance) {
+        public void setChance(Double chance) {
             this.chance = chance;
         }
     }
@@ -328,7 +329,7 @@ public class Weather {
    * */
     public class Snow {
         private String time;
-        private float ammount;
+        private Double ammount;
 
         /*
         * Hour interval
@@ -345,13 +346,13 @@ public class Weather {
 
         /*
        * Ammount of snouw expected
-       * @return float
+       * @return Double
        * */
-        public float getAmmount() {
+        public Double getAmmount() {
             return ammount;
         }
 
-        public void setAmmount(float ammount) {
+        public void setAmmount(Double ammount) {
             this.ammount = ammount;
         }
 
@@ -362,18 +363,18 @@ public class Weather {
     * Current cloud information
     * */
     public class Clouds {
-        private int perc;
+        private Integer perc;
 
         /*
          * Coverage in %
          *
-         * @retrun int
+         * @retrun Integer
          */
-        public int getPerc() {
+        public Integer getPerc() {
             return perc;
         }
 
-        public void setPerc(int perc) {
+        public void setPerc(Integer perc) {
             this.perc = perc;
         }
 

@@ -94,8 +94,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
             JSONObject sysObj = getObject("sys", jObj);
             loc.setCountry(getString("country", sysObj));
-            loc.setSunrise(getInt("sunrise", sysObj));
-            loc.setSunset(getInt("sunset", sysObj));
+            loc.setSunrise(getLong("sunrise", sysObj));
+            loc.setSunset(getLong("sunset", sysObj));
             loc.setCity(getString("name", jObj));
 
             weather.location = loc;
@@ -121,10 +121,10 @@ public class OpenweathermapProvider implements IWeatherProvider {
             weather.currentCondition.setIcon(getString("icon", JSONWeather));
 
             JSONObject mainObj = getObject("main", jObj);
-            weather.currentCondition.setHumidity(getInt("humidity", mainObj));
+            weather.currentCondition.setHumidity(getFloat("humidity", mainObj));
             weather.currentCondition.setPressure(getFloat("pressure", mainObj)); //#18
-            weather.currentCondition.setPressureGroundLevel((float) mainObj.optDouble("grnd_level"));
-            weather.currentCondition.setPressureSeaLevel((float) mainObj.optDouble("sea_level"));
+            weather.currentCondition.setPressureGroundLevel(mainObj.optDouble("grnd_level"));
+            weather.currentCondition.setPressureSeaLevel(mainObj.optDouble("sea_level"));
             weather.temperature.setMaxTemp(getFloat("temp_max", mainObj));
             weather.temperature.setMinTemp(getFloat("temp_min", mainObj));
             weather.temperature.setTemp(getFloat("temp", mainObj));
@@ -140,7 +140,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
             }
             */
 
-            weather.wind.setGust((float) wObj.optDouble("gust"));
+            weather.wind.setGust(wObj.optDouble("gust"));
             // Clouds
             JSONObject cObj = getObject("clouds", jObj);
             weather.clouds.setPerc(getInt("all", cObj));
@@ -149,13 +149,13 @@ public class OpenweathermapProvider implements IWeatherProvider {
             JSONObject rObj = jObj.optJSONObject("rain");
             if (rObj != null) {
 
-                float amm1 = (float) rObj.optDouble("1h");
+                double amm1 = rObj.optDouble("1h");
                 if (amm1 > 0) {
                     weather.rain[0].setAmmount(amm1);
                     weather.rain[0].setTime("1h");
                 }
 
-                float amm3 = (float) rObj.optDouble("3h");
+                double amm3 = rObj.optDouble("3h");
                 if (amm3 > 0) {
                     weather.rain[1].setAmmount(amm3);
                     weather.rain[1].setTime("3h");
@@ -165,7 +165,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
             // Snow
             JSONObject sObj = jObj.optJSONObject("snow");
             if (sObj != null) {
-                weather.snow.setAmmount((float) sObj.optDouble("3h"));
+                weather.snow.setAmmount(sObj.optDouble("3h"));
                 weather.snow.setTime("3h");
             }
 
@@ -194,8 +194,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
             JSONObject cObj = jObj.getJSONObject("city");
             loc.setCity(cObj.getString("name"));
             JSONObject cooObj = cObj.getJSONObject("coord");
-            loc.setLatitude((float) cooObj.getDouble("lat"));
-            loc.setLongitude((float) cooObj.getDouble("lon"));
+            loc.setLatitude(cooObj.getDouble("lat"));
+            loc.setLongitude(cooObj.getDouble("lon"));
             loc.setCountry(cObj.getString("country"));
             loc.setPopulation(cObj.getLong("population"));
 
@@ -223,13 +223,13 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 JSONObject rObj = jObj.optJSONObject("rain");
                 if (rObj != null) {
 
-                    float amm1 = (float) rObj.optDouble("1h");
+                    double amm1 = rObj.optDouble("1h");
                     if (amm1 > 0) {
                         df.weather.rain[0].setAmmount(amm1);
                         df.weather.rain[0].setTime("1h");
                     }
 
-                    float amm3 = (float) rObj.optDouble("3h");
+                    double amm3 = rObj.optDouble("3h");
                     if (amm3 > 0) {
                         df.weather.rain[1].setAmmount(amm3);
                         df.weather.rain[1].setTime("3h");
@@ -238,16 +238,16 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 // Temp is an object
                 JSONObject jTempObj = jDayForecast.getJSONObject("temp");
-                df.forecastTemp.day = (float) jTempObj.getDouble("day");
-                df.forecastTemp.min = (float) jTempObj.getDouble("min");
-                df.forecastTemp.max = (float) jTempObj.getDouble("max");
-                df.forecastTemp.night = (float) jTempObj.getDouble("night");
-                df.forecastTemp.eve = (float) jTempObj.getDouble("eve");
-                df.forecastTemp.morning = (float) jTempObj.getDouble("morn");
+                df.forecastTemp.day = jTempObj.getDouble("day");
+                df.forecastTemp.min = jTempObj.getDouble("min");
+                df.forecastTemp.max = jTempObj.getDouble("max");
+                df.forecastTemp.night = jTempObj.getDouble("night");
+                df.forecastTemp.eve = jTempObj.getDouble("eve");
+                df.forecastTemp.morning = jTempObj.getDouble("morn");
 
                 // Pressure & Humidity
-                df.weather.currentCondition.setPressure((float) jDayForecast.getDouble("pressure"));
-                df.weather.currentCondition.setHumidity((float) jDayForecast.getDouble("humidity"));
+                df.weather.currentCondition.setPressure(jDayForecast.getDouble("pressure"));
+                df.weather.currentCondition.setHumidity(jDayForecast.getDouble("humidity"));
 
                 // ...and now the weather
                 JSONArray jWeatherArr = jDayForecast.getJSONArray("weather");
@@ -327,8 +327,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 hourForecast.weather.temperature.setMinTemp(getFloat("temp_min", jMain));
                 hourForecast.weather.temperature.setMaxTemp(getFloat("temp_max", jMain));
                 hourForecast.weather.currentCondition.setPressure(getFloat("pressure", jMain));
-                hourForecast.weather.currentCondition.setPressureSeaLevel((float) jMain.optDouble("sea_level"));
-                hourForecast.weather.currentCondition.setPressureGroundLevel((float) jMain.optDouble("grnd_level"));
+                hourForecast.weather.currentCondition.setPressureSeaLevel(jMain.optDouble("sea_level"));
+                hourForecast.weather.currentCondition.setPressureGroundLevel(jMain.optDouble("grnd_level"));
                 hourForecast.weather.currentCondition.setHumidity(getFloat("humidity", jMain));
 
                 // Now the weather codes
@@ -360,7 +360,7 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 JSONObject wObj = getObject("wind", jHour);
                 hourForecast.weather.wind.setSpeed(getFloat("speed", wObj));
                 hourForecast.weather.wind.setDeg(getFloat("deg", wObj));
-                hourForecast.weather.wind.setGust((float) wObj.optDouble("gust"));
+                hourForecast.weather.wind.setGust(wObj.optDouble("gust"));
 
                 //Log.d("SwA", "Add weather forecast");
                 forecast.addForecast(hourForecast);
@@ -392,11 +392,11 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
                 JSONObject mainObj = getObject("main", jHour);
 
-                hhWeather.weather.currentCondition.setPressure((float) mainObj.getDouble("pressure"));
+                hhWeather.weather.currentCondition.setPressure(mainObj.getDouble("pressure"));
 
-                hhWeather.weather.temperature.setTemp((float) mainObj.getDouble("temp"));
-                hhWeather.weather.temperature.setMaxTemp((float) mainObj.getDouble("temp_max"));
-                hhWeather.weather.temperature.setMinTemp((float) mainObj.getDouble("temp_min"));
+                hhWeather.weather.temperature.setTemp(mainObj.getDouble("temp"));
+                hhWeather.weather.temperature.setMaxTemp(mainObj.getDouble("temp_max"));
+                hhWeather.weather.temperature.setMinTemp(mainObj.getDouble("temp_min"));
 
                 JSONObject wObj = jHour.getJSONArray("weather").getJSONObject(0);
                 hhWeather.weather.currentCondition.setDescr(wObj.getString("description"));
@@ -415,8 +415,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
                 }
                 JSONObject windObj = getObject("wind", jHour);
 
-                hhWeather.weather.wind.setSpeed((float) windObj.getDouble("speed"));
-                hhWeather.weather.wind.setDeg((float) windObj.getDouble("deg"));
+                hhWeather.weather.wind.setSpeed(windObj.getDouble("speed"));
+                hhWeather.weather.wind.setDeg(windObj.getDouble("deg"));
 
                 histWeather.addHistoricalHourWeather(hhWeather);
             }
@@ -464,11 +464,11 @@ public class OpenweathermapProvider implements IWeatherProvider {
 
     @Override
     public String getQueryCityURLByLocation(android.location.Location location) throws ApiKeyRequiredException {
-        return SEARCH_URL_GEO + "&lat=" + location.getLatitude() + "&lon=" + location.getLongitude() + "&cnt=3" + createAPPID();
+        return getQueryCityURLByCoord(location.getLatitude(), location.getLongitude());
     }
 
     @Override
-    public String getQueryCityURLByCoord(double lon, double lat) throws ApiKeyRequiredException {
+    public String getQueryCityURLByCoord(double lat, double lon) throws ApiKeyRequiredException {
         return SEARCH_URL_GEO + "&lat=" + lat + "&lon=" + lon + "&cnt=3" + createAPPID() ;
     }
 
@@ -512,8 +512,8 @@ public class OpenweathermapProvider implements IWeatherProvider {
         return jObj.optString(tagName);
     }
 
-    private static float getFloat(String tagName, JSONObject jObj) throws JSONException {
-        return (float) jObj.optDouble(tagName);
+    private static Double getFloat(String tagName, JSONObject jObj) throws JSONException {
+        return jObj.optDouble(tagName);
     }
 
     private static int getInt(String tagName, JSONObject jObj) throws JSONException {

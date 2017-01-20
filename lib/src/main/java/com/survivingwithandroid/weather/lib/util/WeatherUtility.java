@@ -17,8 +17,12 @@
 
 package com.survivingwithandroid.weather.lib.util;
 
+import com.survivingwithandroid.weather.lib.DefaultValues;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.model.BaseWeather;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WeatherUtility {
 
@@ -45,13 +49,49 @@ public class WeatherUtility {
         return currentUnit.equals(WeatherConfig.UNIT_SYSTEM.M);
     }
 
+    private static JSONObject getLast(final JSONObject json, final String... names) throws JSONException {
+        final int lastIndex = names.length - 1;
+        JSONObject last = json;
 
-    public static float string2Float(String value) {
-        if (value == null || "".equals(value))
-            return -1;
+        for (int i = 0; i < lastIndex; i++) {
+            last = last.getJSONObject(names[i]);
+        }
 
-        return Float.parseFloat(value);
+        return last;
     }
 
+    public static String getString(final JSONObject json, final String... names) {
+        try {
+            return getLast(json, names).getString(names[names.length - 1]);
+        } catch (JSONException e) {
+            return DefaultValues.ERROR_STRING;
+        }
+    }
 
+    public static Integer getInteger(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getInt(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_INTEGER;
+        }
+    }
+
+    public static Long getLong(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getLong(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_LONG;
+        }
+    }
+
+    public static Double getDouble(final JSONObject json, final String... names){
+        try{
+            return getLast(json, names).getDouble(names[names.length - 1]);
+        }
+        catch (JSONException e){
+            return DefaultValues.ERROR_DOUBLE;
+        }
+    }
 }
