@@ -24,11 +24,42 @@ import com.survivingwithandroid.weather.lib.provider.IWeatherCodeProvider;
 * ForecastIO code provider. It converts the owm weather code to the unified code system provided by this library
 *
 * @author Francesco Azzola
+* @author Chris Watts
 * */
 public class ForecastIOCodeProvider implements IWeatherCodeProvider {
     @Override
     public WeatherCode getWeatherCode(String weatherCode) {
-        return null;
+        if (weatherCode == null)
+            return WeatherCode.NOT_AVAILABLE;
+
+        if (weatherCode.equalsIgnoreCase("clear-day"))
+            return WeatherCode.SUNNY;
+        else if (weatherCode.equalsIgnoreCase("clear-night"))
+            return WeatherCode.CLEAR_NIGHT;
+        else if (weatherCode.equalsIgnoreCase("rain"))
+            return WeatherCode.SHOWERS;
+        else if (weatherCode.equalsIgnoreCase("snow"))
+            return WeatherCode.SNOW;
+        else if (weatherCode.equalsIgnoreCase("sleet"))
+            return WeatherCode.SLEET;
+        else if (weatherCode.equalsIgnoreCase("wind"))
+            return WeatherCode.WINDY;
+        else if (weatherCode.equalsIgnoreCase("fog"))
+            return WeatherCode.FOGGY;
+        else if (weatherCode.equalsIgnoreCase("cloudy"))
+            return WeatherCode.CLOUDY;
+        else if (weatherCode.equalsIgnoreCase("partly-cloudy-day"))
+            return WeatherCode.PARTLY_CLOUDY_DAY;
+        else if (weatherCode.equalsIgnoreCase("partly-cloudy-night"))
+            return WeatherCode.PARTLY_CLOUDY_NIGHT;
+        else if (weatherCode.equalsIgnoreCase("hail"))
+            return WeatherCode.HAIL;
+        else if (weatherCode.equalsIgnoreCase("thunderstorm"))
+            return WeatherCode.THUNDERSTORMS;
+        else if (weatherCode.equalsIgnoreCase("tornado"))
+            return WeatherCode.TORNADO;
+        else
+            return WeatherCode.NOT_AVAILABLE;
     }
 
 

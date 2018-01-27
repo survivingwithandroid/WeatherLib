@@ -50,6 +50,7 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
     private CurrentWeather cWeather;
     private WeatherHourForecast whf;
     private WeatherForecast forecast;
+    private IWeatherCodeProvider codeProvider;
     private long lastUpdate;
 
 
@@ -136,7 +137,7 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
 
     @Override
     public void setWeatherCodeProvider(IWeatherCodeProvider codeProvider) {
-
+        this.codeProvider = codeProvider;
     }
 
     @Override
@@ -243,7 +244,13 @@ public class ForecastIOWeatherProvider implements IWeatherProvider {
         weather.currentCondition.setDescr(jsonWeather.optString("summary"));
         weather.currentCondition.setIcon(jsonWeather.optString("icon"));
 
-
+        if (codeProvider != null) {
+            try {
+                weather.currentCondition.setWeatherCode(codeProvider.getWeatherCode(weather.currentCondition.getIcon()));
+            } catch (Throwable t) {
+                weather.currentCondition.setWeatherCode(WeatherCode.NOT_AVAILABLE);
+            }
+        }
 
         weather.rain[0].setAmmount((float) jsonWeather.optDouble("precipIntensity"));
 
